@@ -1,0 +1,8 @@
+## Information about the digital archetypes
+
+This folder contains information about the digital archetypes for the SRI.
+
+That data is created using the [SRI-database](https://building-competition.org/), which is described in the following paper.
+
+Voss, K., Hendel, S., & Stark, M. (2021). Solar Decathlon Europe – A review on the energy engineering of experimental solar powered houses. Energy and Buildings, 251, 111336. https://doi.org/10.1016/j.enbuild.2021.111336
+
