@@ -9,7 +9,7 @@
     xsi:schemaLocation="http://www.interactive-instruments.de/ShapeChange/Configuration/1.1 http://shapechange.net/resources/schema/ShapeChangeConfiguration.xsd">
   <input>
     <parameter name="inputModelType" value="EA7"/>
-    <parameter name="inputFile" value="C:/Users/felix/Programmieren/djangoSRI/citygml/UML/SRI_ADE_EnterpriseArchitect.qea"/>
+    <parameter name="inputFile" value="C:/Users/felix/Programmieren/djangoSRI/citygml/UML/SRI_ADE.qea"/>
     <parameter name="appSchemaName" value="SRI_ADE"/>
     <parameter name="checkingConstraints" value="disabled"/>
     <parameter name="addTaggedValues" value="itemType"/>
@@ -23,11 +23,11 @@
 
   <log>
     <parameter name="reportLevel" value="INFO"/>
-    <parameter name="logFile" value="C:/Users/felix/Programmieren/djangoSRI/citygml/ShapeChange/logs/Log_CityGML_UtilityNetwork_ADE.xml"/>
+    <parameter name="logFile" value="C:/Users/felix/Programmieren/djangoSRI/citygml/ShapeChange/logs/Log_CityGML_SRI_ADE.xml"/>
   </log>
 
   <targets>
-    <TargetXmlSchema class="de.interactive_instruments.shapechange.target.XmlSchema" mode="enabled">
+    <TargetXmlSchema class="de.interactive_instruments.shapechange.core.target.xmlschema.XmlSchema" mode="enabled">
       <targetParameter name="outputDirectory" value="C:/Users/felix/Programmieren/djangoSRI/citygml/ShapeChange/output"/>
       <targetParameter name="defaultEncodingRule" value="citygml-ade"/>
       <xi:include href="http://shapechange.net/resources/config/StandardRules.xml"/>

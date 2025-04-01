@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="UTF-8"?><schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:bldg="http://www.opengis.net/citygml/building/2.0" xmlns:gml="http://www.opengis.net/gml" xmlns:sri="http://www.citygml.org/ade/SRI/0.1" elementFormDefault="qualified" targetNamespace="http://www.citygml.org/ade/SRI/0.1" version="0.1">
+  <annotation>
+    <documentation>SRI: Contains the Application Schema for the SRI ADE.</documentation>
+  </annotation>
+  <import namespace="http://www.opengis.net/citygml/building/2.0" schemaLocation="http://schemas.opengis.net/citygml/building/2.0/building.xsd"/>
+  <import namespace="http://www.opengis.net/gml" schemaLocation="http://schemas.opengis.net/gml/3.1.1/base/gml.xsd"/>
+  <!--XML Schema document created by ShapeChange - http://shapechange.net/-->
+  <element name="Assessor" substitutionGroup="gml:_Feature" type="sri:AssessorType"/>
+  <complexType name="AssessorType">
+    <complexContent>
+      <extension base="gml:AbstractFeatureType">
+        <sequence>
+          <element name="Name"/>
+          <element name="Organisation"/>
+          <element name="E-Mail"/>
+          <element name="PhoneNumber"/>
+          <element minOccurs="0" name="Assesor" type="sri:SRIAssessmentPropertyType"/>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="AssessorPropertyType">
+    <sequence minOccurs="0">
+      <element ref="sri:Assessor"/>
+    </sequence>
+    <attributeGroup ref="gml:AssociationAttributeGroup"/>
+  </complexType>
+  <element name="Building" substitutionGroup="bldg:Building" type="sri:BuildingType">
+    <annotation>
+      <documentation>ISO 6707-1: construction works that has the provision of shelter for its occupants or contents as one of its main purposes; usually partially or totally enclosed and designed to stand permanently in one place</documentation>
+    </annotation>
+  </element>
+  <complexType name="BuildingType">
+    <complexContent>
+      <extension base="bldg:BuildingType">
+        <sequence/>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="BuildingPropertyType">
+    <sequence minOccurs="0">
+      <element ref="sri:Building"/>
+    </sequence>
+    <attributeGroup ref="gml:AssociationAttributeGroup"/>
+  </complexType>
+  <element name="BuildingUsage" substitutionGroup="gml:_Object" type="sri:BuildingUsageType"/>
+  <complexType name="BuildingUsageType">
+    <sequence/>
+  </complexType>
+  <complexType name="BuildingUsagePropertyType">
+    <sequence>
+      <element ref="sri:BuildingUsage"/>
+    </sequence>
+  </complexType>
+  <element name="ClimateZone" substitutionGroup="gml:_Object" type="sri:ClimateZoneType"/>
+  <complexType name="ClimateZoneType">
+    <sequence/>
+  </complexType>
+  <complexType name="ClimateZonePropertyType">
+    <sequence>
+      <element ref="sri:ClimateZone"/>
+    </sequence>
+  </complexType>
+  <element name="DataCategory" substitutionGroup="gml:_Object" type="sri:DataCategoryType"/>
+  <complexType name="DataCategoryType">
+    <sequence>
+      <element name="EnergyData"/>
+      <element name="IndoorEnvironmentalData"/>
+      <element name="OutdoorEnvironmentalData"/>
+      <element name="SystemOperationalData"/>
+      <element name="ControlSettingData"/>
+      <element name="OccupantData"/>
+      <element name="DesignBasisData"/>
+      <element name="AssetData"/>
+      <element name="UtilityGridData"/>
+      <element name="OnsiteEnergyGenerationData"/>
+      <element name="CyberDeviceData"/>
+      <element name="Other"/>
+    </sequence>
+  </complexType>
+  <complexType name="DataCategoryPropertyType">
+    <sequence>
+      <element ref="sri:DataCategory"/>
+    </sequence>
+  </complexType>
+  <element name="DataCategoy" substitutionGroup="gml:_Feature" type="sri:DataCategoyType"/>
+  <complexType name="DataCategoyType">
+    <complexContent>
+      <extension base="gml:AbstractFeatureType">
+        <sequence/>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="DataCategoyPropertyType">
+    <sequence minOccurs="0">
+      <element ref="sri:DataCategoy"/>
+    </sequence>
+    <attributeGroup ref="gml:AssociationAttributeGroup"/>
+  </complexType>
+  <element name="Domain" substitutionGroup="gml:_Object" type="sri:DomainType"/>
+  <complexType name="DomainType">
+    <sequence/>
+  </complexType>
+  <complexType name="DomainPropertyType">
+    <sequence>
+      <element ref="sri:Domain"/>
+    </sequence>
+  </complexType>
+  <element name="FunctionalityLevel" substitutionGroup="gml:_Feature" type="sri:FunctionalityLevelType">
+    <annotation>
+      <documentation>Description of the functionality level of a Smart Readiness Indicator (SRI). Description contains information such as Level Number, textual description and further remarks.</documentation>
+    </annotation>
+  </element>
+  <complexType name="FunctionalityLevelType">
+    <complexContent>
+      <extension base="gml:AbstractFeatureType">
+        <sequence/>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="FunctionalityLevelPropertyType">
+    <sequence minOccurs="0">
+      <element ref="sri:FunctionalityLevel"/>
+    </sequence>
+    <attributeGroup ref="gml:AssociationAttributeGroup"/>
+  </complexType>
+  <element name="Methodology" substitutionGroup="gml:_Feature" type="sri:MethodologyType"/>
+  <complexType name="MethodologyType">
+    <complexContent>
+      <extension base="gml:AbstractFeatureType">
+        <sequence>
+          <element name="PrefferedWeightings"/>
+          <element name="PrefferedServiceCatalogue"/>
+          <element name="HeatingPresent"/>
+          <element name="CoolingDomainPresent"/>
+          <element name="VentilationDomainPresent"/>
+          <element name="LightingDomainPresent"/>
+          <element name="DynamicBuildingEnvelopeDomainPresent"/>
+          <element name="ElectricityDomainPresent"/>
+          <element name="ElectricVehicleChargingDomainPresent"/>
+          <element name="MonitoringAndControlDomainPresent"/>
+          <element maxOccurs="unbounded" minOccurs="0" name="SRIAssesments" type="sri:SRIAssessmentPropertyType"/>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="MethodologyPropertyType">
+    <sequence minOccurs="0">
+      <element ref="sri:Methodology"/>
+    </sequence>
+    <attributeGroup ref="gml:AssociationAttributeGroup"/>
+  </complexType>
+  <simpleType name="QualityValueType">
+    <annotation>
+      <documentation>Based on SpatialQualityValue in the UtilityADE.</documentation>
+    </annotation>
+    <restriction base="string">
+      <enumeration value="surveyed"/>
+      <enumeration value="calculated"/>
+      <enumeration value="interpolated"/>
+      <enumeration value="estimated"/>
+      <enumeration value="assumed"/>
+      <enumeration value="unknown"/>
+    </restriction>
+  </simpleType>
+  <element name="SRIAssessment" substitutionGroup="gml:_Feature" type="sri:SRIAssessmentType">
+    <annotation>
+      <documentation>Smart Readiness Indicator (SRI) Assessment of a building. The Assessment is conducted by an Assessor, and leads to a rating of a specific building. Depending on the specifics (such as location, type of building, catalogue considered relevant) different types of services are investigated.</documentation>
+    </annotation>
+  </element>
+  <complexType name="SRIAssessmentType">
+    <complexContent>
+      <extension base="gml:AbstractFeatureType">
+        <sequence>
+          <element name="Score" type="integer"/>
+          <element name="Date" type="boolean"/>
+          <element name="FullBuilding" type="boolean"/>
+          <element maxOccurs="unbounded" name="SRI Assesments" type="sri:SRIServicePropertyType"/>
+          <element maxOccurs="unbounded" minOccurs="0" name="SRI Assesments" type="sri:AssessorPropertyType"/>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="SRIAssessmentPropertyType">
+    <sequence minOccurs="0">
+      <element ref="sri:SRIAssessment"/>
+    </sequence>
+    <attributeGroup ref="gml:AssociationAttributeGroup"/>
+  </complexType>
+  <element name="SRIService" substitutionGroup="gml:_Feature" type="sri:SRIServiceType">
+    <annotation>
+      <documentation>Contains the information on a specific service.</documentation>
+    </annotation>
+  </element>
+  <complexType name="SRIServiceType">
+    <complexContent>
+      <extension base="gml:AbstractFeatureType">
+        <sequence>
+          <element name="Domain" type="integer"/>
+          <element name="Impact" type="integer"/>
+          <element name="Code"/>
+          <element name="Name" type="integer"/>
+          <element name="Preconditions" type="integer"/>
+          <element maxOccurs="unbounded" name="SRI Services" type="sri:SRIAssessmentPropertyType"/>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="SRIServicePropertyType">
+    <sequence minOccurs="0">
+      <element ref="sri:SRIService"/>
+    </sequence>
+    <attributeGroup ref="gml:AssociationAttributeGroup"/>
+  </complexType>
+</schema>

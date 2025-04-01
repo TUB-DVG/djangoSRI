@@ -1,0 +1,890 @@
+<html xmlns:r="http://www.interactive-instruments.de/ShapeChange/Result">
+  <head>
+    <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>ShapeChange result</title>
+    <style type="text/css">
+body
+{
+background-color:#f4f6fe;
+}
+h1
+{
+font-family:Arial, Helvetica, sans-serif;
+font-size:24px;
+color:#151B8D;
+text-align:center;
+}
+h2, h3, h4
+{
+font-family:Arial, Helvetica, sans-serif;
+color:#151B8D;
+text-align:center;
+}
+a:link 
+{
+color:#325595;
+text-decoration:none;
+border-bottom:1px dotted; 
+outline: none;
+}
+a:hover
+{
+border-bottom:1px solid;
+color:#325595;
+}
+p, li
+{
+font-family:Arial, Helvetica, sans-serif;
+font-size:14px;
+margin-top: 0px;
+margin-bottom: 4px;
+}
+.small
+{
+font-size:10px;
+}
+table
+{
+font-family:Arial, Helvetica, sans-serif;
+border-style:none;
+border-collapse:collapse;
+border:0px;
+padding:0px;
+margin-left: auto;
+margin-right: auto;
+}
+tr
+{
+vertical-align:top;
+}
+td
+{
+border:1px solid #98bf21;
+padding:5px 20px 5px 20px;
+}
+</style>
+    <script language="JavaScript" type="text/javascript">
+function toggleMe(a)
+{
+var list = document.getElementsByClassName(a);
+
+if(!list)return true;
+
+for (var i=0; i<list.length;i++) {
+  if(list[i].style.display=="none")
+  {
+  list[i].style.display="table-row"
+  }
+  else
+  {
+  list[i].style.display="none"
+  }
+}
+
+return true;
+}
+</script>
+  </head>
+  <body>
+    <h1>ShapeChange result</h1>
+    <table>
+      <tr>
+        <td>
+          <p>Result:</p>
+        </td><td>
+          <p>Conversion Completed</p>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <p>Start time:</p>
+        </td><td>
+          <p>Wed Apr 02 00:37:32 CEST 2025</p>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <p>End time:</p>
+        </td><td>
+          <p>Wed Apr 02 00:38:52 CEST 2025</p>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <p>Configuration file:</p>
+        </td><td>
+          <p>C:\Users\felix\Programmieren\djangoSRI\citygml\ShapeChange\ShapeChangeConfigurationFile_SRI_ADE.xml</p>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <p>ShapeChange version:</p>
+        </td><td>
+          <p>4.0.0</p>
+        </td>
+      </tr>
+    </table>
+    <a name="messages">
+      <h2>Messages</h2>
+    </a>
+    <div id="menu">
+      <p align="center">Click on the following buttons to toggle log messages of the according category.</p>
+      <table>
+        <tbody>
+          <tr>
+            <th>Process Flow</th><th>Process Execution</th>
+          </tr>
+          <tr>
+            <td><a href="javascript:void(0)" onclick="return toggleMe('ProcessFlowDebug')"><img alt="" border="0" height="10" width="10" src="http://shapechange.net/resources/images/open.gif"> Debug</a></td><td><a href="javascript:void(0)" onclick="return toggleMe('Debug')"><img alt="" border="0" height="10" width="10" src="http://shapechange.net/resources/images/open.gif"> Debug</a></td>
+          </tr>
+          <tr>
+            <td><a href="javascript:void(0)" onclick="return toggleMe('ProcessFlowInfo')"><img alt="" border="0" height="10" width="10" src="http://shapechange.net/resources/images/open.gif"> Info</a></td><td><a href="javascript:void(0)" onclick="return toggleMe('Info')"><img alt="" border="0" height="10" width="10" src="http://shapechange.net/resources/images/open.gif"> Info</a></td>
+          </tr>
+          <tr>
+            <td><a href="javascript:void(0)" onclick="return toggleMe('ProcessFlowWarning')"><img alt="" border="0" height="10" width="10" src="http://shapechange.net/resources/images/open.gif"> Warning</a></td><td><a href="javascript:void(0)" onclick="return toggleMe('Warning')"><img alt="" border="0" height="10" width="10" src="http://shapechange.net/resources/images/open.gif"> Warning</a></td>
+          </tr>
+          <tr>
+            <td><a href="javascript:void(0)" onclick="return toggleMe('ProcessFlowError')"><img alt="" border="0" height="10" width="10" src="http://shapechange.net/resources/images/open.gif"> Error</a></td><td><a href="javascript:void(0)" onclick="return toggleMe('Error')"><img alt="" border="0" height="10" width="10" src="http://shapechange.net/resources/images/open.gif"> Error</a></td>
+          </tr>
+          <tr>
+            <td><a href="javascript:void(0)" onclick="return toggleMe('ProcessFlowFatalError')"><img alt="" border="0" height="10" width="10" src="http://shapechange.net/resources/images/open.gif"> Fatal Error</a></td><td><a href="javascript:void(0)" onclick="return toggleMe('FatalError')"><img alt="" border="0" height="10" width="10" src="http://shapechange.net/resources/images/open.gif"> Fatal Error</a></td>
+          </tr>
+        </tbody>
+      </table>
+      <br>
+    </div>
+    <table border="0">
+      <tr>
+        <th>
+          <p>Severity</p>
+        </th><th>
+          <p>Message</p>
+        </th>
+      </tr>
+      <tr style="display:table-row" class="ProcessFlowInfo">
+        <td>
+          <p>ProcessFlowInfo</p>
+        </td><td>
+          <p>---------- Semantic validation of ShapeChange configuration: START ----------</p>
+        </td>
+      </tr>
+      <tr style="display:table-row" class="Info">
+        <td>
+          <p>Info</p>
+        </td><td>
+          <p>Validating input parameters.</p>
+        </td>
+      </tr>
+      <tr style="display:table-row" class="Info">
+        <td>
+          <p>Info</p>
+        </td><td>
+          <p>Validation of input parameters completed.</p>
+        </td>
+      </tr>
+      <tr style="display:table-row" class="Info">
+        <td>
+          <p>Info</p>
+        </td><td>
+          <p>Validating log parameters.</p>
+        </td>
+      </tr>
+      <tr style="display:table-row" class="Info">
+        <td>
+          <p>Info</p>
+        </td><td>
+          <p>Validation of log parameters completed.</p>
+        </td>
+      </tr>
+      <tr style="display:table-row" class="ProcessFlowInfo">
+        <td>
+          <p>ProcessFlowInfo</p>
+        </td><td>
+          <p>--- Validating target with @class 'de.interactive_instruments.shapechange.core.target.xmlschema.XmlSchema' and @inputs 'INPUT' ...</p>
+        </td>
+      </tr>
+      <tr style="display:table-row" class="ProcessFlowInfo">
+        <td>
+          <p>ProcessFlowInfo</p>
+        </td><td>
+          <p>--- Validating target with @class 'de.interactive_instruments.shapechange.core.target.codelists.CodelistDictionaries' and @inputs 'INPUT' ...</p>
+        </td>
+      </tr>
+      <tr style="display:table-row" class="ProcessFlowInfo">
+        <td>
+          <p>ProcessFlowInfo</p>
+        </td><td>
+          <p>---------- Semantic validation of ShapeChange configuration: COMPLETE ----------</p>
+        </td>
+      </tr>
+      <tr style="display:table-row" class="Info">
+        <td>
+          <p>Info</p>
+        </td><td>
+          <p>Connecting to C:\Users\felix\Programmieren\djangoSRI\citygml\UML\SRI_ADE.qea</p>
+        </td>
+      </tr>
+      <tr style="display:table-row" class="Info">
+        <td>
+          <p>Info</p>
+        </td><td>
+          <p>Connected to C:\Users\felix\Programmieren\djangoSRI\citygml\UML\SRI_ADE.qea</p>
+        </td>
+      </tr>
+      <tr style="display:table-row" class="Info">
+        <td>
+          <p>Info</p>
+        </td><td>
+          <p>Starting reading C:\Users\felix\Programmieren\djangoSRI\citygml\UML\SRI_ADE.qea</p>
+        </td>
+      </tr>
+      <tr style="display:table-row" class="Warning">
+        <td>
+          <p>Warning</p>
+        </td><td>
+          <p>Could not establish a category for element 'DoubleBetween0and1', having well-known stereotype &lt;&lt;basictype&gt;&gt; and encoding rule 'iso19136_2007'; setting category to 'unknown'.</p>
+        </td>
+      </tr>
+      <tr style="display:table-row" class="Info">
+        <td>
+          <p>Info</p>
+        </td><td>
+          <p>Finished reading C:\Users\felix\Programmieren\djangoSRI\citygml\UML\SRI_ADE.qea</p>
+        </td>
+      </tr>
+      <tr style="display:table-row" class="Warning">
+        <td>
+          <p>Warning</p>
+        </td><td>
+          <p>The type '' of property 'DataCategory.EnergyData' was not found.</p>
+          <p>
+            <small>Context: Property 'Model::CityGML::CityGML_ADE::SRI_ADE::InformationNeed::DataCategory::EnergyData'</small>
+          </p>
+        </td>
+      </tr>
+      <tr style="display:table-row" class="Warning">
+        <td>
+          <p>Warning</p>
+        </td><td>
+          <p>The type '' of property 'DataCategory.IndoorEnvironmentalData' was not found.</p>
+          <p>
+            <small>Context: Property 'Model::CityGML::CityGML_ADE::SRI_ADE::InformationNeed::DataCategory::IndoorEnvironmentalData'</small>
+          </p>
+        </td>
+      </tr>
+      <tr style="display:table-row" class="Warning">
+        <td>
+          <p>Warning</p>
+        </td><td>
+          <p>The type '' of property 'DataCategory.OutdoorEnvironmentalData' was not found.</p>
+          <p>
+            <small>Context: Property 'Model::CityGML::CityGML_ADE::SRI_ADE::InformationNeed::DataCategory::OutdoorEnvironmentalData'</small>
+          </p>
+        </td>
+      </tr>
+      <tr style="display:table-row" class="Warning">
+        <td>
+          <p>Warning</p>
+        </td><td>
+          <p>The type '' of property 'DataCategory.SystemOperationalData' was not found.</p>
+          <p>
+            <small>Context: Property 'Model::CityGML::CityGML_ADE::SRI_ADE::InformationNeed::DataCategory::SystemOperationalData'</small>
+          </p>
+        </td>
+      </tr>
+      <tr style="display:table-row" class="Warning">
+        <td>
+          <p>Warning</p>
+        </td><td>
+          <p>The type '' of property 'DataCategory.ControlSettingData' was not found.</p>
+          <p>
+            <small>Context: Property 'Model::CityGML::CityGML_ADE::SRI_ADE::InformationNeed::DataCategory::ControlSettingData'</small>
+          </p>
+        </td>
+      </tr>
+      <tr style="display:table-row" class="Warning">
+        <td>
+          <p>Warning</p>
+        </td><td>
+          <p>The type '' of property 'DataCategory.OccupantData' was not found.</p>
+          <p>
+            <small>Context: Property 'Model::CityGML::CityGML_ADE::SRI_ADE::InformationNeed::DataCategory::OccupantData'</small>
+          </p>
+        </td>
+      </tr>
+      <tr style="display:table-row" class="Warning">
+        <td>
+          <p>Warning</p>
+        </td><td>
+          <p>The type '' of property 'DataCategory.DesignBasisData' was not found.</p>
+          <p>
+            <small>Context: Property 'Model::CityGML::CityGML_ADE::SRI_ADE::InformationNeed::DataCategory::DesignBasisData'</small>
+          </p>
+        </td>
+      </tr>
+      <tr style="display:table-row" class="Warning">
+        <td>
+          <p>Warning</p>
+        </td><td>
+          <p>The type '' of property 'DataCategory.AssetData' was not found.</p>
+          <p>
+            <small>Context: Property 'Model::CityGML::CityGML_ADE::SRI_ADE::InformationNeed::DataCategory::AssetData'</small>
+          </p>
+        </td>
+      </tr>
+      <tr style="display:table-row" class="Warning">
+        <td>
+          <p>Warning</p>
+        </td><td>
+          <p>The type '' of property 'DataCategory.UtilityGridData' was not found.</p>
+          <p>
+            <small>Context: Property 'Model::CityGML::CityGML_ADE::SRI_ADE::InformationNeed::DataCategory::UtilityGridData'</small>
+          </p>
+        </td>
+      </tr>
+      <tr style="display:table-row" class="Warning">
+        <td>
+          <p>Warning</p>
+        </td><td>
+          <p>The type '' of property 'DataCategory.OnsiteEnergyGenerationData' was not found.</p>
+          <p>
+            <small>Context: Property 'Model::CityGML::CityGML_ADE::SRI_ADE::InformationNeed::DataCategory::OnsiteEnergyGenerationData'</small>
+          </p>
+        </td>
+      </tr>
+      <tr style="display:table-row" class="Warning">
+        <td>
+          <p>Warning</p>
+        </td><td>
+          <p>The type '' of property 'DataCategory.CyberDeviceData' was not found.</p>
+          <p>
+            <small>Context: Property 'Model::CityGML::CityGML_ADE::SRI_ADE::InformationNeed::DataCategory::CyberDeviceData'</small>
+          </p>
+        </td>
+      </tr>
+      <tr style="display:table-row" class="Warning">
+        <td>
+          <p>Warning</p>
+        </td><td>
+          <p>The type '' of property 'DataCategory.Other' was not found.</p>
+          <p>
+            <small>Context: Property 'Model::CityGML::CityGML_ADE::SRI_ADE::InformationNeed::DataCategory::Other'</small>
+          </p>
+        </td>
+      </tr>
+      <tr style="display:table-row" class="Warning">
+        <td>
+          <p>Warning</p>
+        </td><td>
+          <p>The type 'String' of property 'SRIService.Code' was not found.</p>
+          <p>
+            <small>Context: Property 'Model::CityGML::CityGML_ADE::SRI_ADE::SRICore::SRIService::Code'</small>
+          </p>
+        </td>
+      </tr>
+      <tr style="display:table-row" class="Error">
+        <td>
+          <p>Error</p>
+        </td><td>
+          <p>Name of 'property' 'SRI Services' includes invalid characters.</p>
+          <p>
+            <small>Context: Property 'Model::CityGML::CityGML_ADE::SRI_ADE::SRICore::SRIService::SRI Services'</small>
+          </p>
+        </td>
+      </tr>
+      <tr style="display:table-row" class="Error">
+        <td>
+          <p>Error</p>
+        </td><td>
+          <p>Name of 'property' 'SRI Assesments' includes invalid characters.</p>
+          <p>
+            <small>Context: Property 'Model::CityGML::CityGML_ADE::SRI_ADE::SRICore::SRIAssessment::SRI Assesments'</small>
+          </p>
+        </td>
+      </tr>
+      <tr style="display:table-row" class="Warning">
+        <td>
+          <p>Warning</p>
+        </td><td>
+          <p>The type 'char' of property 'Methodology.PrefferedWeightings' was not found.</p>
+          <p>
+            <small>Context: Property 'Model::CityGML::CityGML_ADE::SRI_ADE::SRICore::Methodology::PrefferedWeightings'</small>
+          </p>
+        </td>
+      </tr>
+      <tr style="display:table-row" class="Warning">
+        <td>
+          <p>Warning</p>
+        </td><td>
+          <p>The type 'char' of property 'Methodology.PrefferedServiceCatalogue' was not found.</p>
+          <p>
+            <small>Context: Property 'Model::CityGML::CityGML_ADE::SRI_ADE::SRICore::Methodology::PrefferedServiceCatalogue'</small>
+          </p>
+        </td>
+      </tr>
+      <tr style="display:table-row" class="Warning">
+        <td>
+          <p>Warning</p>
+        </td><td>
+          <p>The type 'boolean' of property 'Methodology.HeatingPresent' was not found.</p>
+          <p>
+            <small>Context: Property 'Model::CityGML::CityGML_ADE::SRI_ADE::SRICore::Methodology::HeatingPresent'</small>
+          </p>
+        </td>
+      </tr>
+      <tr style="display:table-row" class="Warning">
+        <td>
+          <p>Warning</p>
+        </td><td>
+          <p>The type 'boolean' of property 'Methodology.CoolingDomainPresent' was not found.</p>
+          <p>
+            <small>Context: Property 'Model::CityGML::CityGML_ADE::SRI_ADE::SRICore::Methodology::CoolingDomainPresent'</small>
+          </p>
+        </td>
+      </tr>
+      <tr style="display:table-row" class="Warning">
+        <td>
+          <p>Warning</p>
+        </td><td>
+          <p>The type 'boolean' of property 'Methodology.VentilationDomainPresent' was not found.</p>
+          <p>
+            <small>Context: Property 'Model::CityGML::CityGML_ADE::SRI_ADE::SRICore::Methodology::VentilationDomainPresent'</small>
+          </p>
+        </td>
+      </tr>
+      <tr style="display:table-row" class="Warning">
+        <td>
+          <p>Warning</p>
+        </td><td>
+          <p>The type 'boolean' of property 'Methodology.LightingDomainPresent' was not found.</p>
+          <p>
+            <small>Context: Property 'Model::CityGML::CityGML_ADE::SRI_ADE::SRICore::Methodology::LightingDomainPresent'</small>
+          </p>
+        </td>
+      </tr>
+      <tr style="display:table-row" class="Warning">
+        <td>
+          <p>Warning</p>
+        </td><td>
+          <p>The type 'boolean' of property 'Methodology.DynamicBuildingEnvelopeDomainPresent' was not found.</p>
+          <p>
+            <small>Context: Property 'Model::CityGML::CityGML_ADE::SRI_ADE::SRICore::Methodology::DynamicBuildingEnvelopeDomainPresent'</small>
+          </p>
+        </td>
+      </tr>
+      <tr style="display:table-row" class="Warning">
+        <td>
+          <p>Warning</p>
+        </td><td>
+          <p>The type 'boolean' of property 'Methodology.ElectricityDomainPresent' was not found.</p>
+          <p>
+            <small>Context: Property 'Model::CityGML::CityGML_ADE::SRI_ADE::SRICore::Methodology::ElectricityDomainPresent'</small>
+          </p>
+        </td>
+      </tr>
+      <tr style="display:table-row" class="Warning">
+        <td>
+          <p>Warning</p>
+        </td><td>
+          <p>The type 'boolean' of property 'Methodology.ElectricVehicleChargingDomainPresent' was not found.</p>
+          <p>
+            <small>Context: Property 'Model::CityGML::CityGML_ADE::SRI_ADE::SRICore::Methodology::ElectricVehicleChargingDomainPresent'</small>
+          </p>
+        </td>
+      </tr>
+      <tr style="display:table-row" class="Warning">
+        <td>
+          <p>Warning</p>
+        </td><td>
+          <p>The type 'boolean' of property 'Methodology.MonitoringAndControlDomainPresent' was not found.</p>
+          <p>
+            <small>Context: Property 'Model::CityGML::CityGML_ADE::SRI_ADE::SRICore::Methodology::MonitoringAndControlDomainPresent'</small>
+          </p>
+        </td>
+      </tr>
+      <tr style="display:table-row" class="Warning">
+        <td>
+          <p>Warning</p>
+        </td><td>
+          <p>The type 'char' of property 'Assessor.Name' was not found.</p>
+          <p>
+            <small>Context: Property 'Model::CityGML::CityGML_ADE::SRI_ADE::SRICore::Assessor::Name'</small>
+          </p>
+        </td>
+      </tr>
+      <tr style="display:table-row" class="Warning">
+        <td>
+          <p>Warning</p>
+        </td><td>
+          <p>The type 'int' of property 'Assessor.Organisation' was not found.</p>
+          <p>
+            <small>Context: Property 'Model::CityGML::CityGML_ADE::SRI_ADE::SRICore::Assessor::Organisation'</small>
+          </p>
+        </td>
+      </tr>
+      <tr style="display:table-row" class="Warning">
+        <td>
+          <p>Warning</p>
+        </td><td>
+          <p>The type 'int' of property 'Assessor.E-Mail' was not found.</p>
+          <p>
+            <small>Context: Property 'Model::CityGML::CityGML_ADE::SRI_ADE::SRICore::Assessor::E-Mail'</small>
+          </p>
+        </td>
+      </tr>
+      <tr style="display:table-row" class="Warning">
+        <td>
+          <p>Warning</p>
+        </td><td>
+          <p>The type 'int' of property 'Assessor.PhoneNumber' was not found.</p>
+          <p>
+            <small>Context: Property 'Model::CityGML::CityGML_ADE::SRI_ADE::SRICore::Assessor::PhoneNumber'</small>
+          </p>
+        </td>
+      </tr>
+      <tr style="display:table-row" class="ProcessFlowInfo">
+        <td>
+          <p>ProcessFlowInfo</p>
+        </td><td>
+          <p>Application schema found, package name: 'SRI_ADE', target namespace: 'http://www.citygml.org/ade/SRI/0.1'</p>
+        </td>
+      </tr>
+      <tr style="display:table-row" class="ProcessFlowInfo">
+        <td>
+          <p>ProcessFlowInfo</p>
+        </td><td>
+          <p>Now processing target 'XML Schema' for input 'INPUT'.</p>
+        </td>
+      </tr>
+      <tr style="display:table-row" class="Error">
+        <td>
+          <p>Error</p>
+        </td><td>
+          <p>The type 'char' of property 'Assessor.Name' was not found.</p>
+          <p>
+            <small>Context: Property 'Model::CityGML::CityGML_ADE::SRI_ADE::SRICore::Assessor::Name'</small>
+          </p>
+        </td>
+      </tr>
+      <tr style="display:table-row" class="Error">
+        <td>
+          <p>Error</p>
+        </td><td>
+          <p>The type 'int' of property 'Assessor.Organisation' was not found.</p>
+          <p>
+            <small>Context: Property 'Model::CityGML::CityGML_ADE::SRI_ADE::SRICore::Assessor::Organisation'</small>
+          </p>
+        </td>
+      </tr>
+      <tr style="display:table-row" class="Error">
+        <td>
+          <p>Error</p>
+        </td><td>
+          <p>The type 'int' of property 'Assessor.E-Mail' was not found.</p>
+          <p>
+            <small>Context: Property 'Model::CityGML::CityGML_ADE::SRI_ADE::SRICore::Assessor::E-Mail'</small>
+          </p>
+        </td>
+      </tr>
+      <tr style="display:table-row" class="Error">
+        <td>
+          <p>Error</p>
+        </td><td>
+          <p>The type 'int' of property 'Assessor.PhoneNumber' was not found.</p>
+          <p>
+            <small>Context: Property 'Model::CityGML::CityGML_ADE::SRI_ADE::SRICore::Assessor::PhoneNumber'</small>
+          </p>
+        </td>
+      </tr>
+      <tr style="display:table-row" class="Error">
+        <td>
+          <p>Error</p>
+        </td><td>
+          <p>The type '' of property 'DataCategory.EnergyData' was not found.</p>
+          <p>
+            <small>Context: Property 'Model::CityGML::CityGML_ADE::SRI_ADE::InformationNeed::DataCategory::EnergyData'</small>
+          </p>
+        </td>
+      </tr>
+      <tr style="display:table-row" class="Error">
+        <td>
+          <p>Error</p>
+        </td><td>
+          <p>The type '' of property 'DataCategory.IndoorEnvironmentalData' was not found.</p>
+          <p>
+            <small>Context: Property 'Model::CityGML::CityGML_ADE::SRI_ADE::InformationNeed::DataCategory::IndoorEnvironmentalData'</small>
+          </p>
+        </td>
+      </tr>
+      <tr style="display:table-row" class="Error">
+        <td>
+          <p>Error</p>
+        </td><td>
+          <p>The type '' of property 'DataCategory.OutdoorEnvironmentalData' was not found.</p>
+          <p>
+            <small>Context: Property 'Model::CityGML::CityGML_ADE::SRI_ADE::InformationNeed::DataCategory::OutdoorEnvironmentalData'</small>
+          </p>
+        </td>
+      </tr>
+      <tr style="display:table-row" class="Error">
+        <td>
+          <p>Error</p>
+        </td><td>
+          <p>The type '' of property 'DataCategory.SystemOperationalData' was not found.</p>
+          <p>
+            <small>Context: Property 'Model::CityGML::CityGML_ADE::SRI_ADE::InformationNeed::DataCategory::SystemOperationalData'</small>
+          </p>
+        </td>
+      </tr>
+      <tr style="display:table-row" class="Error">
+        <td>
+          <p>Error</p>
+        </td><td>
+          <p>The type '' of property 'DataCategory.ControlSettingData' was not found.</p>
+          <p>
+            <small>Context: Property 'Model::CityGML::CityGML_ADE::SRI_ADE::InformationNeed::DataCategory::ControlSettingData'</small>
+          </p>
+        </td>
+      </tr>
+      <tr style="display:table-row" class="Error">
+        <td>
+          <p>Error</p>
+        </td><td>
+          <p>The type '' of property 'DataCategory.OccupantData' was not found.</p>
+          <p>
+            <small>Context: Property 'Model::CityGML::CityGML_ADE::SRI_ADE::InformationNeed::DataCategory::OccupantData'</small>
+          </p>
+        </td>
+      </tr>
+      <tr style="display:table-row" class="Error">
+        <td>
+          <p>Error</p>
+        </td><td>
+          <p>The type '' of property 'DataCategory.DesignBasisData' was not found.</p>
+          <p>
+            <small>Context: Property 'Model::CityGML::CityGML_ADE::SRI_ADE::InformationNeed::DataCategory::DesignBasisData'</small>
+          </p>
+        </td>
+      </tr>
+      <tr style="display:table-row" class="Error">
+        <td>
+          <p>Error</p>
+        </td><td>
+          <p>The type '' of property 'DataCategory.AssetData' was not found.</p>
+          <p>
+            <small>Context: Property 'Model::CityGML::CityGML_ADE::SRI_ADE::InformationNeed::DataCategory::AssetData'</small>
+          </p>
+        </td>
+      </tr>
+      <tr style="display:table-row" class="Error">
+        <td>
+          <p>Error</p>
+        </td><td>
+          <p>The type '' of property 'DataCategory.UtilityGridData' was not found.</p>
+          <p>
+            <small>Context: Property 'Model::CityGML::CityGML_ADE::SRI_ADE::InformationNeed::DataCategory::UtilityGridData'</small>
+          </p>
+        </td>
+      </tr>
+      <tr style="display:table-row" class="Error">
+        <td>
+          <p>Error</p>
+        </td><td>
+          <p>The type '' of property 'DataCategory.OnsiteEnergyGenerationData' was not found.</p>
+          <p>
+            <small>Context: Property 'Model::CityGML::CityGML_ADE::SRI_ADE::InformationNeed::DataCategory::OnsiteEnergyGenerationData'</small>
+          </p>
+        </td>
+      </tr>
+      <tr style="display:table-row" class="Error">
+        <td>
+          <p>Error</p>
+        </td><td>
+          <p>The type '' of property 'DataCategory.CyberDeviceData' was not found.</p>
+          <p>
+            <small>Context: Property 'Model::CityGML::CityGML_ADE::SRI_ADE::InformationNeed::DataCategory::CyberDeviceData'</small>
+          </p>
+        </td>
+      </tr>
+      <tr style="display:table-row" class="Error">
+        <td>
+          <p>Error</p>
+        </td><td>
+          <p>The type '' of property 'DataCategory.Other' was not found.</p>
+          <p>
+            <small>Context: Property 'Model::CityGML::CityGML_ADE::SRI_ADE::InformationNeed::DataCategory::Other'</small>
+          </p>
+        </td>
+      </tr>
+      <tr style="display:table-row" class="Error">
+        <td>
+          <p>Error</p>
+        </td><td>
+          <p>The type 'char' of property 'Methodology.PrefferedWeightings' was not found.</p>
+          <p>
+            <small>Context: Property 'Model::CityGML::CityGML_ADE::SRI_ADE::SRICore::Methodology::PrefferedWeightings'</small>
+          </p>
+        </td>
+      </tr>
+      <tr style="display:table-row" class="Error">
+        <td>
+          <p>Error</p>
+        </td><td>
+          <p>The type 'char' of property 'Methodology.PrefferedServiceCatalogue' was not found.</p>
+          <p>
+            <small>Context: Property 'Model::CityGML::CityGML_ADE::SRI_ADE::SRICore::Methodology::PrefferedServiceCatalogue'</small>
+          </p>
+        </td>
+      </tr>
+      <tr style="display:table-row" class="Error">
+        <td>
+          <p>Error</p>
+        </td><td>
+          <p>The type 'boolean' of property 'Methodology.HeatingPresent' was not found.</p>
+          <p>
+            <small>Context: Property 'Model::CityGML::CityGML_ADE::SRI_ADE::SRICore::Methodology::HeatingPresent'</small>
+          </p>
+        </td>
+      </tr>
+      <tr style="display:table-row" class="Error">
+        <td>
+          <p>Error</p>
+        </td><td>
+          <p>The type 'boolean' of property 'Methodology.CoolingDomainPresent' was not found.</p>
+          <p>
+            <small>Context: Property 'Model::CityGML::CityGML_ADE::SRI_ADE::SRICore::Methodology::CoolingDomainPresent'</small>
+          </p>
+        </td>
+      </tr>
+      <tr style="display:table-row" class="Error">
+        <td>
+          <p>Error</p>
+        </td><td>
+          <p>The type 'boolean' of property 'Methodology.VentilationDomainPresent' was not found.</p>
+          <p>
+            <small>Context: Property 'Model::CityGML::CityGML_ADE::SRI_ADE::SRICore::Methodology::VentilationDomainPresent'</small>
+          </p>
+        </td>
+      </tr>
+      <tr style="display:table-row" class="Error">
+        <td>
+          <p>Error</p>
+        </td><td>
+          <p>The type 'boolean' of property 'Methodology.LightingDomainPresent' was not found.</p>
+          <p>
+            <small>Context: Property 'Model::CityGML::CityGML_ADE::SRI_ADE::SRICore::Methodology::LightingDomainPresent'</small>
+          </p>
+        </td>
+      </tr>
+      <tr style="display:table-row" class="Error">
+        <td>
+          <p>Error</p>
+        </td><td>
+          <p>The type 'boolean' of property 'Methodology.DynamicBuildingEnvelopeDomainPresent' was not found.</p>
+          <p>
+            <small>Context: Property 'Model::CityGML::CityGML_ADE::SRI_ADE::SRICore::Methodology::DynamicBuildingEnvelopeDomainPresent'</small>
+          </p>
+        </td>
+      </tr>
+      <tr style="display:table-row" class="Error">
+        <td>
+          <p>Error</p>
+        </td><td>
+          <p>The type 'boolean' of property 'Methodology.ElectricityDomainPresent' was not found.</p>
+          <p>
+            <small>Context: Property 'Model::CityGML::CityGML_ADE::SRI_ADE::SRICore::Methodology::ElectricityDomainPresent'</small>
+          </p>
+        </td>
+      </tr>
+      <tr style="display:table-row" class="Error">
+        <td>
+          <p>Error</p>
+        </td><td>
+          <p>The type 'boolean' of property 'Methodology.ElectricVehicleChargingDomainPresent' was not found.</p>
+          <p>
+            <small>Context: Property 'Model::CityGML::CityGML_ADE::SRI_ADE::SRICore::Methodology::ElectricVehicleChargingDomainPresent'</small>
+          </p>
+        </td>
+      </tr>
+      <tr style="display:table-row" class="Error">
+        <td>
+          <p>Error</p>
+        </td><td>
+          <p>The type 'boolean' of property 'Methodology.MonitoringAndControlDomainPresent' was not found.</p>
+          <p>
+            <small>Context: Property 'Model::CityGML::CityGML_ADE::SRI_ADE::SRICore::Methodology::MonitoringAndControlDomainPresent'</small>
+          </p>
+        </td>
+      </tr>
+      <tr style="display:table-row" class="Error">
+        <td>
+          <p>Error</p>
+        </td><td>
+          <p>The type 'String' of property 'SRIService.Code' was not found.</p>
+          <p>
+            <small>Context: Property 'Model::CityGML::CityGML_ADE::SRI_ADE::SRICore::SRIService::Code'</small>
+          </p>
+        </td>
+      </tr>
+      <tr style="display:table-row" class="ProcessFlowInfo">
+        <td>
+          <p>ProcessFlowInfo</p>
+        </td><td>
+          <p>Executed target class 'de.interactive_instruments.shapechange.core.target.xmlschema.XmlSchema' for input ID: 'INPUT'.
+-------------------------------------------------</p>
+        </td>
+      </tr>
+      <tr style="display:table-row" class="ProcessFlowInfo">
+        <td>
+          <p>ProcessFlowInfo</p>
+        </td><td>
+          <p>Application schema found, package name: 'SRI_ADE', target namespace: 'http://www.citygml.org/ade/SRI/0.1'</p>
+        </td>
+      </tr>
+      <tr style="display:table-row" class="ProcessFlowInfo">
+        <td>
+          <p>ProcessFlowInfo</p>
+        </td><td>
+          <p>Now processing target 'Code List Dictionary' for input 'INPUT'.</p>
+        </td>
+      </tr>
+      <tr style="display:table-row" class="ProcessFlowInfo">
+        <td>
+          <p>ProcessFlowInfo</p>
+        </td><td>
+          <p>Executed target class 'de.interactive_instruments.shapechange.core.target.codelists.CodelistDictionaries' for input ID: 'INPUT'.
+-------------------------------------------------</p>
+        </td>
+      </tr>
+    </table>
+    <a name="results">
+      <h2>Results</h2>
+    </a>
+    <table border="0">
+      <tr>
+        <th>
+          <p>Target</p>
+        </th><th>
+          <p>Scope</p>
+        </th><th>
+          <p>File</p>
+        </th>
+      </tr>
+      <tr>
+        <td>
+          <p>XML Schema</p>
+        </td><td>
+          <p>http://www.citygml.org/ade/SRI/0.1</p>
+        </td><td>
+          <p>
+            <a href="file:/C:/Users/felix/Programmieren/djangoSRI/citygml/ShapeChange/output/INPUT/CityGML_SRIADE.xsd">CityGML_SRIADE.xsd</a>
+          </p>
+        </td>
+      </tr>
+    </table>
+    <hr>
+    <p align="center">
+      <small>This report was generated by <a href="http://shapechange.net">ShapeChange</a></small>
+    </p>
+  </body>
+</html>
