@@ -49,13 +49,14 @@
         <XmlNamespace nsabr="wtr" ns="http://www.opengis.net/citygml/waterbody/2.0" location="http://schemas.opengis.net/citygml/waterbody/2.0/waterBody.xsd"/>      
       </xmlNamespaces>
       <xsdMapEntries>
-        <XsdMapEntry type="_CityObject" xsdEncodingRules="iso19136_2007" xmlElement="core:_CityObject" xmlType="core:AbstractCityObjectType" xmlPropertyType="gml:ReferenceType"/>
+    	<XsdMapEntry type="AbstractBoundarySurface" xsdEncodingRules="iso19136_2007" xmlElement="bldg:_BoundarySurface" xmlType="bldg:AbstractBoundarySurfaceType" xmlPropertyType = "bldg:BoundarySurfacePropertyType"/>
+      	<XsdMapEntry type="AbstractSite" xsdEncodingRules="iso19136_2007" xmlElement="core:_Site" xmlType="core:AbstractSiteType"/>
+        <XsdMapEntry type="AbstractCityObject" xsdEncodingRules="iso19136_2007" xmlElement="core:_CityObject" xmlType="core:AbstractCityObjectType"/>
+		<XsdMapEntry type="AbstractBuilding" xsdEncodingRules="iso19136_2007" xmlElement="bldg:_AbstractBuilding" xmlType="bldg:AbstractBuildingType"/>
         <XsdMapEntry type="URI" xsdEncodingRules="iso19136_2007" xmlPropertyType="anyURI" xmlType="anyURI" xmlTypeType="simple" xmlTypeContent="simple"/>
         <XsdMapEntry type="QuantityExtent" xsdEncodingRules="iso19136_2007" xmlType="gml:QuantityExtentType" xmlPropertyType="gml:QuantityExtentType" xmlTypeType="complex" xmlTypeContent="simple"/>
         <XsdMapEntry type="Code" xsdEncodingRules="iso19136_2007" xmlType="gml:CodeType" xmlPropertyType="gml:CodeType" xmlTypeType="complex" xmlTypeContent="simple"/>
         <XsdMapEntry type="DoubleBetween0and1" xsdEncodingRules="iso19136_2007" xmlType="core:doubleBetween0and1" xmlPropertyType="core:doubleBetween0and1" xmlTypeType="complex" xmlTypeContent="simple"/>
-        <XsdMapEntry type="ExternalReference" xsdEncodingRules="iso19136_2007" xmlType="core:ExternalReferenceType" xmlPropertyType="core:ExternalReferenceType"/>
-        <XsdMapEntry type="ImplicitGeometry" xsdEncodingRules="iso19136_2007" xmlElement="core:ImplicitGeometry" xmlType="core:ImplicitGeometryType" xmlPropertyType="core:ImplicitRepresentationPropertyType"/>
       </xsdMapEntries>
     </TargetXmlSchema>
     <Target class="de.interactive_instruments.shapechange.core.target.codelists.CodelistDictionaries" mode="enabled">
