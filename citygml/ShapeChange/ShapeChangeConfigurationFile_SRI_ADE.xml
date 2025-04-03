@@ -10,26 +10,32 @@
   <input>
     <parameter name="inputModelType" value="EA7"/>
     <parameter name="inputFile" value="C:/Users/felix/Programmieren/djangoSRI/citygml/UML/SRI_ADE.qea"/>
-    <parameter name="appSchemaName" value="SRI_ADE"/>
+    <parameter name="appSchemaName" value="SRIADE"/>
     <parameter name="checkingConstraints" value="disabled"/>
-    <parameter name="addTaggedValues" value="itemType"/>
+    
+	<parameter name="representTaggedValues" value="topLevel,relationType,maxOccurs"/>
     <xi:include href="http://shapechange.net/resources/config/StandardAliases.xml"/>
     <stereotypeAliases>
       <StereotypeAlias wellknown="property" alias="Property"/>
+      <StereotypeAlias wellknown="" alias="Property"/>
       <StereotypeAlias wellknown="version" alias="Version"/>
-      <StereotypeAlias wellknown="FeatureType" alias="TopLevelFeatureType"/>
     </stereotypeAliases>
   </input>
 
   <log>
-    <parameter name="reportLevel" value="INFO"/>
+    <parameter name="reportLevel" value="DEBUG"/>
     <parameter name="logFile" value="C:/Users/felix/Programmieren/djangoSRI/citygml/ShapeChange/logs/Log_CityGML_SRI_ADE.xml"/>
   </log>
 
   <targets>
     <TargetXmlSchema class="de.interactive_instruments.shapechange.core.target.xmlschema.XmlSchema" mode="enabled">
       <targetParameter name="outputDirectory" value="C:/Users/felix/Programmieren/djangoSRI/citygml/ShapeChange/output"/>
-      <targetParameter name="defaultEncodingRule" value="citygml-ade"/>
+      <targetParameter name="defaultEncodingRule" value="custom"/>
+      <rules>
+	    <EncodingRule extends="citygml-ade" name="custom">
+		  <rule name="rule-xsd-all-tagged-values" />
+		</EncodingRule>
+      </rules>
       <xi:include href="http://shapechange.net/resources/config/StandardRules.xml"/>
       <xi:include href="http://shapechange.net/resources/config/StandardNamespaces-v31.xml"/>
       <xi:include href="http://shapechange.net/resources/config/StandardMapEntries-v31.xml"/>
@@ -59,9 +65,6 @@
         <XsdMapEntry type="DoubleBetween0and1" xsdEncodingRules="iso19136_2007" xmlType="core:doubleBetween0and1" xmlPropertyType="core:doubleBetween0and1" xmlTypeType="complex" xmlTypeContent="simple"/>
       </xsdMapEntries>
     </TargetXmlSchema>
-    <Target class="de.interactive_instruments.shapechange.core.target.codelists.CodelistDictionaries" mode="enabled">
-      <targetParameter name="outputDirectory" value="C:/Users/felix/Programmieren/djangoSRI/citygml/ShapeChange/codelists"/>
-    </Target>
   </targets>
 
 </ShapeChangeConfiguration>
