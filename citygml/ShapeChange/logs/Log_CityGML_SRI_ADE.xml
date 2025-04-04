@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><ShapeChangeResult xmlns="http://www.interactive-instruments.de/ShapeChange/Result" xmlns:r="http://www.interactive-instruments.de/ShapeChange/Result" config="C:\Users\felix\Programmieren\djangoSRI\citygml\ShapeChange\ShapeChangeConfigurationFile_SRI_ADE.xml" end="Fri Apr 04 17:59:29 CEST 2025" resultCode="0" start="Fri Apr 04 17:56:28 CEST 2025" version="4.0.0">
+<?xml version="1.0" encoding="UTF-8"?><ShapeChangeResult xmlns="http://www.interactive-instruments.de/ShapeChange/Result" xmlns:r="http://www.interactive-instruments.de/ShapeChange/Result" config="C:\Users\felix\Programmieren\djangoSRI\citygml\ShapeChange\ShapeChangeConfigurationFile_SRI_ADE.xml" end="Fri Apr 04 18:14:28 CEST 2025" resultCode="0" start="Fri Apr 04 18:10:29 CEST 2025" version="4.0.0">
   <Messages>
     <ProcessFlowInfo message="---------- Semantic validation of ShapeChange configuration: START ----------"/>
     <Info message="Validating input parameters."/>
@@ -6379,6 +6379,7 @@
     <Debug message="The 'property' with ID '583_513' and name 'NonResidential' was created."/>
     <Debug message="The 'property' with ID '583_3146' and name 'Other' was created."/>
     <Debug message="Checking overloading. Class = 'AbstractBuilding'; current class = 'AbstractBuilding'."/>
+    <Debug message="Checking overloading. Class = 'AbstractBuilding'; current class = 'Building'."/>
     <Debug message="Checking overloading. Class = 'AbstractBuilding'; current class = 'AbstractBuilding'."/>
     <Debug message="The 'property' with ID '732_648' and name 'class' was created."/>
     <Debug message="The 'property' with ID '732_649' and name 'function' was created."/>
@@ -6422,7 +6423,6 @@
     <Debug message="Stereotype 'property' of element 'buildingUsage' normalized to ''."/>
     <Debug message="No well-known stereotype found for stereotype '' of element 'buildingUsage'."/>
     <Debug message="Element 'buildingUsage' has 0 (well-known or additional) stereotype(s): ''"/>
-    <Debug message="XML Schema Target: Found: 'bldg:_AbstractBuilding'"/>
     <Debug message="XML Schema Target: Import to namespace 'http://www.interactive-instruments.de/ShapeChange/AppInfo' added."/>
     <Debug message="Element 'usefulFloorArea' has the following stereotype(s) in the input model: 'property'."/>
     <Debug message="Stereotype 'property' of element 'usefulFloorArea' normalized to ''."/>
@@ -6430,28 +6430,23 @@
     <Debug message="Element 'usefulFloorArea' has 0 (well-known or additional) stereotype(s): ''"/>
     <Debug message="XML Schema Target: Found: 'gml:AreaType'"/>
     <Debug message="XML Schema Target: Import to namespace 'http://www.opengis.net/gml' added."/>
-    <Debug message="XML Schema Target: Found: 'bldg:_AbstractBuilding'"/>
     <Debug message="Element 'location' has the following stereotype(s) in the input model: 'property'."/>
     <Debug message="Stereotype 'property' of element 'location' normalized to ''."/>
     <Debug message="No well-known stereotype found for stereotype '' of element 'location'."/>
     <Debug message="Element 'location' has 0 (well-known or additional) stereotype(s): ''"/>
     <Debug message="XML Schema Target: Import to namespace 'http://www.opengis.net/citygml/generics/2.0' added."/>
-    <Debug message="XML Schema Target: Found: 'bldg:_AbstractBuilding'"/>
     <Debug message="Element 'SRIBuildingType' has the following stereotype(s) in the input model: 'property'."/>
     <Debug message="Stereotype 'property' of element 'SRIBuildingType' normalized to ''."/>
     <Debug message="No well-known stereotype found for stereotype '' of element 'SRIBuildingType'."/>
     <Debug message="Element 'SRIBuildingType' has 0 (well-known or additional) stereotype(s): ''"/>
-    <Debug message="XML Schema Target: Found: 'bldg:_AbstractBuilding'"/>
     <Debug message="Element 'climateZone' has the following stereotype(s) in the input model: 'property'."/>
     <Debug message="Stereotype 'property' of element 'climateZone' normalized to ''."/>
     <Debug message="No well-known stereotype found for stereotype '' of element 'climateZone'."/>
     <Debug message="Element 'climateZone' has 0 (well-known or additional) stereotype(s): ''"/>
-    <Debug message="XML Schema Target: Found: 'bldg:_AbstractBuilding'"/>
     <Debug message="Element 'buildingState' has the following stereotype(s) in the input model: 'property'."/>
     <Debug message="Stereotype 'property' of element 'buildingState' normalized to ''."/>
     <Debug message="No well-known stereotype found for stereotype '' of element 'buildingState'."/>
     <Debug message="Element 'buildingState' has 0 (well-known or additional) stereotype(s): ''"/>
-    <Debug message="XML Schema Target: Found: 'bldg:_AbstractBuilding'"/>
     <Debug message="Processing class 'Assessor', rule 'custom'."/>
     <Debug message="Processing local properties of class 'Assessor'."/>
     <Debug message="Element 'name' has the following stereotype(s) in the input model: 'property'."/>

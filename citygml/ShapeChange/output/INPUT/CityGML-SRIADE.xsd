@@ -7,28 +7,28 @@
   <import namespace="http://www.opengis.net/citygml/generics/2.0" schemaLocation="http://schemas.opengis.net/citygml/generics/2.0/generics.xsd"/>
   <import namespace="http://www.opengis.net/gml" schemaLocation="http://schemas.opengis.net/gml/3.1.1/base/gml.xsd"/>
   <!--XML Schema document created by ShapeChange - http://shapechange.net/-->
-  <element name="buildingUsage" substitutionGroup="bldg:_GenericApplicationPropertyOfAbstractBuilding" type="SRIADE:BuildingUsageType"/>
-  <element name="usefulFloorArea" substitutionGroup="bldg:_GenericApplicationPropertyOfAbstractBuilding" type="gml:AreaType">
+  <element name="buildingUsage" substitutionGroup="bldg:_GenericApplicationPropertyOfBuilding" type="SRIADE:BuildingUsageType"/>
+  <element name="usefulFloorArea" substitutionGroup="bldg:_GenericApplicationPropertyOfBuilding" type="gml:AreaType">
     <annotation>
       <appinfo>
         <sc:taggedValue tag="maxOccurs">1</sc:taggedValue>
       </appinfo>
     </annotation>
   </element>
-  <element name="location" substitutionGroup="bldg:_GenericApplicationPropertyOfAbstractBuilding" type="gen:StringAttributePropertyType">
+  <element name="location" substitutionGroup="bldg:_GenericApplicationPropertyOfBuilding" type="gen:StringAttributePropertyType">
     <annotation>
       <documentation>Location of the Building, e.g. Country and City.</documentation>
     </annotation>
   </element>
-  <element name="SRIBuildingType" substitutionGroup="bldg:_GenericApplicationPropertyOfAbstractBuilding" type="SRIADE:SRIBuildingTypeType">
+  <element name="SRIBuildingType" substitutionGroup="bldg:_GenericApplicationPropertyOfBuilding" type="SRIADE:SRIBuildingTypeType">
     <annotation>
       <appinfo>
         <sc:taggedValue tag="maxOccurs">1</sc:taggedValue>
       </appinfo>
     </annotation>
   </element>
-  <element name="climateZone" substitutionGroup="bldg:_GenericApplicationPropertyOfAbstractBuilding" type="SRIADE:ClimateZoneTypeType"/>
-  <element name="buildingState" substitutionGroup="bldg:_GenericApplicationPropertyOfAbstractBuilding" type="SRIADE:BuildingStateType"/>
+  <element name="climateZone" substitutionGroup="bldg:_GenericApplicationPropertyOfBuilding" type="SRIADE:ClimateZoneTypeType"/>
+  <element name="buildingState" substitutionGroup="bldg:_GenericApplicationPropertyOfBuilding" type="SRIADE:BuildingStateType"/>
   <element name="Assessor" substitutionGroup="gml:_Feature" type="SRIADE:AssessorType"/>
   <complexType name="AssessorType">
     <complexContent>
