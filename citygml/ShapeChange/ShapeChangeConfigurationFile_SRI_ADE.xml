@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- Created by Felix - last edit: 2025-04-01 -->
+
+<ShapeChangeConfiguration xmlns:xi="http://www.w3.org/2001/XInclude" 
+    xmlns="http://www.interactive-instruments.de/ShapeChange/Configuration/1.1" 
+    xmlns:sc="http://www.interactive-instruments.de/ShapeChange/Configuration/1.1" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xsi:schemaLocation="http://www.interactive-instruments.de/ShapeChange/Configuration/1.1 http://shapechange.net/resources/schema/ShapeChangeConfiguration.xsd">
+  <input>
+    <parameter name="inputModelType" value="EA7"/>
+    <parameter name="inputFile" value="C:/Users/felix/Programmieren/djangoSRI/citygml/UML/SRI_ADE.qea"/>
+    <parameter name="appSchemaName" value="SRIADE"/>
+    <parameter name="checkingConstraints" value="disabled"/>
+    
+	<parameter name="representTaggedValues" value="topLevel,relationType,maxOccurs"/>
+    <xi:include href="http://shapechange.net/resources/config/StandardAliases.xml"/>
+    <stereotypeAliases>
+      <StereotypeAlias wellknown="property" alias="Property"/>
+      <StereotypeAlias wellknown="" alias="Property"/>
+      <StereotypeAlias wellknown="version" alias="Version"/>
+      <StereotypeAlias wellknown="FeatureType" alias="TopLevelFeatureType"/>
+    </stereotypeAliases>
+  </input>
+
+  <log>
+    <parameter name="reportLevel" value="INFO"/>
+    <parameter name="logFile" value="C:/Users/felix/Programmieren/djangoSRI/citygml/ShapeChange/logs/Log_CityGML_SRI_ADE.xml"/>
+  </log>
+
+  <targets>
+    <TargetXmlSchema class="de.interactive_instruments.shapechange.core.target.xmlschema.XmlSchema" mode="enabled">
+      <targetParameter name="outputDirectory" value="C:/Users/felix/Programmieren/djangoSRI/citygml/ShapeChange/output"/>
+      <targetParameter name="defaultEncodingRule" value="custom"/>
+      <rules>
+	    <EncodingRule extends="citygml-ade" name="custom">
+		      <rule name="rule-xsd-all-tagged-values" />
+          <rule name="rule-xsd-rel-association-classes"/>
+          <rule name="rule-xsd-cls-basictype"/>
+        </EncodingRule>
+      </rules>
+      <xi:include href="http://shapechange.net/resources/config/StandardRules.xml"/>
+      <xi:include href="http://shapechange.net/resources/config/StandardNamespaces-v31.xml"/>
+      <xi:include href="http://shapechange.net/resources/config/StandardMapEntries-v31.xml"/>
+      <xmlNamespaces>
+        <XmlNamespace nsabr="core" ns="http://www.opengis.net/citygml/2.0" location="http://schemas.opengis.net/citygml/2.0/cityGMLBase.xsd"/>
+        <XmlNamespace nsabr="app" ns="http://www.opengis.net/citygml/appearance/2.0" location="http://schemas.opengis.net/citygml/appearance/2.0/appearance.xsd"/>
+        <XmlNamespace nsabr="brid" ns="http://www.opengis.net/citygml/bridge/2.0" location="http://schemas.opengis.net/citygml/bridge/2.0/bridge.xsd"/>
+        <XmlNamespace nsabr="bldg" ns="http://www.opengis.net/citygml/building/2.0" location="http://schemas.opengis.net/citygml/building/2.0/building.xsd"/>
+        <XmlNamespace nsabr="frn" ns="http://www.opengis.net/citygml/cityfurniture/2.0" location="http://schemas.opengis.net/citygml/cityfurniture/2.0/cityFurniture.xsd"/>
+        <XmlNamespace nsabr="grp" ns="http://www.opengis.net/citygml/cityobjectgroup/2.0" location="http://schemas.opengis.net/citygml/cityobjectgroup/2.0/cityObjectGroup.xsd"/>
+        <XmlNamespace nsabr="gen" ns="http://www.opengis.net/citygml/generics/2.0" location="http://schemas.opengis.net/citygml/generics/2.0/generics.xsd"/>
+        <XmlNamespace nsabr="luse" ns="http://www.opengis.net/citygml/landuse/2.0" location="http://schemas.opengis.net/citygml/landuse/2.0/landUse.xsd"/>
+        <XmlNamespace nsabr="dem" ns="http://www.opengis.net/citygml/relief/2.0" location="http://schemas.opengis.net/citygml/relief/2.0/relief.xsd"/>
+        <XmlNamespace nsabr="tran" ns="http://www.opengis.net/citygml/transportation/2.0" location="http://schemas.opengis.net/citygml/transportation/2.0/transportation.xsd"/>
+        <XmlNamespace nsabr="tun" ns="http://www.opengis.net/citygml/tunnel/2.0" location="http://schemas.opengis.net/citygml/tunnel/2.0/tunnel.xsd"/>
+        <XmlNamespace nsabr="veg" ns="http://www.opengis.net/citygml/vegetation/2.0" location="http://schemas.opengis.net/citygml/vegetation/2.0/vegetation.xsd"/>
+        <XmlNamespace nsabr="wtr" ns="http://www.opengis.net/citygml/waterbody/2.0" location="http://schemas.opengis.net/citygml/waterbody/2.0/waterBody.xsd"/>      
+      </xmlNamespaces>
+      <xsdMapEntries>
+    	<XsdMapEntry type="AbstractBoundarySurface" xsdEncodingRules="iso19136_2007" xmlElement="bldg:_BoundarySurface" xmlType="bldg:AbstractBoundarySurfaceType" xmlPropertyType = "bldg:BoundarySurfacePropertyType"/>
+      	<XsdMapEntry type="AbstractSite" xsdEncodingRules="iso19136_2007" xmlElement="core:_Site" xmlType="core:AbstractSiteType"/>
+        <XsdMapEntry type="AbstractCityObject" xsdEncodingRules="iso19136_2007" xmlElement="core:_CityObject" xmlType="core:AbstractCityObjectType"/>
+		<XsdMapEntry type="AbstractBuilding" xsdEncodingRules="iso19136_2007" xmlElement="bldg:_AbstractBuilding" xmlType="bldg:AbstractBuildingType"/>
+        <XsdMapEntry type="URI" xsdEncodingRules="iso19136_2007" xmlPropertyType="anyURI" xmlType="anyURI" xmlTypeType="simple" xmlTypeContent="simple"/>
+        <XsdMapEntry type="QuantityExtent" xsdEncodingRules="iso19136_2007" xmlType="gml:QuantityExtentType" xmlPropertyType="gml:QuantityExtentType" xmlTypeType="complex" xmlTypeContent="simple"/>
+        <XsdMapEntry type="Code" xsdEncodingRules="iso19136_2007" xmlType="gml:CodeType" xmlPropertyType="gml:CodeType" xmlTypeType="complex" xmlTypeContent="simple"/>
+        <XsdMapEntry type="DoubleBetween0and1" xsdEncodingRules="iso19136_2007" xmlType="core:doubleBetween0and1" xmlPropertyType="core:doubleBetween0and1" xmlTypeType="complex" xmlTypeContent="simple"/>
+      </xsdMapEntries>
+    </TargetXmlSchema>
+     <Target class="de.interactive_instruments.shapechange.core.target.codelists.CodelistDictionaries" mode="enabled">
+      <targetParameter name="outputDirectory" value="C:/Users/felix/Programmieren/djangoSRI/citygml/ShapeChange/output/codelists"/>
+    </Target>
+  </targets>
+
+</ShapeChangeConfiguration>
