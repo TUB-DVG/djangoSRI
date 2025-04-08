@@ -1,6 +1,7 @@
 ### This file loads the data from the SRI calculation sheet and transforms it into the model sheet for the Archetype
 
 import pandas as pd
+import os
 
 PATH_SRI_CALCULATION = r"C:\Users\felix\Nextcloud\Back Up\03_Rehmann\04_Paper\11_InformationsSystems\SRI_Version45\SRI3_calculation-sheet_v4.5.xlsx"
 SHEET_NAME_SRI_CALCULATION = "overview_of_services"
@@ -14,6 +15,18 @@ print(sri_data.columns)
 print(archetype_data.head())
 
 FUNCTIONALITY_LEVELS = ["Functionality level 0 (as non-smart default)", "Functionality level 1", "Functionality level 2", "Functionality level 3", "Functionality level 4"]
+
+ARCHETYPE_COLUMNS = ["Energy data",
+                    "Indoor environmental data",
+                    "Outdoor envionmental data",
+                    "System and equipment operational data",
+                    "Control setting and logic data",
+                    "Occupant data",
+                    "Desing basis data",
+                    "Building and system asset data",
+                    "Utility and grid signal data",
+                    "Onsite energy generation data",
+                    "Cyber (IoT) device data", "Use Cases"]
 
 
 # Load the data and split it into different service groups ( Functionality level 0 (as non-smart default)	Functionality level 1	Functionality level 2	Functionality level 3	Functionality level 4) together with the rest of the columns
@@ -35,8 +48,8 @@ for i, functionality_level in enumerate(FUNCTIONALITY_LEVELS):
     columns_to_keep.append(functionality_level)
 
     reduced_data = sri_data[columns_to_keep]
-    reduced_data["FunctionalityLevel"] = i
-    reduced_data["FunctionalityDescription"] = reduced_data.loc[0, functionality_level]
+    reduced_data.loc[:, "FunctionalityLevel"] = i
+    reduced_data.loc[:, "FunctionalityDescription"] = reduced_data.loc[:, functionality_level]
     list_of_reduced_data.append(reduced_data)
     
 
@@ -61,8 +74,13 @@ HIDDEN_COLUMNS = [15, "Service included in the selected method (A/B/custom): 0 -
 
 df_merged = df_merged.drop(columns=HIDDEN_COLUMNS)
 
+df_merged = df_merged.drop(columns=FUNCTIONALITY_LEVELS)
+
 df_merged["Preconditions"] = df_merged["Preconditions"].str.replace("Please define your preconditions for this service", "")
-df_merged.sort_values(by="SRIService", inplace=True)
-df_merged.to_excel(r"C:\Users\felix\Nextcloud\Back Up\03_Rehmann\04_Paper\11_InformationsSystems\SRI_Version45\DigitalArchetypes_BasiscSheet.xlsx", index=False)
+df_merged = df_merged.sort_values(by=["SRIService", "FunctionalityLevel"])
+df_merged.dropna(subset=["FunctionalityDescription"], inplace=True)
+df_merged[ARCHETYPE_COLUMNS] = ""
+BASE_PATH = os.path.dirname(os.path.abspath(__file__))
+df_merged.to_excel(os.path.join(BASE_PATH, "DigitalArchetypes_BasiscSheet.xlsx"), index=False)
 
 
