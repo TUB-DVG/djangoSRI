@@ -1,43 +1,42 @@
-<?xml version="1.0" encoding="UTF-8"?><schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:SRIADE="http://www.citygml.org/ade/SRIADE/0.1" xmlns:bldg="http://www.opengis.net/citygml/building/2.0" xmlns:gen="http://www.opengis.net/citygml/generics/2.0" xmlns:gml="http://www.opengis.net/gml" xmlns:sc="http://www.interactive-instruments.de/ShapeChange/AppInfo" elementFormDefault="qualified" targetNamespace="http://www.citygml.org/ade/SRIADE/0.1" version="0.1">
+<?xml version="1.0" encoding="UTF-8"?><schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:SRIADE="http://www.citygml.org/ade/SRIADE/0.1" xmlns:bldg="http://www.opengis.net/citygml/building/2.0" xmlns:gml="http://www.opengis.net/gml" xmlns:sc="http://www.interactive-instruments.de/ShapeChange/AppInfo" elementFormDefault="qualified" targetNamespace="http://www.citygml.org/ade/SRIADE/0.1" version="0.1">
   <annotation>
     <documentation>SRI ADE: Contains the Application Schema for the Smart Readiness Indicator (SRI) ADE. Optional data models included to create archetypes for data needs, use cases, and communication technologies.</documentation>
   </annotation>
   <import namespace="http://www.interactive-instruments.de/ShapeChange/AppInfo" schemaLocation="https://shapechange.net/resources/schema/ShapeChangeAppinfo.xsd"/>
   <import namespace="http://www.opengis.net/citygml/building/2.0" schemaLocation="http://schemas.opengis.net/citygml/building/2.0/building.xsd"/>
-  <import namespace="http://www.opengis.net/citygml/generics/2.0" schemaLocation="http://schemas.opengis.net/citygml/generics/2.0/generics.xsd"/>
   <import namespace="http://www.opengis.net/gml" schemaLocation="http://schemas.opengis.net/gml/3.1.1/base/gml.xsd"/>
   <!--XML Schema document created by ShapeChange - http://shapechange.net/-->
-  <element name="buildingUsage" substitutionGroup="bldg:_GenericApplicationPropertyOfBuilding" type="SRIADE:BuildingUsageType"/>
-  <element name="usefulFloorArea" substitutionGroup="bldg:_GenericApplicationPropertyOfBuilding" type="gml:AreaType">
+  <element name="buildingUsage" substitutionGroup="bldg:_GenericApplicationPropertyOfAbstractBuilding" type="SRIADE:SRIBuildingUsageType"/>
+  <element name="usefulFloorArea" substitutionGroup="bldg:_GenericApplicationPropertyOfAbstractBuilding" type="string">
     <annotation>
       <appinfo>
         <sc:taggedValue tag="maxOccurs">1</sc:taggedValue>
       </appinfo>
     </annotation>
   </element>
-  <element name="location" substitutionGroup="bldg:_GenericApplicationPropertyOfBuilding" type="gen:StringAttributePropertyType">
+  <element name="location" substitutionGroup="bldg:_GenericApplicationPropertyOfAbstractBuilding" type="string">
     <annotation>
       <documentation>Location of the Building, e.g. Country and City.</documentation>
     </annotation>
   </element>
-  <element name="SRIBuildingType" substitutionGroup="bldg:_GenericApplicationPropertyOfBuilding" type="SRIADE:SRIBuildingTypeType">
+  <element name="SRIBuildingType" substitutionGroup="bldg:_GenericApplicationPropertyOfAbstractBuilding" type="SRIADE:SRIBuildingTypeType">
     <annotation>
       <appinfo>
         <sc:taggedValue tag="maxOccurs">1</sc:taggedValue>
       </appinfo>
     </annotation>
   </element>
-  <element name="climateZone" substitutionGroup="bldg:_GenericApplicationPropertyOfBuilding" type="SRIADE:ClimateZoneTypeType"/>
-  <element name="buildingState" substitutionGroup="bldg:_GenericApplicationPropertyOfBuilding" type="SRIADE:BuildingStateType"/>
+  <element name="climateZone" substitutionGroup="bldg:_GenericApplicationPropertyOfAbstractBuilding" type="SRIADE:SRIClimateZoneTypeType"/>
+  <element name="buildingState" substitutionGroup="bldg:_GenericApplicationPropertyOfAbstractBuilding" type="SRIADE:SRIBuildingStateType"/>
   <element name="Assessor" substitutionGroup="gml:_Feature" type="SRIADE:AssessorType"/>
   <complexType name="AssessorType">
     <complexContent>
       <extension base="gml:AbstractFeatureType">
         <sequence>
-          <element name="name" type="gen:StringAttributePropertyType"/>
-          <element name="organisation" type="gen:StringAttributePropertyType"/>
-          <element name="eMail" type="gen:StringAttributePropertyType"/>
-          <element name="phoneNumber" type="gen:StringAttributePropertyType"/>
+          <element name="name" type="string"/>
+          <element name="organisation" type="string"/>
+          <element name="eMail" type="string"/>
+          <element name="phoneNumber" type="string"/>
           <element maxOccurs="unbounded" minOccurs="0" name="Assessments" type="SRIADE:SRIAssessmentPropertyType"/>
         </sequence>
       </extension>
@@ -54,9 +53,9 @@
     <complexContent>
       <extension base="gml:AbstractFeatureType">
         <sequence>
-          <element minOccurs="0" name="assetType" type="SRIADE:AssetTypeDataType"/>
-          <element name="other" type="gen:StringAttributePropertyType"/>
-          <element minOccurs="0" name="category" type="SRIADE:SRIDataCategoryType"/>
+          <element minOccurs="0" name="assetType" type="SRIADE:AssetTypeDataTagType"/>
+          <element name="other" type="string"/>
+          <element minOccurs="0" name="category" type="SRIADE:DataCategoryTagType"/>
         </sequence>
       </extension>
     </complexContent>
@@ -67,7 +66,7 @@
     </sequence>
     <attributeGroup ref="gml:AssociationAttributeGroup"/>
   </complexType>
-  <simpleType name="AssetTypeDataType">
+  <simpleType name="AssetTypeDataTagType">
     <restriction base="string">
       <enumeration value="BuildingCharacteristics">
         <annotation>
@@ -82,39 +81,6 @@
       <enumeration value="Other"/>
     </restriction>
   </simpleType>
-  <simpleType name="BuildingStateType">
-    <restriction base="string">
-      <enumeration value="Original"/>
-      <enumeration value="AdvancedRefurbishment"/>
-      <enumeration value="NormalRefurbishment"/>
-      <enumeration value="Other"/>
-    </restriction>
-  </simpleType>
-  <simpleType name="BuildingUsageType">
-    <annotation>
-      <documentation>Refers to the SRI Building Usage type, user other for Mixed Use.</documentation>
-    </annotation>
-    <restriction base="string">
-      <enumeration value="NonResidentialEducational"/>
-      <enumeration value="NonResidentialHealthcare"/>
-      <enumeration value="NonResidentialOffice"/>
-      <enumeration value="ResidentialOther"/>
-      <enumeration value="ResidentialLargeMultiFamilyHouse"/>
-      <enumeration value="ResidentialSmallMultiFamilyHouse"/>
-      <enumeration value="NonResidentialOther"/>
-      <enumeration value="Other"/>
-      <enumeration value="ResidentialSingleFamilyHouse"/>
-    </restriction>
-  </simpleType>
-  <simpleType name="ClimateZoneTypeType">
-    <restriction base="string">
-      <enumeration value="NorthEastEurope"/>
-      <enumeration value="NorthEurope"/>
-      <enumeration value="Other"/>
-      <enumeration value="SouthEastEurope"/>
-      <enumeration value="WestEurope"/>
-    </restriction>
-  </simpleType>
   <element name="ControlLogic" substitutionGroup="SRIADE:DataCategoryMeta" type="SRIADE:ControlLogicType">
     <annotation>
       <documentation>Abbreviation for Control setting and logic data</documentation>
@@ -124,8 +90,8 @@
     <complexContent>
       <extension base="SRIADE:DataCategoryMetaType">
         <sequence>
-          <element name="controlType" type="SRIADE:ControlTypeType"/>
-          <element maxOccurs="unbounded" minOccurs="0" name="controlSystem" type="SRIADE:ControlSystemType"/>
+          <element name="controlType" type="SRIADE:ControlTypeTagType"/>
+          <element maxOccurs="unbounded" minOccurs="0" name="controlSystem" type="SRIADE:ControlSystemTagType"/>
         </sequence>
       </extension>
     </complexContent>
@@ -136,7 +102,7 @@
     </sequence>
     <attributeGroup ref="gml:AssociationAttributeGroup"/>
   </complexType>
-  <simpleType name="ControlSystemType">
+  <simpleType name="ControlSystemTagType">
     <restriction base="string">
       <enumeration value="HVAC"/>
       <enumeration value="Lighting"/>
@@ -145,7 +111,7 @@
       <enumeration value="OtherControlSystemType"/>
     </restriction>
   </simpleType>
-  <simpleType name="ControlTypeType">
+  <simpleType name="ControlTypeTagType">
     <restriction base="string">
       <enumeration value="Logic"/>
       <enumeration value="Setpoint"/>
@@ -159,8 +125,8 @@
     <complexContent>
       <extension base="gml:AbstractFeatureType">
         <sequence>
-          <element name="other" type="gen:StringAttributePropertyType"/>
-          <element maxOccurs="unbounded" minOccurs="0" name="cyberDeviceType" type="SRIADE:CyberDeviceDataTypeType"/>
+          <element name="other" type="string"/>
+          <element maxOccurs="unbounded" minOccurs="0" name="cyberDeviceType" type="SRIADE:CyberDeviceDataTypeTagType"/>
         </sequence>
       </extension>
     </complexContent>
@@ -171,7 +137,7 @@
     </sequence>
     <attributeGroup ref="gml:AssociationAttributeGroup"/>
   </complexType>
-  <simpleType name="CyberDeviceDataTypeType">
+  <simpleType name="CyberDeviceDataTypeTagType">
     <restriction base="string">
       <enumeration value="Proxy"/>
       <enumeration value="CyberAttacks"/>
@@ -182,9 +148,9 @@
     <complexContent>
       <extension base="gml:AbstractFeatureType">
         <sequence>
-          <element name="description" type="gen:StringAttributePropertyType"/>
-          <element maxOccurs="unbounded" minOccurs="0" name="dataScale" type="SRIADE:SpatialDataScaleType"/>
-          <element name="other" type="gen:StringAttributePropertyType"/>
+          <element name="description" type="string"/>
+          <element maxOccurs="unbounded" minOccurs="0" name="dataScale" type="SRIADE:SpatialDataScaleTagType"/>
+          <element name="other" type="string"/>
         </sequence>
       </extension>
     </complexContent>
@@ -195,12 +161,28 @@
     </sequence>
     <attributeGroup ref="gml:AssociationAttributeGroup"/>
   </complexType>
-  <element name="DesignBasisData" substitutionGroup="gml:_Feature" type="SRIADE:DesignBasisDataType"/>
+  <simpleType name="DataCategoryTagType">
+    <restriction base="string">
+      <enumeration value="EnergyData"/>
+      <enumeration value="IndoorEnvironmentalData"/>
+      <enumeration value="OutdoorEnvironmentalData"/>
+      <enumeration value="SystemOperationalData"/>
+      <enumeration value="ControlSettingData"/>
+      <enumeration value="OccupantData"/>
+      <enumeration value="DesignBasisData"/>
+      <enumeration value="AssetData"/>
+      <enumeration value="UtilityGridData"/>
+      <enumeration value="OnsiteEnergyGenerationData"/>
+      <enumeration value="CyberDeviceData"/>
+      <enumeration value="OtherData"/>
+    </restriction>
+  </simpleType>
+  <element name="DesignBasisData" substitutionGroup="SRIADE:DataCategoryMeta" type="SRIADE:DesignBasisDataType"/>
   <complexType name="DesignBasisDataType">
     <complexContent>
-      <extension base="gml:AbstractFeatureType">
+      <extension base="SRIADE:DataCategoryMetaType">
         <sequence>
-          <element name="designType" type="SRIADE:DesignTypeType"/>
+          <element name="designType" type="SRIADE:DesignTypeTagType"/>
         </sequence>
       </extension>
     </complexContent>
@@ -211,7 +193,7 @@
     </sequence>
     <attributeGroup ref="gml:AssociationAttributeGroup"/>
   </complexType>
-  <simpleType name="DesignTypeType">
+  <simpleType name="DesignTypeTagType">
     <restriction base="string">
       <enumeration value="IEQCriteria">
         <annotation>
@@ -252,8 +234,8 @@
     <complexContent>
       <extension base="gml:AbstractFeatureType">
         <sequence>
-          <element name="name" type="SRIADE:SRIDomainsType"/>
-          <element name="description" type="gen:StringAttributePropertyType"/>
+          <element name="category" type="SRIADE:SRIDomainsType"/>
+          <element minOccurs="0" name="description" type="string"/>
         </sequence>
       </extension>
     </complexContent>
@@ -264,15 +246,14 @@
     </sequence>
     <attributeGroup ref="gml:AssociationAttributeGroup"/>
   </complexType>
-  <element name="EnergyData" substitutionGroup="gml:_Feature" type="SRIADE:EnergyDataType"/>
+  <element name="EnergyData" substitutionGroup="SRIADE:DataCategoryMeta" type="SRIADE:EnergyDataType"/>
   <complexType name="EnergyDataType">
     <complexContent>
-      <extension base="gml:AbstractFeatureType">
+      <extension base="SRIADE:DataCategoryMetaType">
         <sequence>
-          <element maxOccurs="unbounded" minOccurs="0" name="energySource" type="SRIADE:EnergySourceType"/>
-          <element name="other" type="gen:StringAttributePropertyType"/>
-          <element name="scale" type="SRIADE:SpatialDataScaleType"/>
-          <element maxOccurs="unbounded" minOccurs="0" name="endUse" type="SRIADE:EnergyEndUseType"/>
+          <element maxOccurs="unbounded" minOccurs="0" name="energySource" type="SRIADE:EnergySourceTagType"/>
+          <element name="scale" type="SRIADE:SpatialDataScaleTagType"/>
+          <element maxOccurs="unbounded" minOccurs="0" name="endUse" type="SRIADE:EnergyEndUseTagType"/>
         </sequence>
       </extension>
     </complexContent>
@@ -283,7 +264,7 @@
     </sequence>
     <attributeGroup ref="gml:AssociationAttributeGroup"/>
   </complexType>
-  <simpleType name="EnergyEndUseType">
+  <simpleType name="EnergyEndUseTagType">
     <restriction base="string">
       <enumeration value="HVAC"/>
       <enumeration value="Lighting"/>
@@ -303,7 +284,7 @@
       <enumeration value="OtherEnergyEndUse"/>
     </restriction>
   </simpleType>
-  <simpleType name="EnergySourceType">
+  <simpleType name="EnergySourceTagType">
     <restriction base="string">
       <enumeration value="Fuel"/>
       <enumeration value="Electricity"/>
@@ -324,7 +305,7 @@
       <enumeration value="OtherEnvironmentalData"/>
     </restriction>
   </simpleType>
-  <simpleType name="EnvironmentalDataTypeType">
+  <simpleType name="EnvironmentalDataTypeTagType">
     <restriction base="string">
       <enumeration value="Thermal">
         <annotation>
@@ -377,10 +358,10 @@ Outdoor: illuminances, luminance, cloud cover, etc.</documentation>
     <complexContent>
       <extension base="gml:AbstractFeatureType">
         <sequence>
-          <element name="ID" type="gen:StringAttributePropertyType"/>
-          <element name="name" type="gen:StringAttributePropertyType"/>
-          <element name="description" type="gen:StringAttributePropertyType"/>
-          <element name="functionalityLevel" type="gen:IntAttributePropertyType"/>
+          <element name="ID" type="string"/>
+          <element name="name" type="string"/>
+          <element name="description" type="string"/>
+          <element name="functionalityLevel" type="integer"/>
         </sequence>
       </extension>
     </complexContent>
@@ -396,8 +377,8 @@ Outdoor: illuminances, luminance, cloud cover, etc.</documentation>
     <complexContent>
       <extension base="gml:AbstractFeatureType">
         <sequence>
-          <element maxOccurs="unbounded" minOccurs="0" name="environmentalDataType" type="SRIADE:EnvironmentalDataTypeType"/>
-          <element name="other" type="gen:StringAttributePropertyType"/>
+          <element maxOccurs="unbounded" minOccurs="0" name="environmentalDataType" type="SRIADE:EnvironmentalDataTypeTagType"/>
+          <element name="other" type="string"/>
         </sequence>
       </extension>
     </complexContent>
@@ -420,12 +401,12 @@ Outdoor: illuminances, luminance, cloud cover, etc.</documentation>
     <complexContent>
       <extension base="gml:AbstractFeatureType">
         <sequence>
-          <element name="preferredWeightings" type="gen:StringAttributePropertyType">
+          <element name="preferredWeightings" type="string">
             <annotation>
               <documentation>Preferred Weightings of the SRI Assessment. These can either be default or user-defined.</documentation>
             </annotation>
           </element>
-          <element name="preferredServiceCatalogue" type="gen:StringAttributePropertyType">
+          <element name="preferredServiceCatalogue" type="string">
             <annotation>
               <documentation>The preferred Service Catalogue for the Assesment.</documentation>
             </annotation>
@@ -441,18 +422,18 @@ Outdoor: illuminances, luminance, cloud cover, etc.</documentation>
     </sequence>
     <attributeGroup ref="gml:AssociationAttributeGroup"/>
   </complexType>
-  <simpleType name="NonRenewableEnergyType">
+  <simpleType name="NonRenewableEnergyTagType">
     <restriction base="string">
       <enumeration value="OnsiteConventionalEnergy"/>
       <enumeration value="OtherNonRenewableEnergy"/>
     </restriction>
   </simpleType>
-  <element name="OccupantData" substitutionGroup="gml:_Feature" type="SRIADE:OccupantDataType"/>
+  <element name="OccupantData" substitutionGroup="SRIADE:DataCategoryMeta" type="SRIADE:OccupantDataType"/>
   <complexType name="OccupantDataType">
     <complexContent>
-      <extension base="gml:AbstractFeatureType">
+      <extension base="SRIADE:DataCategoryMetaType">
         <sequence>
-          <element name="occupantType" type="SRIADE:OccupantTypeType"/>
+          <element name="occupantType" type="SRIADE:OccupantTypeTagType"/>
         </sequence>
       </extension>
     </complexContent>
@@ -463,7 +444,7 @@ Outdoor: illuminances, luminance, cloud cover, etc.</documentation>
     </sequence>
     <attributeGroup ref="gml:AssociationAttributeGroup"/>
   </complexType>
-  <simpleType name="OccupantTypeType">
+  <simpleType name="OccupantTypeTagType">
     <restriction base="string">
       <enumeration value="Occupancy">
         <annotation>
@@ -497,8 +478,8 @@ Outdoor: illuminances, luminance, cloud cover, etc.</documentation>
     <complexContent>
       <extension base="gml:AbstractFeatureType">
         <sequence>
-          <element name="renewableEnergy" type="SRIADE:RenewableEnergyType"/>
-          <element name="nonRenewableEnergy" type="SRIADE:NonRenewableEnergyType"/>
+          <element name="renewableEnergy" type="SRIADE:RenewableEnergyTagType"/>
+          <element name="nonRenewableEnergy" type="SRIADE:NonRenewableEnergyTagType"/>
         </sequence>
       </extension>
     </complexContent>
@@ -509,17 +490,17 @@ Outdoor: illuminances, luminance, cloud cover, etc.</documentation>
     </sequence>
     <attributeGroup ref="gml:AssociationAttributeGroup"/>
   </complexType>
-  <element name="OperationalData" substitutionGroup="gml:_Feature" type="SRIADE:OperationalDataType">
+  <element name="OperationalData" substitutionGroup="SRIADE:DataCategoryMeta" type="SRIADE:OperationalDataType">
     <annotation>
       <documentation>System and Equipment Operational Data, abbreviation for consistency with Names.</documentation>
     </annotation>
   </element>
   <complexType name="OperationalDataType">
     <complexContent>
-      <extension base="gml:AbstractFeatureType">
+      <extension base="SRIADE:DataCategoryMetaType">
         <sequence>
-          <element name="systemData" type="SRIADE:SystemDataType"/>
-          <element name="systemType" type="SRIADE:SystemTypeType"/>
+          <element name="systemData" type="SRIADE:SystemDataTagType"/>
+          <element name="systemType" type="SRIADE:SystemTypeTagType"/>
         </sequence>
       </extension>
     </complexContent>
@@ -535,9 +516,9 @@ Outdoor: illuminances, luminance, cloud cover, etc.</documentation>
     <complexContent>
       <extension base="gml:AbstractFeatureType">
         <sequence>
-          <element maxOccurs="unbounded" minOccurs="0" name="environmentalDataType" type="SRIADE:EnvironmentalDataTypeType"/>
+          <element maxOccurs="unbounded" minOccurs="0" name="environmentalDataType" type="SRIADE:EnvironmentalDataTypeTagType"/>
           <element maxOccurs="unbounded" minOccurs="0" name="source" type="SRIADE:EnvironmentalDataSourceType"/>
-          <element name="other" type="gen:StringAttributePropertyType"/>
+          <element name="other" type="string"/>
         </sequence>
       </extension>
     </complexContent>
@@ -548,7 +529,7 @@ Outdoor: illuminances, luminance, cloud cover, etc.</documentation>
     </sequence>
     <attributeGroup ref="gml:AssociationAttributeGroup"/>
   </complexType>
-  <simpleType name="RenewableEnergyType">
+  <simpleType name="RenewableEnergyTagType">
     <restriction base="string">
       <enumeration value="SolarEnergy"/>
       <enumeration value="WindEnergy"/>
@@ -568,9 +549,9 @@ Outdoor: illuminances, luminance, cloud cover, etc.</documentation>
     <complexContent>
       <extension base="gml:AbstractFeatureType">
         <sequence>
-          <element name="Score" type="gen:IntAttributePropertyType"/>
-          <element name="Date" type="gen:DateAttributePropertyType"/>
-          <element name="FullBuilding" type="boolean"/>
+          <element name="score" type="integer"/>
+          <element name="dateOfAssessment" type="date"/>
+          <element name="fullBuilding" type="boolean"/>
           <element maxOccurs="unbounded" name="SRIServices" type="SRIADE:SRIServicePropertyType"/>
         </sequence>
       </extension>
@@ -582,6 +563,14 @@ Outdoor: illuminances, luminance, cloud cover, etc.</documentation>
     </sequence>
     <attributeGroup ref="gml:AssociationAttributeGroup"/>
   </complexType>
+  <simpleType name="SRIBuildingStateType">
+    <restriction base="string">
+      <enumeration value="Original"/>
+      <enumeration value="AdvancedRefurbishment"/>
+      <enumeration value="NormalRefurbishment"/>
+      <enumeration value="Other"/>
+    </restriction>
+  </simpleType>
   <simpleType name="SRIBuildingTypeType">
     <annotation>
       <documentation>The building type classification according to the SRI modeling sheet 4.5. Additionally, the term other is added to offer the possibility to include Mixed-Use Buildings.</documentation>
@@ -592,20 +581,29 @@ Outdoor: illuminances, luminance, cloud cover, etc.</documentation>
       <enumeration value="Other"/>
     </restriction>
   </simpleType>
-  <simpleType name="SRIDataCategoryType">
+  <simpleType name="SRIBuildingUsageType">
+    <annotation>
+      <documentation>Refers to the SRI Building Usage type, user other for Mixed Use.</documentation>
+    </annotation>
     <restriction base="string">
-      <enumeration value="EnergyData"/>
-      <enumeration value="IndoorEnvironmentalData"/>
-      <enumeration value="OutdoorEnvironmentalData"/>
-      <enumeration value="SystemOperationalData"/>
-      <enumeration value="ControlSettingData"/>
-      <enumeration value="OccupantData"/>
-      <enumeration value="DesignBasisData"/>
-      <enumeration value="AssetData"/>
-      <enumeration value="UtilityGridData"/>
-      <enumeration value="OnsiteEnergyGenerationData"/>
-      <enumeration value="CyberDeviceData"/>
-      <enumeration value="OtherData"/>
+      <enumeration value="NonResidentialEducational"/>
+      <enumeration value="NonResidentialHealthcare"/>
+      <enumeration value="NonResidentialOffice"/>
+      <enumeration value="ResidentialOther"/>
+      <enumeration value="ResidentialLargeMultiFamilyHouse"/>
+      <enumeration value="ResidentialSmallMultiFamilyHouse"/>
+      <enumeration value="NonResidentialOther"/>
+      <enumeration value="Other"/>
+      <enumeration value="ResidentialSingleFamilyHouse"/>
+    </restriction>
+  </simpleType>
+  <simpleType name="SRIClimateZoneTypeType">
+    <restriction base="string">
+      <enumeration value="NorthEastEurope"/>
+      <enumeration value="NorthEurope"/>
+      <enumeration value="Other"/>
+      <enumeration value="SouthEastEurope"/>
+      <enumeration value="WestEurope"/>
     </restriction>
   </simpleType>
   <simpleType name="SRIDomainsType">
@@ -628,15 +626,15 @@ Outdoor: illuminances, luminance, cloud cover, etc.</documentation>
     <complexContent>
       <extension base="gml:AbstractFeatureType">
         <sequence>
-          <element name="Domain" type="gen:StringAttributePropertyType"/>
-          <element name="Impact" type="gen:StringAttributePropertyType"/>
-          <element name="Code" type="gen:StringAttributePropertyType"/>
-          <element name="Name" type="gen:StringAttributePropertyType"/>
-          <element name="ServiceGroup" type="gen:StringAttributePropertyType"/>
-          <element name="Preconditions" type="gen:StringAttributePropertyType"/>
-          <element name="UserDefined" type="boolean"/>
+          <element name="domain" type="SRIADE:SRIDomainsType"/>
+          <element name="impact" type="string"/>
+          <element name="code" type="string"/>
+          <element name="name" type="string"/>
+          <element name="serviceGroup" type="string"/>
+          <element name="preconditions" type="string"/>
+          <element name="userDefined" type="boolean"/>
           <element name="partOfMethod" type="boolean"/>
-          <element name="PartOfMethodB" type="boolean"/>
+          <element name="partOfMethodB" type="boolean"/>
           <element maxOccurs="unbounded" minOccurs="0" name="Assessments" type="SRIADE:SRIAssessmentPropertyType"/>
         </sequence>
       </extension>
@@ -648,7 +646,7 @@ Outdoor: illuminances, luminance, cloud cover, etc.</documentation>
     </sequence>
     <attributeGroup ref="gml:AssociationAttributeGroup"/>
   </complexType>
-  <simpleType name="SpatialDataScaleType">
+  <simpleType name="SpatialDataScaleTagType">
     <restriction base="string">
       <enumeration value="Room"/>
       <enumeration value="Building"/>
@@ -661,7 +659,7 @@ Outdoor: illuminances, luminance, cloud cover, etc.</documentation>
       <enumeration value="Circuit"/>
     </restriction>
   </simpleType>
-  <simpleType name="SystemDataType">
+  <simpleType name="SystemDataTagType">
     <annotation>
       <documentation>computer, washer, refrigerator, oven, dryer, etc.</documentation>
     </annotation>
@@ -701,7 +699,7 @@ Outdoor: illuminances, luminance, cloud cover, etc.</documentation>
       <enumeration value="Elevator"/>
     </restriction>
   </simpleType>
-  <simpleType name="SystemTypeType">
+  <simpleType name="SystemTypeTagType">
     <restriction base="string">
       <enumeration value="Log"/>
       <enumeration value="Fault"/>
@@ -719,8 +717,8 @@ Outdoor: illuminances, luminance, cloud cover, etc.</documentation>
     <complexContent>
       <extension base="gml:AbstractFeatureType">
         <sequence>
-          <element name="title" type="gen:StringAttributePropertyType"/>
-          <element name="description" type="gen:StringAttributePropertyType"/>
+          <element name="title" type="string"/>
+          <element name="description" type="string"/>
         </sequence>
       </extension>
     </complexContent>
@@ -731,12 +729,12 @@ Outdoor: illuminances, luminance, cloud cover, etc.</documentation>
     </sequence>
     <attributeGroup ref="gml:AssociationAttributeGroup"/>
   </complexType>
-  <element name="UtilityGridData" substitutionGroup="gml:_Feature" type="SRIADE:UtilityGridDataType"/>
+  <element name="UtilityGridData" substitutionGroup="SRIADE:DataCategoryMeta" type="SRIADE:UtilityGridDataType"/>
   <complexType name="UtilityGridDataType">
     <complexContent>
-      <extension base="gml:AbstractFeatureType">
+      <extension base="SRIADE:DataCategoryMetaType">
         <sequence>
-          <element name="utilityGridType" type="SRIADE:UtilityGridTypeType"/>
+          <element name="utilityGridType" type="SRIADE:UtilityGridTypeTagType"/>
         </sequence>
       </extension>
     </complexContent>
@@ -747,7 +745,7 @@ Outdoor: illuminances, luminance, cloud cover, etc.</documentation>
     </sequence>
     <attributeGroup ref="gml:AssociationAttributeGroup"/>
   </complexType>
-  <simpleType name="UtilityGridTypeType">
+  <simpleType name="UtilityGridTypeTagType">
     <restriction base="string">
       <enumeration value="Tariff">
         <annotation>
