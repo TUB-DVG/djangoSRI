@@ -16,17 +16,18 @@ print(archetype_data.head())
 
 FUNCTIONALITY_LEVELS = ["Functionality level 0 (as non-smart default)", "Functionality level 1", "Functionality level 2", "Functionality level 3", "Functionality level 4"]
 
-ARCHETYPE_COLUMNS = ["Energy data",
+ARCHETYPE_COLUMNS = ["Use Cases",
+                     "Energy data",
                     "Indoor environmental data",
                     "Outdoor envionmental data",
                     "System and equipment operational data",
                     "Control setting and logic data",
                     "Occupant data",
-                    "Desing basis data",
+                    "Design basis data",
                     "Building and system asset data",
                     "Utility and grid signal data",
                     "Onsite energy generation data",
-                    "Cyber (IoT) device data", "Use Cases"]
+                    "Cyber (IoT) device data"]
 
 
 # Load the data and split it into different service groups ( Functionality level 0 (as non-smart default)	Functionality level 1	Functionality level 2	Functionality level 3	Functionality level 4) together with the rest of the columns
