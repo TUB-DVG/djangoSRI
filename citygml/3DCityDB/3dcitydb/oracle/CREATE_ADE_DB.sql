@@ -1,4 +1,4 @@
--- This document was automatically created by the ADE-Manager tool of 3DCityDB (https://www.3dcitydb.org) on 2025-04-08 11:44:22 
+-- This document was automatically created by the ADE-Manager tool of 3DCityDB (https://www.3dcitydb.org) on 2025-04-10 16:18:54 
 -- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
 -- *********************************** Create tables ************************************** 
 -- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
@@ -22,7 +22,6 @@ CREATE TABLE SRI_assetdata
 (
     id NUMBER(38) NOT NULL,
     assettype VARCHAR2(1000),
-    category VARCHAR2(1000),
     other VARCHAR2(1000),
     PRIMARY KEY (id)
 );

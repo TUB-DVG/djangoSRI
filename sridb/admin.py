@@ -1,15 +1,7 @@
 from django.contrib import admin
 from django.db.models import Q
 from django.utils.translation import gettext_lazy as _
-from sri.models import (
-    Building, BuildingPart, Service, SRILevel, Assessor,
-    Assessment, AssessmentMethod, EnergySystem,
-    ServiceCatalog,
-    ServiceGroup,
-    ServiceDefinition,
-    FunctionalityLevelDefinition,
-    ServiceImplementation
-)
+from sridb.models import SRILevel, Service, Building, BuildingPart, Assessor, Assessment, AssessmentMethod, EnergySystem, ServiceCatalog, ServiceGroup, ServiceDefinition, FunctionalityLevelDefinition, ServiceImplementation
 from django.utils.html import format_html
 
 # Inline Models for Better Admin UI

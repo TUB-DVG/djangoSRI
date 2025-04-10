@@ -1,10 +1,10 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from sri.views import BuildingViewSet, ServiceViewSet, assign_service_to_building, get_building_gml, get_available_services
+from sridb.views import BuildingViewSet, SRIServiceViewSet, assign_service_to_building, get_building_gml, get_available_services
 
 router = DefaultRouter()
 router.register(r'buildings', BuildingViewSet)
-router.register(r'services', ServiceViewSet)
+router.register(r'services', SRIServiceViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),
