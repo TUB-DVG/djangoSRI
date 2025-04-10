@@ -1,0 +1,5 @@
+include README.md
+include LICENSE
+recursive-include sri/static *
+recursive-include sri/templates *
+recursive-include citygml *.xsd
