@@ -55,7 +55,6 @@
         <sequence>
           <element minOccurs="0" name="assetType" type="SRIADE:AssetTypeDataTagType"/>
           <element name="other" type="string"/>
-          <element minOccurs="0" name="category" type="SRIADE:DataCategoryTagType"/>
         </sequence>
       </extension>
     </complexContent>
@@ -615,6 +614,7 @@ Outdoor: illuminances, luminance, cloud cover, etc.</documentation>
       <enumeration value="LightingDomain"/>
       <enumeration value="MonitoringAndControlDomain"/>
       <enumeration value="VentilationDomain"/>
+      <enumeration value="DomesticHotWater"/>
     </restriction>
   </simpleType>
   <element name="SRIService" substitutionGroup="gml:_Feature" type="SRIADE:SRIServiceType">

@@ -58,7 +58,6 @@
             </extension>
             <attribute column="assettype" type="string" maxOccurs="1" path="assetType" schema="SRI"/>
             <attribute column="other" type="string" minOccurs="1" maxOccurs="1" path="other" schema="SRI"/>
-            <attribute column="category" type="string" maxOccurs="1" path="category" schema="SRI"/>
         </featureType>
         <featureType id="SRI_ControlLogicType" table="SRI_controllogic" objectClassId="10004" path="ControlLogic" schema="SRI">
             <extension base="SRI_DataCategoryMetaType">
