@@ -1,5 +1,7 @@
 from django.db import models
+from citydb.modules.core.cityobject import CityObject
 
+from citydb.modules.bldg.building import Building
 # ToDo Double check if all choices are implemented correctly
 
 

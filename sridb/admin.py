@@ -1,15 +1,14 @@
 from django.contrib import admin
 from django.db.models import Q
 from django.utils.translation import gettext_lazy as _
-from sri.models import (
-    Building, BuildingPart, Service, SRILevel, Assessor,
-    Assessment, AssessmentMethod, EnergySystem,
-    ServiceCatalog,
-    ServiceGroup,
-    ServiceDefinition,
-    FunctionalityLevelDefinition,
-    ServiceImplementation
+from sridb.models import SRILevel, Service, Building, BuildingPart, Assessor, Assessment, AssessmentMethod, EnergySystem, ServiceCatalog, ServiceGroup, ServiceDefinition, FunctionalityLevelDefinition, ServiceImplementation
+# Import the new models
+from sridb.modules.sri.information_need import (
+    SRIAssetData, SRIIndoorEnvironmentalData, SRIControlLogic, 
+    SRICyberDeviceData, SRIDatacategoryMeta, SRIEnergyData, 
+    SRIOperationalData, SRIOutdoorenvironmentalData, SRIOnsiteenergygeneratio
 )
+
 from django.utils.html import format_html
 
 # Inline Models for Better Admin UI
@@ -206,3 +205,59 @@ class ServiceImplementationAdmin(admin.ModelAdmin):
         }),
     )
     readonly_fields = ('implementation_date', 'last_updated')
+
+# Register the new models
+@admin.register(SRIAssetData)
+class SRIAssetDataAdmin(admin.ModelAdmin):
+    list_display = ('id', 'assettype', 'other')
+    list_filter = ('assettype',)
+    search_fields = ('id__cityobject_id', 'other')  # Assuming CityObject has a field like cityobject_id
+
+@admin.register(SRIIndoorEnvironmentalData)
+class SRIIndoorEnvironmentalDataAdmin(admin.ModelAdmin):
+    list_display = ('id', 'environmentaldatatype', 'other')
+    list_filter = ('environmentaldatatype',)
+    search_fields = ('id__cityobject_id', 'other')
+
+@admin.register(SRIControlLogic)
+class SRIControlLogicAdmin(admin.ModelAdmin):
+    list_display = ('id', 'controlsystem', 'controltype')
+    list_filter = ('controlsystem', 'controltype')
+    search_fields = ('id__id', 'id__description') # Accessing SRIDatacategorymeta fields
+
+@admin.register(SRICyberDeviceData)
+class SRICyberDeviceDataAdmin(admin.ModelAdmin):
+    list_display = ('id', 'cyberdevicetype', 'other')
+    list_filter = ('cyberdevicetype',)
+    search_fields = ('id__cityobject_id', 'other')
+
+@admin.register(SRIDatacategoryMeta)
+class SRIDatacategoryMetaAdmin(admin.ModelAdmin):
+    list_display = ('id', 'datascale', 'description', 'designtype', 'objectclass', 'occupanttype', 'utilitygridtype')
+    list_filter = ('datascale', 'designtype', 'objectclass', 'occupanttype', 'utilitygridtype')
+    search_fields = ('id__cityobject_id', 'description', 'objectclass__name') # Assuming ObjectClass has a 'name' field
+    raw_id_fields = ('objectclass',) # For better handling of ForeignKey
+
+@admin.register(SRIEnergyData)
+class SRIEnergyDataAdmin(admin.ModelAdmin):
+    list_display = ('id', 'enduse', 'energysource', 'scale')
+    list_filter = ('enduse', 'energysource', 'scale')
+    search_fields = ('id__id', 'id__description') # Accessing SRIDatacategorymeta fields
+
+@admin.register(SRIOperationalData)
+class SRIOperationalDataAdmin(admin.ModelAdmin):
+    list_display = ('id', 'systemdata', 'systemtype')
+    list_filter = ('systemdata', 'systemtype')
+    search_fields = ('id__id', 'id__description') # Accessing SRIDatacategorymeta fields
+
+@admin.register(SRIOutdoorenvironmentalData)
+class SRIOutdoorenvironmentalDataAdmin(admin.ModelAdmin):
+    list_display = ('id', 'environmentaldatatype', 'other', 'source')
+    list_filter = ('environmentaldatatype', 'source')
+    search_fields = ('id__cityobject_id', 'other', 'source')
+
+@admin.register(SRIOnsiteenergygeneratio)
+class SRIOnsiteenergygeneratioAdmin(admin.ModelAdmin):
+    list_display = ('id', 'renewableenergy', 'nonrenewableenergy')
+    list_filter = ('renewableenergy', 'nonrenewableenergy')
+    search_fields = ('id__cityobject_id', 'renewableenergy', 'nonrenewableenergy')
