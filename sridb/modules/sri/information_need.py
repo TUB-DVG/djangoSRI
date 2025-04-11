@@ -1,7 +1,7 @@
 ## This file contains all the models reagarding the information need of the SRI project.
 from django.db import models
-# Check import of CityObject
-from 
+from citydb.modules.core.cityobject import CityObject
+from citydb.modules.core.objectclass import ObjectClass
 
 # Defined outside the model as both indoor and 
 # outdoor environmental models refer to this tag
@@ -131,7 +131,7 @@ class SRIEnergyData(models.Model):
         ("electricity", "Electricity"),
         ("other", "Other")
     )
-    id = models.OneToOneField(SRIDatacategorymeta, primary_key=True, on_delete=models.CASCADE, db_column='id')
+    id = models.OneToOneField(SRIDatacategoryMeta, primary_key=True, on_delete=models.CASCADE, db_column='id')
     enduse = models.CharField(max_length=1000, blank=True, null=True, choices=enduse_tag_choices)
     energysource = models.CharField(max_length=1000, blank=True, null=True)
     scale = models.CharField(max_length=1000, blank=True, null=True)

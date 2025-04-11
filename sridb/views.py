@@ -6,7 +6,19 @@ from rest_framework.response import Response
 from citydb.modules.energy.core.energybuilding import EnergyBuilding
 from citydb.modules.bldg.building import Building
 from sridb.modules.sri.sri import SRISriservice, SRIBuilding, SRISriassessment
-from sridb.serializers import BuildingSerializer, SRIServiceSerializer, SRIBuildingSerializer, SRIAssessmentSerializer
+from sridb.modules.sri.information_need import (
+    SRIAssetData, SRIIndoorEnvironmentalData, SRIControlLogic, 
+    SRICyberDeviceData, SRIDatacategoryMeta, SRIEnergyData, 
+    SRIOperationalData, SRIOutdoorenvironmentalData, SRIOnsiteenergygeneratio
+)
+from sridb.serializers import (
+    BuildingSerializer, SRIServiceSerializer, SRIBuildingSerializer, 
+    SRIAssessmentSerializer, SRIAssetDataSerializer,
+    SRIIndoorEnvironmentalDataSerializer, SRIControlLogicSerializer, 
+    SRICyberDeviceDataSerializer, SRIDatacategoryMetaSerializer, 
+    SRIEnergyDataSerializer, SRIOperationalDataSerializer, 
+    SRIOutdoorenvironmentalDataSerializer, SRIOnsiteenergygeneratioSerializer
+)
 from sridb.auxillary.gml_generator import generate_gml
 
 class BuildingViewSet(viewsets.ModelViewSet):
@@ -42,3 +54,41 @@ def get_available_services(request, sri_level_id):
     services = SRISriservice.objects.filter(sri_level_id=sri_level_id)
     serializer = SRIServiceSerializer(services, many=True)
     return Response(serializer.data)
+
+# ViewSets for the new Information Need models
+
+class SRIAssetDataViewSet(viewsets.ModelViewSet):
+    queryset = SRIAssetData.objects.all()
+    serializer_class = SRIAssetDataSerializer
+
+class SRIIndoorEnvironmentalDataViewSet(viewsets.ModelViewSet):
+    queryset = SRIIndoorEnvironmentalData.objects.all()
+    serializer_class = SRIIndoorEnvironmentalDataSerializer
+
+class SRIControlLogicViewSet(viewsets.ModelViewSet):
+    queryset = SRIControlLogic.objects.all()
+    serializer_class = SRIControlLogicSerializer
+
+class SRICyberDeviceDataViewSet(viewsets.ModelViewSet):
+    queryset = SRICyberDeviceData.objects.all()
+    serializer_class = SRICyberDeviceDataSerializer
+
+class SRIDatacategoryMetaViewSet(viewsets.ModelViewSet):
+    queryset = SRIDatacategoryMeta.objects.all()
+    serializer_class = SRIDatacategoryMetaSerializer
+
+class SRIEnergyDataViewSet(viewsets.ModelViewSet):
+    queryset = SRIEnergyData.objects.all()
+    serializer_class = SRIEnergyDataSerializer
+
+class SRIOperationalDataViewSet(viewsets.ModelViewSet):
+    queryset = SRIOperationalData.objects.all()
+    serializer_class = SRIOperationalDataSerializer
+
+class SRIOutdoorenvironmentalDataViewSet(viewsets.ModelViewSet):
+    queryset = SRIOutdoorenvironmentalData.objects.all()
+    serializer_class = SRIOutdoorenvironmentalDataSerializer
+
+class SRIOnsiteenergygeneratioViewSet(viewsets.ModelViewSet):
+    queryset = SRIOnsiteenergygeneratio.objects.all()
+    serializer_class = SRIOnsiteenergygeneratioSerializer

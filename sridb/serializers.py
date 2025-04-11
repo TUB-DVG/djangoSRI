@@ -1,6 +1,12 @@
 from rest_framework import serializers
 from sridb.modules.sri.sri import SRIFunctionalitylevel, SRISriservice, SRIBuilding, SRISriassessment
 from citydb.modules.bldg.building import Building
+# Import the new models
+from sridb.modules.sri.information_need import (
+    SRIAssetData, SRIIndoorEnvironmentalData, SRIControlLogic, 
+    SRICyberDeviceData, SRIDatacategoryMeta, SRIEnergyData, 
+    SRIOperationalData, SRIOutdoorenvironmentalData, SRIOnsiteenergygeneratio
+)
 
 """
 This file contains serializers for the SRI (Smart Readiness Indicator) models.
@@ -44,3 +50,48 @@ class SRIAssessmentSerializer(serializers.ModelSerializer):
     class Meta:
         model = SRISriassessment
         fields = ['id', 'dateofassessment', 'fullbuilding', 'score', 'services']
+
+class SRIAssetDataSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SRIAssetData
+        fields = '__all__'
+
+class SRIIndoorEnvironmentalDataSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SRIIndoorEnvironmentalData
+        fields = '__all__'
+
+class SRIControlLogicSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SRIControlLogic
+        fields = '__all__'
+
+class SRICyberDeviceDataSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SRICyberDeviceData
+        fields = '__all__'
+
+class SRIDatacategoryMetaSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SRIDatacategoryMeta
+        fields = '__all__'
+
+class SRIEnergyDataSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SRIEnergyData
+        fields = '__all__'
+
+class SRIOperationalDataSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SRIOperationalData
+        fields = '__all__'
+
+class SRIOutdoorenvironmentalDataSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SRIOutdoorenvironmentalData
+        fields = '__all__'
+
+class SRIOnsiteenergygeneratioSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SRIOnsiteenergygeneratio
+        fields = '__all__'
