@@ -49,11 +49,11 @@ pip install -e [Path/to/your/django-sri/Clone]
 
 ### **3. Integrate into a Django Project**
 
-Add `sri` to your `INSTALLED_APPS` in **settings.py**:
+Add `sridb` to your `INSTALLED_APPS` in **settings.py**:
 ```python
 INSTALLED_APPS = [
     ...
-    'sri',
+    'sridb',
 ]
 ```
 
@@ -61,13 +61,13 @@ Include `sri` URLs in your **urls.py**:
 ```python
 from django.urls import include, path
 urlpatterns = [
-    path('sri/', include('sri.urls')),
+    path('sridb/', include('sridb.urls')),
 ]
 ```
 
 Run database migrations:
 ```bash
-python manage.py migrate sri
+python manage.py migrate sridb
 python manage.py migrate --fake-initial
 ```
 
