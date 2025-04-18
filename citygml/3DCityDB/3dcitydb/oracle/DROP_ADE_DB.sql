@@ -1,4 +1,4 @@
--- This document was automatically created by the ADE-Manager tool of 3DCityDB (https://www.3dcitydb.org) on 2025-04-10 16:18:54 
+-- This document was automatically created by the ADE-Manager tool of 3DCityDB (https://www.3dcitydb.org) on 2025-04-18 23:12:12 
 -- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
 -- *********************************** Drop foreign keys ********************************** 
 -- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
@@ -42,6 +42,30 @@ ALTER TABLE SRI_datacategorymeta
     DROP CONSTRAINT SRI_datacategorymeta_fk;
 
 -- -------------------------------------------------------------------- 
+-- SRI_dataconnector 
+-- -------------------------------------------------------------------- 
+ALTER TABLE SRI_dataconnector
+    DROP CONSTRAINT SRI_dataconnector_fk;
+
+-- -------------------------------------------------------------------- 
+-- SRI_datasource 
+-- -------------------------------------------------------------------- 
+ALTER TABLE SRI_datasource
+    DROP CONSTRAINT SRI_datasourc_objectcla_fk;
+
+ALTER TABLE SRI_datasource
+    DROP CONSTRAINT SRI_datasource_fk;
+
+-- -------------------------------------------------------------------- 
+-- SRI_device 
+-- -------------------------------------------------------------------- 
+ALTER TABLE SRI_device
+    DROP CONSTRAINT SRI_device_objectclass_fk;
+
+ALTER TABLE SRI_device
+    DROP CONSTRAINT SRI_device_fk;
+
+-- -------------------------------------------------------------------- 
 -- SRI_domain 
 -- -------------------------------------------------------------------- 
 ALTER TABLE SRI_domain
@@ -64,6 +88,15 @@ ALTER TABLE SRI_functionalitylevel
 -- -------------------------------------------------------------------- 
 ALTER TABLE SRI_indoorenvironmentalda
     DROP CONSTRAINT SRI_indoorenvironmental_fk;
+
+-- -------------------------------------------------------------------- 
+-- SRI_informationneed 
+-- -------------------------------------------------------------------- 
+ALTER TABLE SRI_informationneed
+    DROP CONSTRAINT SRI_informationneed_fk;
+
+ALTER TABLE SRI_informationneed
+    DROP CONSTRAINT SRI_informati_objectcla_fk;
 
 -- -------------------------------------------------------------------- 
 -- SRI_methodology 
@@ -153,6 +186,21 @@ DROP TABLE SRI_cyberdevicedata;
 DROP TABLE SRI_datacategorymeta;
 
 -- -------------------------------------------------------------------- 
+-- SRI_dataconnector 
+-- -------------------------------------------------------------------- 
+DROP TABLE SRI_dataconnector;
+
+-- -------------------------------------------------------------------- 
+-- SRI_datasource 
+-- -------------------------------------------------------------------- 
+DROP TABLE SRI_datasource;
+
+-- -------------------------------------------------------------------- 
+-- SRI_device 
+-- -------------------------------------------------------------------- 
+DROP TABLE SRI_device;
+
+-- -------------------------------------------------------------------- 
 -- SRI_domain 
 -- -------------------------------------------------------------------- 
 DROP TABLE SRI_domain;
@@ -171,6 +219,16 @@ DROP TABLE SRI_functionalitylevel;
 -- SRI_indoorenvironmentalda 
 -- -------------------------------------------------------------------- 
 DROP TABLE SRI_indoorenvironmentalda;
+
+-- -------------------------------------------------------------------- 
+-- SRI_informationneed 
+-- -------------------------------------------------------------------- 
+DROP TABLE SRI_informationneed;
+
+-- -------------------------------------------------------------------- 
+-- SRI_interface 
+-- -------------------------------------------------------------------- 
+DROP TABLE SRI_interface;
 
 -- -------------------------------------------------------------------- 
 -- SRI_methodology 
@@ -203,6 +261,11 @@ DROP TABLE SRI_sriassessment;
 DROP TABLE SRI_sriservice;
 
 -- -------------------------------------------------------------------- 
+-- SRI_supportedaccess 
+-- -------------------------------------------------------------------- 
+DROP TABLE SRI_supportedaccess;
+
+-- -------------------------------------------------------------------- 
 -- SRI_usecase 
 -- -------------------------------------------------------------------- 
 DROP TABLE SRI_usecase;
@@ -210,5 +273,7 @@ DROP TABLE SRI_usecase;
 -- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
 -- *********************************** Drop Sequences ************************************* 
 -- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
+
+DROP SEQUENCE SRI_supportedaccess_seq;
 
 PURGE RECYCLEBIN;
