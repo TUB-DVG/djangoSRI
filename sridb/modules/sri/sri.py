@@ -1,4 +1,5 @@
 from django.db import models
+from django.core import validators
 from citydb.modules.core.cityobject import CityObject
 
 from citydb.modules.bldg.building import Building
@@ -79,37 +80,20 @@ class SRIBuilding(models.Model):
     climatezone = models.CharField(max_length=1000, blank=True, null=True, choices=climatezone_tag_choices)
     location = models.CharField(max_length=1000, blank=True, null=True)
     sribuildingtype = models.CharField(max_length=1000, blank=True, null=True, choices=sribuildingtype_tag_choices)
-    usefulfloorarea = models.DecimalField(max_digits=15, decimal_places=2, blank=True, null=True, 
-                                         help_text="Useful floor area in square meters")
+    usefulfloorarea = models.CharField(max_length=1000, blank=True, null=True,
+                                       description="Category of useful floor area in square meters")
+    description = models.CharField(max_length=1000, blank=True, null=True)
 
     class Meta:
         db_table = 'SRI_building'
         
     def __str__(self):
         """Return a string representation of the SRI building."""
-        return f"SRI Building {self.id_id}"
+        return f"SRI Building {self.id}"
 
 
 
-# SRI_functionalitylevel model
-class SRIFunctionalitylevel(models.Model):
 
-    functionalitylevel_tag_choices = (
-        ("Functionality level 0", "Functionality level 0 (as non-smart default)"),
-        ("functionalityLevel1", "Functionality level 1"),
-        ("functionalityLevel2", "Functionality level 2"),
-        ("functionalityLevel3", "Functionality level 3"),
-        ("functionalityLevel4", "Functionality level 4")
-    )
-
-    id = models.OneToOneField(CityObject, primary_key=True, on_delete=models.CASCADE, db_column='id')
-    description = models.CharField(max_length=1000, blank=True, null=True)
-    functionalitylevel = models.IntegerField(blank=True, null=True)
-    id_1 = models.CharField(max_length=1000, blank=True, null=True)
-    name = models.CharField(max_length=1000, blank=True, null=True)
-
-    class Meta:
-        db_table = 'SRI_functionalitylevel'
 
 
 # SRI_methodology model
@@ -125,7 +109,7 @@ class SRIMethodology(models.Model):
 
 
 # SRI_sriassessment model
-class SRISriassessment(models.Model):
+class SRISriAssessment(models.Model):
     id = models.OneToOneField(CityObject, primary_key=True, on_delete=models.CASCADE, db_column='id')
     assessor_assessments = models.ForeignKey(
         SRIAssessor,
@@ -136,7 +120,6 @@ class SRISriassessment(models.Model):
         related_name='sri_assessments'
     )
     dateofassessment = models.DateTimeField(null=True, blank=True)
-    fullbuilding = models.IntegerField(null=True, blank=True)
     methodology_assessments = models.ForeignKey(
         SRIMethodology,
         on_delete=models.SET_NULL,
@@ -166,7 +149,7 @@ class SRISriassessment(models.Model):
 
 # SRI_sriservice model
 class SRISriservice(models.Model):
-    id = models.OneToOneField(CityObject, primary_key=True, on_delete=models.CASCADE, db_column='id')
+    name = models.OneToOneField(CityObject, primary_key=True, on_delete=models.CASCADE, db_column='id')
     code = models.CharField(max_length=1000, blank=True, null=True)
     domain = models.CharField(max_length=1000, blank=True, null=True)
     impact = models.CharField(max_length=1000, blank=True, null=True)
@@ -191,6 +174,25 @@ class SRISriservice(models.Model):
             models.Index(fields=['sriassessment_sriservices']),
         ]
 
+# SRI_functionalitylevel model
+class SRIFunctionalitylevel(models.Model):
+
+    functionalitylevel_tag_choices = (
+        ("Functionality level 0", "Functionality level 0 (as non-smart default)"),
+        ("functionalityLevel1", "Functionality level 1"),
+        ("functionalityLevel2", "Functionality level 2"),
+        ("functionalityLevel3", "Functionality level 3"),
+        ("functionalityLevel4", "Functionality level 4")
+    )
+
+    id = models.OneToOneField(SRISriservice, primary_key=True, on_delete=models.CASCADE, db_column='id')
+    description = models.CharField(max_length=1000, blank=True, null=True)
+    functionalitylevel = models.IntegerField(blank=True, null=True)
+    id_1 = models.CharField(max_length=1000, blank=True, null=True)
+    name = models.CharField(max_length=1000, blank=True, null=True)
+
+    class Meta:
+        db_table = 'SRI_functionalitylevel'
 
 # SRI_usecase model
 class SRIUsecase(models.Model):
@@ -214,7 +216,8 @@ class SRIDomain(models.Model):
         ("lighting", "Lighting"),
         ("monitoringAndControl", "Monitoring and Control"),
         ("ventilation", "Ventilation"),
-        ("domesticHotWater", "Domestic Hot Water")
+        ("domesticHotWater", "Domestic Hot Water"),
+        ("electricity", "Electricity")
     )
     
     id = models.OneToOneField(CityObject, primary_key=True, on_delete=models.CASCADE, db_column='id')
@@ -223,3 +226,15 @@ class SRIDomain(models.Model):
 
     class Meta:
         db_table = 'SRI_domain'
+
+
+class SRIServiceCatalogue(models.Model):
+    id = models.OneToOneField(CityObject, primary_key=True,
+                              on_delete=models.CASCADE, db_column='id')
+    description = models.CharField(max_length=1000, blank=True, null=True)
+    version = models.FloatField(blank=True, null=True, validators=[
+        validators.MinValueValidator(0.1, message="Version must be greater than 0")
+    ])
+
+    class Meta:
+        db_table = 'SRI_service_catalogue'

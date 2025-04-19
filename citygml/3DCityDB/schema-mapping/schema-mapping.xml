@@ -12,7 +12,7 @@
         </schema>
     </applicationSchemas>
     <complexTypes>
-        <complexType id="SRI_SupportedAccessType" table="SRI_supportedaccess" objectClassId="10025" path="SupportedAccess" schema="SRI">
+        <complexType id="SRI_SupportedAccessType" table="SRI_supportedaccess" objectClassId="10024" path="SupportedAccess" schema="SRI">
             <attribute column="description" type="string" minOccurs="1" maxOccurs="1" path="description" schema="SRI"/>
             <attribute column="hasapi" type="boolean" minOccurs="1" maxOccurs="1" path="hasAPI" schema="SRI"/>
             <attribute column="hasendpoint" type="boolean" minOccurs="1" maxOccurs="1" path="hasEndpoint" schema="SRI"/>
@@ -37,81 +37,60 @@
             </extension>
             <attribute column="score" type="integer" minOccurs="1" maxOccurs="1" path="score" schema="SRI"/>
             <attribute column="dateofassessment" type="timestamp" minOccurs="1" maxOccurs="1" path="dateOfAssessment" schema="SRI"/>
-            <attribute column="fullbuilding" type="boolean" minOccurs="1" maxOccurs="1" path="fullBuilding" schema="SRI"/>
-            <featureProperty target="SRI_SRIServiceType" minOccurs="1" path="SRIServices" schema="SRI">
-                <join table="SRI_sriservice" fromColumn="id" toColumn="sriassessment_sriservices_id" toRole="child"/>
-            </featureProperty>
         </featureType>
-        <featureType id="SRI_SRIServiceType" table="SRI_sriservice" objectClassId="10015" path="SRIService" schema="SRI">
-            <extension base="AbstractFeatureType">
-                <join table="cityobject" fromColumn="id" toColumn="id" toRole="parent"/>
-            </extension>
-            <attribute column="domain" type="string" minOccurs="1" maxOccurs="1" path="domain" schema="SRI"/>
-            <attribute column="impact" type="string" minOccurs="1" maxOccurs="1" path="impact" schema="SRI"/>
-            <attribute column="code" type="string" minOccurs="1" maxOccurs="1" path="code" schema="SRI"/>
-            <attribute column="name" type="string" minOccurs="1" maxOccurs="1" path="name" schema="SRI"/>
-            <attribute column="servicegroup" type="string" minOccurs="1" maxOccurs="1" path="serviceGroup" schema="SRI"/>
-            <attribute column="preconditions" type="string" minOccurs="1" maxOccurs="1" path="preconditions" schema="SRI"/>
-            <attribute column="userdefined" type="boolean" minOccurs="1" maxOccurs="1" path="userDefined" schema="SRI"/>
-            <attribute column="partofmethod" type="boolean" minOccurs="1" maxOccurs="1" path="partOfMethod" schema="SRI"/>
-            <attribute column="partofmethodb" type="boolean" minOccurs="1" maxOccurs="1" path="partOfMethodB" schema="SRI"/>
-            <featureProperty target="SRI_SRIAssessmentType" path="Assessments" schema="SRI">
-                <join table="SRI_sriassessment" fromColumn="id" toColumn="sriservice_assessments_id" toRole="child"/>
-            </featureProperty>
-        </featureType>
-        <featureType id="SRI_AssetDataType" table="SRI_assetdata" objectClassId="10016" path="AssetData" schema="SRI">
+        <featureType id="SRI_AssetDataType" table="SRI_assetdata" objectClassId="10015" path="AssetData" schema="SRI">
             <extension base="SRI_InformationNeedType">
                 <join table="SRI_informationneed" fromColumn="id" toColumn="id" toRole="parent"/>
             </extension>
             <attribute column="assettype" type="string" maxOccurs="1" path="assetType" schema="SRI"/>
             <attribute column="other" type="string" minOccurs="1" maxOccurs="1" path="other" schema="SRI"/>
         </featureType>
-        <featureType id="SRI_InformationNeedType" table="SRI_informationneed" objectClassId="10017" path="InformationNeed" schema="SRI">
+        <featureType id="SRI_InformationNeedType" table="SRI_informationneed" objectClassId="10016" path="InformationNeed" schema="SRI">
             <extension base="AbstractFeatureType">
                 <join table="cityobject" fromColumn="id" toColumn="id" toRole="parent"/>
             </extension>
             <attribute column="description" type="string" minOccurs="1" maxOccurs="1" path="description" schema="SRI"/>
         </featureType>
-        <featureType id="SRI_ControlLogicType" table="SRI_controllogic" objectClassId="10018" path="ControlLogic" schema="SRI">
+        <featureType id="SRI_ControlLogicType" table="SRI_controllogic" objectClassId="10017" path="ControlLogic" schema="SRI">
             <extension base="SRI_DataCategoryMetaType">
                 <join table="SRI_datacategorymeta" fromColumn="id" toColumn="id" toRole="parent"/>
             </extension>
             <attribute column="controltype" type="string" minOccurs="1" maxOccurs="1" path="controlType" schema="SRI"/>
             <attribute column="controlsystem" type="string" path="controlSystem" schema="SRI"/>
         </featureType>
-        <featureType id="SRI_DataCategoryMetaType" table="SRI_datacategorymeta" objectClassId="10019" path="DataCategoryMeta" schema="SRI">
+        <featureType id="SRI_DataCategoryMetaType" table="SRI_datacategorymeta" objectClassId="10018" path="DataCategoryMeta" schema="SRI">
             <extension base="SRI_InformationNeedType">
                 <join table="SRI_informationneed" fromColumn="id" toColumn="id" toRole="parent"/>
             </extension>
             <attribute column="datascale" type="string" path="dataScale" schema="SRI"/>
             <attribute column="other" type="string" minOccurs="1" maxOccurs="1" path="other" schema="SRI"/>
         </featureType>
-        <featureType id="SRI_CyberDeviceDataType" table="SRI_cyberdevicedata" objectClassId="10020" path="CyberDeviceData" schema="SRI">
+        <featureType id="SRI_CyberDeviceDataType" table="SRI_cyberdevicedata" objectClassId="10019" path="CyberDeviceData" schema="SRI">
             <extension base="SRI_InformationNeedType">
                 <join table="SRI_informationneed" fromColumn="id" toColumn="id" toRole="parent"/>
             </extension>
             <attribute column="other" type="string" minOccurs="1" maxOccurs="1" path="other" schema="SRI"/>
             <attribute column="cyberdevicetype" type="string" path="cyberDeviceType" schema="SRI"/>
         </featureType>
-        <featureType id="SRI_DataConnectorType" table="SRI_dataconnector" objectClassId="10021" path="DataConnector" schema="SRI">
+        <featureType id="SRI_DataConnectorType" table="SRI_dataconnector" objectClassId="10020" path="DataConnector" schema="SRI">
             <extension base="AbstractFeatureType">
                 <join table="cityobject" fromColumn="id" toColumn="id" toRole="parent"/>
             </extension>
             <attribute column="modelschema" type="string" minOccurs="1" maxOccurs="1" path="modelSchema" schema="SRI"/>
             <attribute column="urlmodelschema" type="clob" minOccurs="1" maxOccurs="1" path="urlModelSchema" schema="SRI"/>
         </featureType>
-        <featureType id="SRI_DataSourceType" table="SRI_datasource" objectClassId="10022" path="DataSource" schema="SRI">
+        <featureType id="SRI_DataSourceType" table="SRI_datasource" objectClassId="10021" path="DataSource" schema="SRI">
             <extension base="AbstractFeatureType">
                 <join table="cityobject" fromColumn="id" toColumn="id" toRole="parent"/>
             </extension>
             <attribute column="name" type="string" minOccurs="1" maxOccurs="1" path="name" schema="SRI"/>
             <attribute column="description" type="string" minOccurs="1" maxOccurs="1" path="description" schema="SRI"/>
         </featureType>
-        <featureType id="SRI_DesignBasisDataType" table="SRI_datacategorymeta" objectClassId="10023" path="DesignBasisData" schema="SRI">
+        <featureType id="SRI_DesignBasisDataType" table="SRI_datacategorymeta" objectClassId="10022" path="DesignBasisData" schema="SRI">
             <extension base="SRI_DataCategoryMetaType"/>
             <attribute column="designtype" type="string" minOccurs="1" maxOccurs="1" path="designType" schema="SRI"/>
         </featureType>
-        <featureType id="SRI_DeviceType" table="SRI_device" objectClassId="10024" path="Device" schema="SRI">
+        <featureType id="SRI_DeviceType" table="SRI_device" objectClassId="10023" path="Device" schema="SRI">
             <extension base="SRI_DataSourceType">
                 <join table="SRI_datasource" fromColumn="id" toColumn="id" toRole="parent"/>
             </extension>
@@ -125,12 +104,34 @@
                 </type>
             </complexProperty>
         </featureType>
-        <featureType id="SRI_DomainType" table="SRI_domain" objectClassId="10026" topLevel="true" path="Domain" schema="SRI">
+        <featureType id="SRI_DomainType" table="SRI_domain" objectClassId="10025" topLevel="true" path="Domain" schema="SRI">
             <extension base="AbstractFeatureType">
                 <join table="cityobject" fromColumn="id" toColumn="id" toRole="parent"/>
             </extension>
             <attribute column="category" type="string" minOccurs="1" maxOccurs="1" path="category" schema="SRI"/>
             <attribute column="description" type="string" maxOccurs="1" path="description" schema="SRI"/>
+            <featureProperty target="SRI_SRIServiceType" minOccurs="1" path="Services" schema="SRI">
+                <join table="SRI_sriservice" fromColumn="id" toColumn="domain_services_id" toRole="child"/>
+            </featureProperty>
+            <featureProperty target="SRI_SRIAssessmentType" path="Assessments" schema="SRI">
+                <join table="SRI_sriassessment" fromColumn="id" toColumn="domain_assessments_id" toRole="child"/>
+            </featureProperty>
+        </featureType>
+        <featureType id="SRI_SRIServiceType" table="SRI_sriservice" objectClassId="10026" path="SRIService" schema="SRI">
+            <extension base="AbstractFeatureType">
+                <join table="cityobject" fromColumn="id" toColumn="id" toRole="parent"/>
+            </extension>
+            <attribute column="domain" type="string" minOccurs="1" maxOccurs="1" path="domain" schema="SRI"/>
+            <attribute column="impact" type="string" minOccurs="1" maxOccurs="1" path="impact" schema="SRI"/>
+            <attribute column="code" type="string" minOccurs="1" maxOccurs="1" path="code" schema="SRI"/>
+            <attribute column="name" type="string" minOccurs="1" maxOccurs="1" path="name" schema="SRI"/>
+            <attribute column="servicegroup" type="string" minOccurs="1" maxOccurs="1" path="serviceGroup" schema="SRI"/>
+            <attribute column="preconditions" type="string" minOccurs="1" maxOccurs="1" path="preconditions" schema="SRI"/>
+            <attribute column="userdefined" type="boolean" minOccurs="1" maxOccurs="1" path="userDefined" schema="SRI"/>
+            <attribute column="partofmethod" type="boolean" minOccurs="1" maxOccurs="1" path="partOfMethod" schema="SRI"/>
+            <attribute column="partofmethodb" type="boolean" minOccurs="1" maxOccurs="1" path="partOfMethodB" schema="SRI"/>
+            <attribute column="sharemainfunctionalitylevel" type="integer" minOccurs="1" maxOccurs="1" path="shareMainFunctionalityLevel" schema="SRI"/>
+            <attribute column="shareadditionalfunctionality" type="integer" minOccurs="1" maxOccurs="1" path="shareAdditionalFunctionalityLevel" schema="SRI"/>
         </featureType>
         <featureType id="SRI_EnergyDataType" table="SRI_energydata" objectClassId="10027" path="EnergyData" schema="SRI">
             <extension base="SRI_DataCategoryMetaType">
@@ -143,7 +144,7 @@
             <extension base="AbstractFeatureType">
                 <join table="cityobject" fromColumn="id" toColumn="id" toRole="parent"/>
             </extension>
-            <attribute column="id_1" type="string" minOccurs="1" maxOccurs="1" path="ID" schema="SRI"/>
+            <attribute column="level_" type="string" minOccurs="1" maxOccurs="1" path="level" schema="SRI"/>
             <attribute column="name" type="string" minOccurs="1" maxOccurs="1" path="name" schema="SRI"/>
             <attribute column="description" type="string" minOccurs="1" maxOccurs="1" path="description" schema="SRI"/>
             <attribute column="functionalitylevel" type="integer" minOccurs="1" maxOccurs="1" path="functionalityLevel" schema="SRI"/>
@@ -204,14 +205,24 @@
             <attribute column="source" type="string" path="source" schema="SRI"/>
             <attribute column="other" type="string" minOccurs="1" maxOccurs="1" path="other" schema="SRI"/>
         </featureType>
-        <featureType id="SRI_UseCaseType" table="SRI_usecase" objectClassId="10037" topLevel="true" path="UseCase" schema="SRI">
+        <featureType id="SRI_SRIServiceCatalogueType" table="SRI_sriservicecatalogue" objectClassId="10037" path="SRIServiceCatalogue" schema="SRI">
+            <extension base="AbstractFeatureType">
+                <join table="cityobject" fromColumn="id" toColumn="id" toRole="parent"/>
+            </extension>
+            <attribute column="version" type="clob" minOccurs="1" maxOccurs="1" path="version" schema="SRI"/>
+            <attribute column="description" type="string" minOccurs="1" maxOccurs="1" path="description" schema="SRI"/>
+            <featureProperty target="SRI_SRIServiceType" path="Services" schema="SRI">
+                <join table="SRI_sriservice" fromColumn="id" toColumn="sriservicecatalo_services_id" toRole="child"/>
+            </featureProperty>
+        </featureType>
+        <featureType id="SRI_UseCaseType" table="SRI_usecase" objectClassId="10038" topLevel="true" path="UseCase" schema="SRI">
             <extension base="AbstractFeatureType">
                 <join table="cityobject" fromColumn="id" toColumn="id" toRole="parent"/>
             </extension>
             <attribute column="title" type="string" minOccurs="1" maxOccurs="1" path="title" schema="SRI"/>
             <attribute column="description" type="string" minOccurs="1" maxOccurs="1" path="description" schema="SRI"/>
         </featureType>
-        <featureType id="SRI_UtilityGridDataType" table="SRI_datacategorymeta" objectClassId="10038" path="UtilityGridData" schema="SRI">
+        <featureType id="SRI_UtilityGridDataType" table="SRI_datacategorymeta" objectClassId="10039" path="UtilityGridData" schema="SRI">
             <extension base="SRI_DataCategoryMetaType"/>
             <attribute column="utilitygridtype" type="string" minOccurs="1" maxOccurs="1" path="utilityGridType" schema="SRI"/>
         </featureType>
@@ -225,6 +236,7 @@
             <attribute column="sribuildingtype" type="string" maxOccurs="1" path="SRIBuildingType" schema="SRI"/>
             <attribute column="climatezone" type="string" path="climateZone" schema="SRI"/>
             <attribute column="buildingstate" type="string" path="buildingState" schema="SRI"/>
+            <attribute column="description" type="string" path="description" schema="SRI"/>
         </propertyInjection>
     </propertyInjections>
 </schemaMapping>

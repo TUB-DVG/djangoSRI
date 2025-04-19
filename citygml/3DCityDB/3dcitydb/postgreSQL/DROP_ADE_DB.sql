@@ -1,4 +1,4 @@
--- This document was automatically created by the ADE-Manager tool of 3DCityDB (https://www.3dcitydb.org) on 2025-04-18 23:12:12 
+-- This document was automatically created by the ADE-Manager tool of 3DCityDB (https://www.3dcitydb.org) on 2025-04-19 15:07:28 
 -- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
 -- *********************************** Drop foreign keys ********************************** 
 -- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
@@ -132,10 +132,10 @@ ALTER TABLE SRI_sriassessment
     DROP CONSTRAINT SRI_sriass_assess_asses_fk;
 
 ALTER TABLE SRI_sriassessment
-    DROP CONSTRAINT SRI_sriass_method_asses_fk;
+    DROP CONSTRAINT SRI_sriass_domain_asses_fk;
 
 ALTER TABLE SRI_sriassessment
-    DROP CONSTRAINT SRI_sriass_sriser_asses_fk;
+    DROP CONSTRAINT SRI_sriass_method_asses_fk;
 
 -- -------------------------------------------------------------------- 
 -- SRI_sriservice 
@@ -144,7 +144,16 @@ ALTER TABLE SRI_sriservice
     DROP CONSTRAINT SRI_sriservice_fk;
 
 ALTER TABLE SRI_sriservice
-    DROP CONSTRAINT SRI_sriser_sriass_srise_fk;
+    DROP CONSTRAINT SRI_sriser_domain_servi_fk;
+
+ALTER TABLE SRI_sriservice
+    DROP CONSTRAINT SRI_sriser_sriser_servi_fk;
+
+-- -------------------------------------------------------------------- 
+-- SRI_sriservicecatalogue 
+-- -------------------------------------------------------------------- 
+ALTER TABLE SRI_sriservicecatalogue
+    DROP CONSTRAINT SRI_sriservicecatalogue_fk;
 
 -- -------------------------------------------------------------------- 
 -- SRI_usecase 
@@ -259,6 +268,11 @@ DROP TABLE SRI_sriassessment;
 -- SRI_sriservice 
 -- -------------------------------------------------------------------- 
 DROP TABLE SRI_sriservice;
+
+-- -------------------------------------------------------------------- 
+-- SRI_sriservicecatalogue 
+-- -------------------------------------------------------------------- 
+DROP TABLE SRI_sriservicecatalogue;
 
 -- -------------------------------------------------------------------- 
 -- SRI_supportedaccess 

@@ -28,6 +28,11 @@
   </element>
   <element name="climateZone" substitutionGroup="bldg:_GenericApplicationPropertyOfAbstractBuilding" type="SRIADE:SRIClimateZoneTypeType"/>
   <element name="buildingState" substitutionGroup="bldg:_GenericApplicationPropertyOfAbstractBuilding" type="SRIADE:SRIBuildingStateType"/>
+  <element name="description" substitutionGroup="bldg:_GenericApplicationPropertyOfAbstractBuilding" type="string">
+    <annotation>
+      <documentation>Description of the building.</documentation>
+    </annotation>
+  </element>
   <element name="Assessor" substitutionGroup="gml:_Feature" type="SRIADE:AssessorType"/>
   <complexType name="AssessorType">
     <complexContent>
@@ -293,6 +298,8 @@
         <sequence>
           <element name="category" type="SRIADE:SRIDomainsType"/>
           <element minOccurs="0" name="description" type="string"/>
+          <element maxOccurs="unbounded" name="Services" type="SRIADE:SRIServicePropertyType"/>
+          <element maxOccurs="unbounded" minOccurs="0" name="Assessments" type="SRIADE:SRIAssessmentPropertyType"/>
         </sequence>
       </extension>
     </complexContent>
@@ -414,7 +421,7 @@ Outdoor: illuminances, luminance, cloud cover, etc.</documentation>
     <complexContent>
       <extension base="gml:AbstractFeatureType">
         <sequence>
-          <element name="ID" type="string"/>
+          <element name="level" type="string"/>
           <element name="name" type="string"/>
           <element name="description" type="string"/>
           <element name="functionalityLevel" type="integer"/>
@@ -653,8 +660,6 @@ Outdoor: illuminances, luminance, cloud cover, etc.</documentation>
         <sequence>
           <element name="score" type="integer"/>
           <element name="dateOfAssessment" type="date"/>
-          <element name="fullBuilding" type="boolean"/>
-          <element maxOccurs="unbounded" name="SRIServices" type="SRIADE:SRIServicePropertyType"/>
         </sequence>
       </extension>
     </complexContent>
@@ -738,7 +743,26 @@ Outdoor: illuminances, luminance, cloud cover, etc.</documentation>
           <element name="userDefined" type="boolean"/>
           <element name="partOfMethod" type="boolean"/>
           <element name="partOfMethodB" type="boolean"/>
-          <element maxOccurs="unbounded" minOccurs="0" name="Assessments" type="SRIADE:SRIAssessmentPropertyType"/>
+          <element name="mainFunctionalityLevel">
+            <complexType>
+              <sequence>
+                <element ref="SRIADE:FunctionalityLevel"/>
+              </sequence>
+            </complexType>
+          </element>
+          <element name="shareMainFunctionalityLevel" type="integer"/>
+          <element name="additonalFunctionalityLevel">
+            <complexType>
+              <sequence>
+                <element ref="SRIADE:FunctionalityLevel"/>
+              </sequence>
+            </complexType>
+          </element>
+          <element name="shareAdditionalFunctionalityLevel" type="integer">
+            <annotation>
+              <documentation>Share of additional functionality level</documentation>
+            </annotation>
+          </element>
         </sequence>
       </extension>
     </complexContent>
@@ -746,6 +770,24 @@ Outdoor: illuminances, luminance, cloud cover, etc.</documentation>
   <complexType name="SRIServicePropertyType">
     <sequence minOccurs="0">
       <element ref="SRIADE:SRIService"/>
+    </sequence>
+    <attributeGroup ref="gml:AssociationAttributeGroup"/>
+  </complexType>
+  <element name="SRIServiceCatalogue" substitutionGroup="gml:_Feature" type="SRIADE:SRIServiceCatalogueType"/>
+  <complexType name="SRIServiceCatalogueType">
+    <complexContent>
+      <extension base="gml:AbstractFeatureType">
+        <sequence>
+          <element name="version"/>
+          <element name="description" type="string"/>
+          <element maxOccurs="unbounded" minOccurs="0" name="Services" type="SRIADE:SRIServicePropertyType"/>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="SRIServiceCataloguePropertyType">
+    <sequence minOccurs="0">
+      <element ref="SRIADE:SRIServiceCatalogue"/>
     </sequence>
     <attributeGroup ref="gml:AssociationAttributeGroup"/>
   </complexType>

@@ -1,4 +1,4 @@
--- This document was automatically created by the ADE-Manager tool of 3DCityDB (https://www.3dcitydb.org) on 2025-04-18 23:12:12 
+-- This document was automatically created by the ADE-Manager tool of 3DCityDB (https://www.3dcitydb.org) on 2025-04-19 15:07:28 
 -- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
 -- *********************************** Create tables ************************************** 
 -- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
@@ -35,6 +35,7 @@ CREATE TABLE SRI_building
     buildingstate VARCHAR2(1000),
     buildingusage VARCHAR2(1000),
     climatezone VARCHAR2(1000),
+    description VARCHAR2(1000),
     location VARCHAR2(1000),
     sribuildingtype VARCHAR2(1000),
     usefulfloorarea VARCHAR2(1000),
@@ -146,7 +147,7 @@ CREATE TABLE SRI_functionalitylevel
     id NUMBER(38) NOT NULL,
     description VARCHAR2(1000),
     functionalitylevel INTEGER,
-    id_1 VARCHAR2(1000),
+    level_ VARCHAR2(1000),
     name VARCHAR2(1000),
     PRIMARY KEY (id)
 );
@@ -238,10 +239,9 @@ CREATE TABLE SRI_sriassessment
     id NUMBER(38) NOT NULL,
     assessor_assessments_id NUMBER(38),
     dateofassessment TIMESTAMP,
-    fullbuilding NUMBER,
+    domain_assessments_id NUMBER(38),
     methodology_assessments_id NUMBER(38),
     score INTEGER,
-    sriservice_assessments_id NUMBER(38),
     PRIMARY KEY (id)
 );
 
@@ -253,14 +253,28 @@ CREATE TABLE SRI_sriservice
     id NUMBER(38) NOT NULL,
     code VARCHAR2(1000),
     domain VARCHAR2(1000),
+    domain_services_id NUMBER(38),
     impact VARCHAR2(1000),
     name VARCHAR2(1000),
     partofmethod NUMBER,
     partofmethodb NUMBER,
     preconditions VARCHAR2(1000),
     servicegroup VARCHAR2(1000),
-    sriassessment_sriservices_id NUMBER(38),
+    shareadditionalfunctionality INTEGER,
+    sharemainfunctionalitylevel INTEGER,
+    sriservicecatalo_services_id NUMBER(38),
     userdefined NUMBER,
+    PRIMARY KEY (id)
+);
+
+-- -------------------------------------------------------------------- 
+-- SRI_sriservicecatalogue 
+-- -------------------------------------------------------------------- 
+CREATE TABLE SRI_sriservicecatalogue
+(
+    id NUMBER(38) NOT NULL,
+    description VARCHAR2(1000),
+    version CLOB,
     PRIMARY KEY (id)
 );
 
@@ -420,12 +434,12 @@ ALTER TABLE SRI_sriassessment ADD CONSTRAINT SRI_sriass_assess_asses_fk FOREIGN 
 REFERENCES SRI_assessor (id)
 ON DELETE SET NULL;
 
-ALTER TABLE SRI_sriassessment ADD CONSTRAINT SRI_sriass_method_asses_fk FOREIGN KEY (methodology_assessments_id)
-REFERENCES SRI_methodology (id)
+ALTER TABLE SRI_sriassessment ADD CONSTRAINT SRI_sriass_domain_asses_fk FOREIGN KEY (domain_assessments_id)
+REFERENCES SRI_domain (id)
 ON DELETE SET NULL;
 
-ALTER TABLE SRI_sriassessment ADD CONSTRAINT SRI_sriass_sriser_asses_fk FOREIGN KEY (sriservice_assessments_id)
-REFERENCES SRI_sriservice (id)
+ALTER TABLE SRI_sriassessment ADD CONSTRAINT SRI_sriass_method_asses_fk FOREIGN KEY (methodology_assessments_id)
+REFERENCES SRI_methodology (id)
 ON DELETE SET NULL;
 
 -- -------------------------------------------------------------------- 
@@ -434,9 +448,19 @@ ON DELETE SET NULL;
 ALTER TABLE SRI_sriservice ADD CONSTRAINT SRI_sriservice_fk FOREIGN KEY (id)
 REFERENCES cityobject (id);
 
-ALTER TABLE SRI_sriservice ADD CONSTRAINT SRI_sriser_sriass_srise_fk FOREIGN KEY (sriassessment_sriservices_id)
-REFERENCES SRI_sriassessment (id)
+ALTER TABLE SRI_sriservice ADD CONSTRAINT SRI_sriser_domain_servi_fk FOREIGN KEY (domain_services_id)
+REFERENCES SRI_domain (id)
 ON DELETE SET NULL;
+
+ALTER TABLE SRI_sriservice ADD CONSTRAINT SRI_sriser_sriser_servi_fk FOREIGN KEY (sriservicecatalo_services_id)
+REFERENCES SRI_sriservicecatalogue (id)
+ON DELETE SET NULL;
+
+-- -------------------------------------------------------------------- 
+-- SRI_sriservicecatalogue 
+-- -------------------------------------------------------------------- 
+ALTER TABLE SRI_sriservicecatalogue ADD CONSTRAINT SRI_sriservicecatalogue_fk FOREIGN KEY (id)
+REFERENCES cityobject (id);
 
 -- -------------------------------------------------------------------- 
 -- SRI_usecase 
@@ -472,14 +496,16 @@ CREATE INDEX SRI_informati_objectcl_fkx ON SRI_informationneed (objectclass_id);
 -- -------------------------------------------------------------------- 
 CREATE INDEX SRI_sriass_asses_asses_fkx ON SRI_sriassessment (assessor_assessments_id);
 
-CREATE INDEX SRI_sriass_metho_asses_fkx ON SRI_sriassessment (methodology_assessments_id);
+CREATE INDEX SRI_sriass_domai_asses_fkx ON SRI_sriassessment (domain_assessments_id);
 
-CREATE INDEX SRI_sriass_srise_asses_fkx ON SRI_sriassessment (sriservice_assessments_id);
+CREATE INDEX SRI_sriass_metho_asses_fkx ON SRI_sriassessment (methodology_assessments_id);
 
 -- -------------------------------------------------------------------- 
 -- SRI_sriservice 
 -- -------------------------------------------------------------------- 
-CREATE INDEX SRI_sriser_srias_srise_fkx ON SRI_sriservice (sriassessment_sriservices_id);
+CREATE INDEX SRI_sriser_domai_servi_fkx ON SRI_sriservice (domain_services_id);
+
+CREATE INDEX SRI_sriser_srise_servi_fkx ON SRI_sriservice (sriservicecatalo_services_id);
 
 -- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
 -- *********************************** Create Sequences *********************************** 
