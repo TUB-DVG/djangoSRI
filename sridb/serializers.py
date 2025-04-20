@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from sridb.modules.sri.sri import SRIFunctionalitylevel, SRISriservice, SRIBuilding, SRISriassessment
+from sridb.modules.sri.sri import SRIFunctionalitylevel, SRISriservice, SRIBuilding, SRISriAssessment
 from citydb.modules.bldg.building import Building
 # Import the new models
 from sridb.modules.sri.information_need import (
@@ -48,7 +48,7 @@ class SRIAssessmentSerializer(serializers.ModelSerializer):
     services = SRIServiceSerializer(source='sri_services', many=True, read_only=True)
     
     class Meta:
-        model = SRISriassessment
+        model = SRISriAssessment
         fields = ['id', 'dateofassessment', 'fullbuilding', 'score', 'services']
 
 class SRIAssetDataSerializer(serializers.ModelSerializer):

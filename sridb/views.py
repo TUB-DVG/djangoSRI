@@ -5,7 +5,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from citydb.modules.energy.core.energybuilding import EnergyBuilding
 from citydb.modules.bldg.building import Building
-from sridb.modules.sri.sri import SRISriservice, SRIBuilding, SRISriassessment
+from sridb.modules.sri.sri import SRISriservice, SRIBuilding, SRISriAssessment
 from sridb.modules.sri.information_need import (
     SRIAssetData, SRIIndoorEnvironmentalData, SRIControlLogic, 
     SRICyberDeviceData, SRIDatacategoryMeta, SRIEnergyData, 

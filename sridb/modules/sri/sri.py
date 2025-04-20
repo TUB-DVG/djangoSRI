@@ -80,8 +80,7 @@ class SRIBuilding(models.Model):
     climatezone = models.CharField(max_length=1000, blank=True, null=True, choices=climatezone_tag_choices)
     location = models.CharField(max_length=1000, blank=True, null=True)
     sribuildingtype = models.CharField(max_length=1000, blank=True, null=True, choices=sribuildingtype_tag_choices)
-    usefulfloorarea = models.CharField(max_length=1000, blank=True, null=True,
-                                       description="Category of useful floor area in square meters")
+    usefulfloorarea = models.CharField(max_length=1000, blank=True, null=True)
     description = models.CharField(max_length=1000, blank=True, null=True)
 
     class Meta:
@@ -159,7 +158,7 @@ class SRISriservice(models.Model):
     preconditions = models.CharField(max_length=1000, blank=True, null=True)
     servicegroup = models.CharField(max_length=1000, blank=True, null=True)
     sriassessment_sriservices = models.ForeignKey(
-        SRISriassessment,
+        SRISriAssessment,
         on_delete=models.SET_NULL,
         null=True,
         blank=True,
