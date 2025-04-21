@@ -10,7 +10,7 @@ class SRIInformationNeed(models.Model):
     objectclass = models.ForeignKey(ObjectClass, on_delete=models.CASCADE, db_column='objectclass_id', null=True)
 
     class Meta:
-        db_table = 'SRI_informationneed'
+        db_table = 'sri_informationneed'
         indexes = [
             models.Index(fields=['objectclass']),
         ]
@@ -23,7 +23,7 @@ class SRISupportedAccess(models.Model):
     hasendpoint = models.IntegerField(blank=True, null=True, db_column='hasendpoint')
 
     class Meta:
-        db_table = 'SRI_supportedaccess'
+        db_table = 'sri_supportedaccess'
 
 # SRI_datasource model (base class for data sources)
 class SRIDataSource(models.Model):
@@ -33,17 +33,18 @@ class SRIDataSource(models.Model):
     objectclass = models.ForeignKey(ObjectClass, on_delete=models.CASCADE, db_column='objectclass_id', null=True)
 
     class Meta:
-        db_table = 'SRI_datasource'
+        db_table = 'sri_datasource'
         indexes = [
             models.Index(fields=['objectclass']),
         ]
 
 # SRI_model model (inherits from SRIDataSource)
+# To-Do: Rework the model that work for this
 class SRIModel(models.Model):
     id = models.OneToOneField(SRIDataSource, primary_key=True, on_delete=models.CASCADE, db_column='id')
 
     class Meta:
-        db_table = 'SRI_model'
+        db_table = 'sri_model'
 
 # SRI_interface model
 class SRIInterface(models.Model):
@@ -53,7 +54,7 @@ class SRIInterface(models.Model):
     supportedaccesstype_hasapi = models.IntegerField(blank=True, null=True)
 
     class Meta:
-        db_table = 'SRI_interface'
+        db_table = 'sri_interface'
 
 # SRI_device model
 class SRIDevice(models.Model):
@@ -66,7 +67,7 @@ class SRIDevice(models.Model):
     supportedprotcolls = models.TextField(blank=True, null=True)
 
     class Meta:
-        db_table = 'SRI_device'
+        db_table = 'sri_device'
         indexes = [
             models.Index(fields=['objectclass']),
         ]
@@ -78,4 +79,4 @@ class SRIDataConnector(models.Model):
     urlmodelschema = models.TextField(blank=True, null=True)
 
     class Meta:
-        db_table = 'SRI_dataconnector'
+        db_table = 'sri_dataconnector'

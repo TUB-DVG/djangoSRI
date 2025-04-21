@@ -5,11 +5,16 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from citydb.modules.energy.core.energybuilding import EnergyBuilding
 from citydb.modules.bldg.building import Building
-from sridb.modules.sri.sri import SRISriservice, SRIBuilding, SRISriAssessment
+from sridb.modules.sri.sri import (
+    SRISriservice, SRIBuilding, SRISriAssessment, 
+    SRIServiceCatalogue, SRIFunctionalitylevel, SRIMethodology,
+    SRIAssessor, SRIDomain, SRIUsecase
+)
 from sridb.modules.sri.information_need import (
     SRIAssetData, SRIIndoorEnvironmentalData, SRIControlLogic, 
     SRICyberDeviceData, SRIDatacategoryMeta, SRIEnergyData, 
-    SRIOperationalData, SRIOutdoorenvironmentalData, SRIOnsiteenergygeneratio
+    SRIOperationalData, SRIOutdoorenvironmentalData,
+     SRIOnsiteenergygeneration
 )
 from sridb.serializers import (
     BuildingSerializer, SRIServiceSerializer, SRIBuildingSerializer, 
@@ -17,7 +22,9 @@ from sridb.serializers import (
     SRIIndoorEnvironmentalDataSerializer, SRIControlLogicSerializer, 
     SRICyberDeviceDataSerializer, SRIDatacategoryMetaSerializer, 
     SRIEnergyDataSerializer, SRIOperationalDataSerializer, 
-    SRIOutdoorenvironmentalDataSerializer, SRIOnsiteenergygeneratioSerializer
+    SRIOutdoorenvironmentalDataSerializer, SRIOnsiteenergygenerationSerializer,
+    SRIMethodologySerializer, SRIAssessorSerializer, SRIFunctionalityLevelSerializer,
+    SRIDomainSerializer, SRIUsecaseSerializer, SRIServiceCatalogueSerializer
 )
 from sridb.auxillary.gml_generator import generate_gml
 
@@ -25,17 +32,75 @@ class BuildingViewSet(viewsets.ModelViewSet):
     queryset = Building.objects.all()
     serializer_class = BuildingSerializer
 
+class SRIBuildingViewSet(viewsets.ModelViewSet):
+    queryset = SRIBuilding.objects.all()
+    serializer_class = SRIBuildingSerializer
+
 class SRIServiceViewSet(viewsets.ModelViewSet):
     queryset = SRISriservice.objects.all()
     serializer_class = SRIServiceSerializer
 
+class SRIAssessmentViewSet(viewsets.ModelViewSet):
+    queryset = SRISriAssessment.objects.all()
+    serializer_class = SRIAssessmentSerializer
+
+class SRIMethodologyViewSet(viewsets.ModelViewSet):
+    queryset = SRIMethodology.objects.all()
+    serializer_class = SRIMethodologySerializer
+
+class SRIAssessorViewSet(viewsets.ModelViewSet):
+    queryset = SRIAssessor.objects.all()
+    serializer_class = SRIAssessorSerializer
+
+class SRIFunctionalityLevelViewSet(viewsets.ModelViewSet):
+    queryset = SRIFunctionalitylevel.objects.all()
+    serializer_class = SRIFunctionalityLevelSerializer
+
+class SRIDomainViewSet(viewsets.ModelViewSet):
+    queryset = SRIDomain.objects.all()
+    serializer_class = SRIDomainSerializer
+
+class SRIUsecaseViewSet(viewsets.ModelViewSet):
+    queryset = SRIUsecase.objects.all()
+    serializer_class = SRIUsecaseSerializer
+
+class SRIServiceCatalogueViewSet(viewsets.ModelViewSet):
+    queryset = SRIServiceCatalogue.objects.all()
+    serializer_class = SRIServiceCatalogueSerializer
+
 @api_view(['POST'])
 def assign_service_to_building(request, building_id, service_id):
-    """Assigns a SRI Service to a Building"""
+    """Assigns a SRI Service to a Building via an Assessment"""
     building = get_object_or_404(SRIBuilding, id=building_id)
     service = get_object_or_404(SRISriservice, id=service_id)
-    building.services.add(service)
-    return Response({"message": f"Service {service.name} assigned to Building {building_id}"})
+    
+    # With the new model structure, we need to assign services through assessments
+    # Check if the building has an assessment, create one if not
+    # First try to get from the direct relationship
+    assessment = None
+    
+    # Look for existing assessments linked to this building
+    existing_assessments = building.assessments.all()
+    if existing_assessments.exists():
+        # Use the first assessment if there's already one
+        assessment = existing_assessments.first()
+    
+    if assessment is None:
+        # Create a new assessment and link it to the building
+        assessment = SRISriAssessment.objects.create(
+            score=0  # Default score value
+        )
+        # Link using the M2M relationship
+        assessment.buildings.add(building)
+        assessment.save()
+    
+    # Add the service to the assessment
+    assessment.sri_services.add(service)
+    
+    return Response({
+        "message": f"Service {service.name} assigned to Building {building_id} via Assessment {assessment.id}",
+        "assessment_id": assessment.id
+    })
 
 @api_view(['GET'])
 def get_building_gml(request, building_id):
@@ -49,14 +114,17 @@ def get_building_gml(request, building_id):
     return response
 
 @api_view(['GET'])
-def get_available_services(request, sri_level_id):
-    """Returns all services available for a given SRI Level"""
-    services = SRISriservice.objects.filter(sri_level_id=sri_level_id)
+def get_available_services(request, catalogue_id=None):
+    """Returns all services available for a given SRI Catalogue"""
+    if catalogue_id:
+        services = SRISriservice.objects.filter(catalogue_id=catalogue_id)
+    else:
+        services = SRISriservice.objects.all()
+    
     serializer = SRIServiceSerializer(services, many=True)
     return Response(serializer.data)
 
-# ViewSets for the new Information Need models
-
+# ViewSets for the Information Need models
 class SRIAssetDataViewSet(viewsets.ModelViewSet):
     queryset = SRIAssetData.objects.all()
     serializer_class = SRIAssetDataSerializer
@@ -89,6 +157,6 @@ class SRIOutdoorenvironmentalDataViewSet(viewsets.ModelViewSet):
     queryset = SRIOutdoorenvironmentalData.objects.all()
     serializer_class = SRIOutdoorenvironmentalDataSerializer
 
-class SRIOnsiteenergygeneratioViewSet(viewsets.ModelViewSet):
-    queryset = SRIOnsiteenergygeneratio.objects.all()
-    serializer_class = SRIOnsiteenergygeneratioSerializer
+class SRIOnsiteenergygenerationViewSet(viewsets.ModelViewSet):
+    queryset = SRIOnsiteenergygeneration.objects.all()
+    serializer_class = SRIOnsiteenergygenerationSerializer

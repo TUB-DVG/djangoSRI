@@ -1,11 +1,14 @@
 from rest_framework import serializers
-from sridb.modules.sri.sri import SRIFunctionalitylevel, SRISriservice, SRIBuilding, SRISriAssessment
+from sridb.modules.sri.sri import (
+    SRIFunctionalitylevel, SRISriservice, SRIBuilding, SRISriAssessment,
+    SRIServiceCatalogue, SRIMethodology, SRIAssessor, SRIDomain, SRIUsecase
+)
 from citydb.modules.bldg.building import Building
-# Import the new models
+# Import the information need models
 from sridb.modules.sri.information_need import (
     SRIAssetData, SRIIndoorEnvironmentalData, SRIControlLogic, 
     SRICyberDeviceData, SRIDatacategoryMeta, SRIEnergyData, 
-    SRIOperationalData, SRIOutdoorenvironmentalData, SRIOnsiteenergygeneratio
+    SRIOperationalData, SRIOutdoorenvironmentalData, SRIOnsiteenergygeneration
 )
 
 """
@@ -16,6 +19,12 @@ They also provide deserialization, allowing parsed data to be converted back
 into complex types after validating the incoming data.
 """
 
+class SRIServiceCatalogueSerializer(serializers.ModelSerializer):
+    """Serializer for the SRI Service Catalogue model."""
+    class Meta:
+        model = SRIServiceCatalogue
+        fields = '__all__'
+
 class SRIFunctionalityLevelSerializer(serializers.ModelSerializer):
     """Serializer for the SRI Functionality Level model."""
     class Meta:
@@ -24,9 +33,14 @@ class SRIFunctionalityLevelSerializer(serializers.ModelSerializer):
 
 class SRIServiceSerializer(serializers.ModelSerializer):
     """Serializer for the SRI Service model."""
+    functionality_levels = SRIFunctionalityLevelSerializer(many=True, read_only=True)
+    catalogue_details = SRIServiceCatalogueSerializer(source='catalogue', read_only=True)
+    
     class Meta:
         model = SRISriservice
-        fields = '__all__'
+        fields = ['id', 'code', 'name', 'domain', 'impact', 'servicegroup', 
+                  'partofmethod', 'partofmethodb', 'preconditions', 'userdefined',
+                  'catalogue', 'catalogue_details', 'functionality_levels']
 
 class BuildingSerializer(serializers.ModelSerializer):
     """Serializer for the Building model."""
@@ -40,17 +54,48 @@ class SRIBuildingSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = SRIBuilding
-        fields = ['building', 'buildingstate', 'buildingusage', 'climatezone', 
-                  'location', 'sribuildingtype', 'usefulfloorarea']
+        fields = ['id', 'building', 'buildingstate', 'buildingusage', 'climatezone', 
+                  'location', 'sribuildingtype', 'usefulfloorarea', 'sri_description']
+
+class SRIAssessorSerializer(serializers.ModelSerializer):
+    """Serializer for the SRI Assessor model."""
+    class Meta:
+        model = SRIAssessor
+        fields = '__all__'
+
+class SRIMethodologySerializer(serializers.ModelSerializer):
+    """Serializer for the SRI Methodology model."""
+    class Meta:
+        model = SRIMethodology
+        fields = '__all__'
 
 class SRIAssessmentSerializer(serializers.ModelSerializer):
     """Serializer for the SRI Assessment model with related services."""
     services = SRIServiceSerializer(source='sri_services', many=True, read_only=True)
+    buildings = SRIBuildingSerializer(many=True, read_only=True)
+    assessor = SRIAssessorSerializer(source='assessor_assessments', read_only=True)
+    methodology = SRIMethodologySerializer(source='methodology_assessments', read_only=True)
     
     class Meta:
         model = SRISriAssessment
-        fields = ['id', 'dateofassessment', 'fullbuilding', 'score', 'services']
+        fields = ['id', 'dateofassessment', 'score', 'services', 
+                  'buildings',
+                  'assessor_assessments', 'assessor',
+                  'methodology_assessments', 'methodology']
 
+class SRIDomainSerializer(serializers.ModelSerializer):
+    """Serializer for the SRI Domain model."""
+    class Meta:
+        model = SRIDomain
+        fields = '__all__'
+
+class SRIUsecaseSerializer(serializers.ModelSerializer):
+    """Serializer for the SRI Usecase model."""
+    class Meta:
+        model = SRIUsecase
+        fields = '__all__'
+
+# Information Need model serializers
 class SRIAssetDataSerializer(serializers.ModelSerializer):
     class Meta:
         model = SRIAssetData
@@ -91,7 +136,7 @@ class SRIOutdoorenvironmentalDataSerializer(serializers.ModelSerializer):
         model = SRIOutdoorenvironmentalData
         fields = '__all__'
 
-class SRIOnsiteenergygeneratioSerializer(serializers.ModelSerializer):
+class SRIOnsiteenergygenerationSerializer(serializers.ModelSerializer):
     class Meta:
-        model = SRIOnsiteenergygeneratio
+        model = SRIOnsiteenergygeneration
         fields = '__all__'

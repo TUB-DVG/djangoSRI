@@ -1,4 +1,4 @@
--- This document was automatically created by the ADE-Manager tool of 3DCityDB (https://www.3dcitydb.org) on 2025-04-19 15:07:28 
+-- This document was automatically created by the ADE-Manager tool of 3DCityDB (https://www.3dcitydb.org) on 2025-04-21 22:53:53 
 -- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
 -- *********************************** Drop foreign keys ********************************** 
 -- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
@@ -66,12 +66,6 @@ ALTER TABLE SRI_device
     DROP CONSTRAINT SRI_device_fk;
 
 -- -------------------------------------------------------------------- 
--- SRI_domain 
--- -------------------------------------------------------------------- 
-ALTER TABLE SRI_domain
-    DROP CONSTRAINT SRI_domain_fk;
-
--- -------------------------------------------------------------------- 
 -- SRI_energydata 
 -- -------------------------------------------------------------------- 
 ALTER TABLE SRI_energydata
@@ -81,7 +75,7 @@ ALTER TABLE SRI_energydata
 -- SRI_functionalitylevel 
 -- -------------------------------------------------------------------- 
 ALTER TABLE SRI_functionalitylevel
-    DROP CONSTRAINT SRI_functionalitylevel_fk;
+    DROP CONSTRAINT SRI_functi_sriser_funct_fk;
 
 -- -------------------------------------------------------------------- 
 -- SRI_indoorenvironmentalda 
@@ -132,19 +126,16 @@ ALTER TABLE SRI_sriassessment
     DROP CONSTRAINT SRI_sriass_assess_asses_fk;
 
 ALTER TABLE SRI_sriassessment
-    DROP CONSTRAINT SRI_sriass_domain_asses_fk;
-
-ALTER TABLE SRI_sriassessment
     DROP CONSTRAINT SRI_sriass_method_asses_fk;
 
 -- -------------------------------------------------------------------- 
 -- SRI_sriservice 
 -- -------------------------------------------------------------------- 
 ALTER TABLE SRI_sriservice
-    DROP CONSTRAINT SRI_sriservice_fk;
+    DROP CONSTRAINT SRI_sriservic_objectcla_fk;
 
 ALTER TABLE SRI_sriservice
-    DROP CONSTRAINT SRI_sriser_domain_servi_fk;
+    DROP CONSTRAINT SRI_sriservice_fk;
 
 ALTER TABLE SRI_sriservice
     DROP CONSTRAINT SRI_sriser_sriser_servi_fk;
@@ -289,5 +280,9 @@ DROP TABLE SRI_usecase;
 -- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
 
 DROP SEQUENCE SRI_supportedaccess_seq;
+
+DROP SEQUENCE SRI_domain_seq;
+
+DROP SEQUENCE SRI_functionalityleve_seq;
 
 PURGE RECYCLEBIN;

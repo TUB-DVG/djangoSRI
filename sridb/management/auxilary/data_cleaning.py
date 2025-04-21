@@ -7,7 +7,7 @@ def clean_data(df):
     # Service ready service does not containt ' User defined smart ready service'
     df = df[df['Code'].notna()]
     df = df[df['Code'] != 0]
-    df = df[~df['Service ready service'].str.contains('User defined smart ready service')]
+    df = df[~df['Smart ready service'].str.contains('User defined smart ready service')]
     return df
 
 

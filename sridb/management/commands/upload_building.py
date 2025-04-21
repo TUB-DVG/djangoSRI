@@ -5,6 +5,7 @@ from sridb.modules.sri import (
     SRISriservice,
     SRIFunctionalitylevel,
     SRISriAssessment,
+    SRIBuilding
 )
 from sridb.management.auxilary.data_cleaning import clean_data , load_building_data
 
@@ -32,7 +33,7 @@ class Command(BaseCommand):
                                                       climatezone = building_info_dict['Climate Zone'],
                                                       location = building_info_dict['Location'],
                                                       usefulfloorarea = building_info_dict['Useful Floor Area'],
-                                                      description = building_info_dict['Description'])
+                                                      sri_description = building_info_dict['Description'])
 
             # Create a new SRI assessment
             # Building , get the ID of a building 

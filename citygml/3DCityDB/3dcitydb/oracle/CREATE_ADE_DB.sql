@@ -1,4 +1,4 @@
--- This document was automatically created by the ADE-Manager tool of 3DCityDB (https://www.3dcitydb.org) on 2025-04-19 15:07:28 
+-- This document was automatically created by the ADE-Manager tool of 3DCityDB (https://www.3dcitydb.org) on 2025-04-21 22:53:53 
 -- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
 -- *********************************** Create tables ************************************** 
 -- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
@@ -35,9 +35,9 @@ CREATE TABLE SRI_building
     buildingstate VARCHAR2(1000),
     buildingusage VARCHAR2(1000),
     climatezone VARCHAR2(1000),
-    description VARCHAR2(1000),
     location VARCHAR2(1000),
     sribuildingtype VARCHAR2(1000),
+    sridescription VARCHAR2(1000),
     usefulfloorarea VARCHAR2(1000),
     PRIMARY KEY (id)
 );
@@ -149,6 +149,7 @@ CREATE TABLE SRI_functionalitylevel
     functionalitylevel INTEGER,
     level_ VARCHAR2(1000),
     name VARCHAR2(1000),
+    sriservice_functionalityl_id NUMBER(38),
     PRIMARY KEY (id)
 );
 
@@ -192,6 +193,7 @@ CREATE TABLE SRI_interface
 CREATE TABLE SRI_methodology
 (
     id NUMBER(38) NOT NULL,
+    description VARCHAR2(1000),
     preferredservicecatalogue VARCHAR2(1000),
     preferredweightings VARCHAR2(1000),
     PRIMARY KEY (id)
@@ -239,7 +241,6 @@ CREATE TABLE SRI_sriassessment
     id NUMBER(38) NOT NULL,
     assessor_assessments_id NUMBER(38),
     dateofassessment TIMESTAMP,
-    domain_assessments_id NUMBER(38),
     methodology_assessments_id NUMBER(38),
     score INTEGER,
     PRIMARY KEY (id)
@@ -251,11 +252,14 @@ CREATE TABLE SRI_sriassessment
 CREATE TABLE SRI_sriservice
 (
     id NUMBER(38) NOT NULL,
+    additonalassesssedfunctional INTEGER,
+    assesssedfunctionalitylevel INTEGER,
     code VARCHAR2(1000),
-    domain VARCHAR2(1000),
-    domain_services_id NUMBER(38),
+    domaintype_category VARCHAR2(1000),
+    domaintype_description VARCHAR2(1000),
     impact VARCHAR2(1000),
     name VARCHAR2(1000),
+    objectclass_id INTEGER,
     partofmethod NUMBER,
     partofmethodb NUMBER,
     preconditions VARCHAR2(1000),
@@ -274,7 +278,7 @@ CREATE TABLE SRI_sriservicecatalogue
 (
     id NUMBER(38) NOT NULL,
     description VARCHAR2(1000),
-    version CLOB,
+    version INTEGER,
     PRIMARY KEY (id)
 );
 
@@ -368,12 +372,6 @@ ALTER TABLE SRI_device ADD CONSTRAINT SRI_device_fk FOREIGN KEY (id)
 REFERENCES SRI_datasource (id);
 
 -- -------------------------------------------------------------------- 
--- SRI_domain 
--- -------------------------------------------------------------------- 
-ALTER TABLE SRI_domain ADD CONSTRAINT SRI_domain_fk FOREIGN KEY (id)
-REFERENCES cityobject (id);
-
--- -------------------------------------------------------------------- 
 -- SRI_energydata 
 -- -------------------------------------------------------------------- 
 ALTER TABLE SRI_energydata ADD CONSTRAINT SRI_energydata_fk FOREIGN KEY (id)
@@ -382,8 +380,8 @@ REFERENCES SRI_datacategorymeta (id);
 -- -------------------------------------------------------------------- 
 -- SRI_functionalitylevel 
 -- -------------------------------------------------------------------- 
-ALTER TABLE SRI_functionalitylevel ADD CONSTRAINT SRI_functionalitylevel_fk FOREIGN KEY (id)
-REFERENCES cityobject (id);
+ALTER TABLE SRI_functionalitylevel ADD CONSTRAINT SRI_functi_sriser_funct_fk FOREIGN KEY (sriservice_functionalityl_id)
+REFERENCES SRI_sriservice (id);
 
 -- -------------------------------------------------------------------- 
 -- SRI_indoorenvironmentalda 
@@ -434,10 +432,6 @@ ALTER TABLE SRI_sriassessment ADD CONSTRAINT SRI_sriass_assess_asses_fk FOREIGN 
 REFERENCES SRI_assessor (id)
 ON DELETE SET NULL;
 
-ALTER TABLE SRI_sriassessment ADD CONSTRAINT SRI_sriass_domain_asses_fk FOREIGN KEY (domain_assessments_id)
-REFERENCES SRI_domain (id)
-ON DELETE SET NULL;
-
 ALTER TABLE SRI_sriassessment ADD CONSTRAINT SRI_sriass_method_asses_fk FOREIGN KEY (methodology_assessments_id)
 REFERENCES SRI_methodology (id)
 ON DELETE SET NULL;
@@ -445,12 +439,11 @@ ON DELETE SET NULL;
 -- -------------------------------------------------------------------- 
 -- SRI_sriservice 
 -- -------------------------------------------------------------------- 
+ALTER TABLE SRI_sriservice ADD CONSTRAINT SRI_sriservic_objectcla_fk FOREIGN KEY (objectclass_id)
+REFERENCES objectclass (id);
+
 ALTER TABLE SRI_sriservice ADD CONSTRAINT SRI_sriservice_fk FOREIGN KEY (id)
 REFERENCES cityobject (id);
-
-ALTER TABLE SRI_sriservice ADD CONSTRAINT SRI_sriser_domain_servi_fk FOREIGN KEY (domain_services_id)
-REFERENCES SRI_domain (id)
-ON DELETE SET NULL;
 
 ALTER TABLE SRI_sriservice ADD CONSTRAINT SRI_sriser_sriser_servi_fk FOREIGN KEY (sriservicecatalo_services_id)
 REFERENCES SRI_sriservicecatalogue (id)
@@ -487,6 +480,11 @@ CREATE INDEX SRI_datasourc_objectcl_fkx ON SRI_datasource (objectclass_id);
 CREATE INDEX SRI_device_objectclass_fkx ON SRI_device (objectclass_id);
 
 -- -------------------------------------------------------------------- 
+-- SRI_functionalitylevel 
+-- -------------------------------------------------------------------- 
+CREATE INDEX SRI_functi_srise_funct_fkx ON SRI_functionalitylevel (sriservice_functionalityl_id);
+
+-- -------------------------------------------------------------------- 
 -- SRI_informationneed 
 -- -------------------------------------------------------------------- 
 CREATE INDEX SRI_informati_objectcl_fkx ON SRI_informationneed (objectclass_id);
@@ -496,14 +494,12 @@ CREATE INDEX SRI_informati_objectcl_fkx ON SRI_informationneed (objectclass_id);
 -- -------------------------------------------------------------------- 
 CREATE INDEX SRI_sriass_asses_asses_fkx ON SRI_sriassessment (assessor_assessments_id);
 
-CREATE INDEX SRI_sriass_domai_asses_fkx ON SRI_sriassessment (domain_assessments_id);
-
 CREATE INDEX SRI_sriass_metho_asses_fkx ON SRI_sriassessment (methodology_assessments_id);
 
 -- -------------------------------------------------------------------- 
 -- SRI_sriservice 
 -- -------------------------------------------------------------------- 
-CREATE INDEX SRI_sriser_domai_servi_fkx ON SRI_sriservice (domain_services_id);
+CREATE INDEX SRI_sriservic_objectcl_fkx ON SRI_sriservice (objectclass_id);
 
 CREATE INDEX SRI_sriser_srise_servi_fkx ON SRI_sriservice (sriservicecatalo_services_id);
 
@@ -512,4 +508,8 @@ CREATE INDEX SRI_sriser_srise_servi_fkx ON SRI_sriservice (sriservicecatalo_serv
 -- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
 
 CREATE SEQUENCE SRI_supportedaccess_seq INCREMENT BY 1 START WITH 1 MINVALUE 1 CACHE 10000;
+
+CREATE SEQUENCE SRI_domain_seq INCREMENT BY 1 START WITH 1 MINVALUE 1 CACHE 10000;
+
+CREATE SEQUENCE SRI_functionalityleve_seq INCREMENT BY 1 START WITH 1 MINVALUE 1 CACHE 10000;
 

@@ -17,6 +17,18 @@ environmentaldatatype_tag_choices = (
         ("wind", "Wind"),
     )
 
+scale_tag_choices = (
+    ("room", "Room"),
+    ("building", "Building"),
+    ("district", "District"),
+    ("system", "System"),
+    ("floor", "Floor"),
+    ("otherSpatialScale", "Other Spatial Scale"),
+    ("equipment", "Equipment"),
+    ("zone", "Zone"),
+    ("circuit", "Circuit"),
+)
+
 # SRI_assetdata model
 class SRIAssetData(models.Model):
     """
@@ -34,17 +46,15 @@ class SRIAssetData(models.Model):
         ("other", "Other")
     )
 
-
-
     id = models.OneToOneField(CityObject, primary_key=True, on_delete=models.CASCADE, db_column='id')
     assettype = models.CharField(max_length=1000, blank=True, null=True, choices=asset_tag_choices)
     other = models.CharField(max_length=1000, blank=True, null=True)
 
     class Meta:
-        db_table = 'SRI_assetdata'
+        db_table = 'sri_assetdata'
 
 
-# SRI_indoorenvironmentalda model
+# SRI_indoorenvironmentaldata model
 class SRIIndoorEnvironmentalData(models.Model):
 
     id = models.OneToOneField(CityObject, primary_key=True, on_delete=models.CASCADE, db_column='id')
@@ -53,7 +63,7 @@ class SRIIndoorEnvironmentalData(models.Model):
     other = models.CharField(max_length=1000, blank=True, null=True)
 
     class Meta:
-        db_table = 'SRI_indoorenvironmentalda'
+        db_table = 'sri_indoorenvironmentalda'
 
 
 # SRI_controllogic model
@@ -77,7 +87,7 @@ class SRIControlLogic(models.Model):
     controltype = models.CharField(max_length=1000, blank=True, null=True, choices=controltype_tag_choices)
 
     class Meta:
-        db_table = 'SRI_controllogic'
+        db_table = 'sri_controllogic'
 
 
 # SRI_cyberdevicedata model
@@ -92,33 +102,28 @@ class SRICyberDeviceData(models.Model):
     other = models.CharField(max_length=1000, blank=True, null=True)
 
     class Meta:
-        db_table = 'SRI_cyberdevicedata'
+        db_table = 'sri_cyberdevicedata'
 
 
 # SRI_datacategorymeta model
 class SRIDatacategoryMeta(models.Model):
     id = models.OneToOneField(CityObject, primary_key=True, on_delete=models.CASCADE, db_column='id')
-    datascale = models.CharField(max_length=1000, blank=True, null=True)
-    description = models.CharField(max_length=1000, blank=True, null=True)
-    designtype = models.CharField(max_length=1000, blank=True, null=True)
-    # ForeignKey to ObjectClass using the column objectclass_id
-    objectclass = models.ForeignKey(ObjectClass, on_delete=models.CASCADE, db_column='objectclass_id')
-    occupanttype = models.CharField(max_length=1000, blank=True, null=True)
+    datascale = models.CharField(max_length=1000, blank=True, null=True, choices=scale_tag_choices)
     other = models.CharField(max_length=1000, blank=True, null=True)
-    utilitygridtype = models.CharField(max_length=1000, blank=True, null=True)
-
     class Meta:
-        db_table = 'SRI_datacategorymeta'
-        indexes = [
-            models.Index(fields=['objectclass']),
-        ]
+        db_table = 'sri_datacategorymeta'
+       
 
 
 # SRI_energydata model
 class SRIEnergyData(models.Model):
-    # id is FK to SRIDatacategorymeta
+    """
+    Energy data model extending SRIDatacategoryMeta.
+    As seen in the database diagram, this table has a direct
+    foreign key relationship to sri_datacategorymeta.
+    """
     enduse_tag_choices = (
-        ("hvac  ", "HVAC"),
+        ("hvac", "HVAC"),
         ("lighting", "Lighting"),
         ("appliances", "Appliances"),
         ("DHW", "DHW"),
@@ -133,11 +138,10 @@ class SRIEnergyData(models.Model):
     )
     id = models.OneToOneField(SRIDatacategoryMeta, primary_key=True, on_delete=models.CASCADE, db_column='id')
     enduse = models.CharField(max_length=1000, blank=True, null=True, choices=enduse_tag_choices)
-    energysource = models.CharField(max_length=1000, blank=True, null=True)
-    scale = models.CharField(max_length=1000, blank=True, null=True)
-
+    energysource = models.CharField(max_length=1000, blank=True, null=True, choices=energysource_tag_choices)
+    
     class Meta:
-        db_table = 'SRI_energydata'
+        db_table = 'sri_energydata'
 
 
 # SRI_operationaldata model
@@ -161,27 +165,27 @@ class SRIOperationalData(models.Model):
     )
 
     id = models.OneToOneField(SRIDatacategoryMeta, primary_key=True, on_delete=models.CASCADE, db_column='id')
-    systemdata = models.CharField(max_length=1000, blank=True, null=True)
-    systemtype = models.CharField(max_length=1000, blank=True, null=True)
+    systemdata = models.CharField(max_length=1000, blank=True, null=True, choices=systemdata_tag_choices)
+    systemtype = models.CharField(max_length=1000, blank=True, null=True, choices=systemtype_tag_choices)
 
     class Meta:
-        db_table = 'SRI_operationaldata'
+        db_table = 'sri_operationaldata'
 
 
-# SRI_outdoorenvironmentald model
+# SRI_outdoorenvironmentaldata model
 class SRIOutdoorenvironmentalData(models.Model):
     
 
     id = models.OneToOneField(CityObject, primary_key=True, on_delete=models.CASCADE, db_column='id')
-    environmentaldatatype = models.CharField(max_length=1000, blank=True, null=True)
+    environmentaldatatype = models.CharField(max_length=1000, blank=True, null=True, choices=environmentaldatatype_tag_choices)
     other = models.CharField(max_length=1000, blank=True, null=True)
     source = models.CharField(max_length=1000, blank=True, null=True)
 
     class Meta:
-        db_table = 'SRI_outdoorenvironmentald'
+        db_table = 'sri_outdoorenvironmentald'
 
-# SRI_onsiteenergygeneratio model
-class SRIOnsiteenergygeneratio(models.Model):
+# SRI_onsiteenergygeneration model
+class SRIOnsiteenergygeneration(models.Model):
     renewableenergy_tag_choices = (
         ("solarEnergy", "Solar Energy"),
         ("windEnergy", "Wind Energy"),
@@ -197,5 +201,5 @@ class SRIOnsiteenergygeneratio(models.Model):
     renewableenergy = models.CharField(max_length=1000, blank=True, null=True, choices=renewableenergy_tag_choices)
 
     class Meta:
-        db_table = 'SRI_onsiteenergygeneratio'
+        db_table = 'sri_onsiteenergygeneratio'
 
