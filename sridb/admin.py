@@ -69,12 +69,13 @@ class SRIAssessorAdmin(admin.ModelAdmin):
 # Assessment Admin
 @admin.register(SRISriAssessment)
 class SRISriAssessmentAdmin(admin.ModelAdmin):
-    list_display = ('id', 'dateofassessment', 'score', 'assessor_name')
+    list_display = ('dateofassessment', 'score', 'assessor_name')
     list_filter = ('dateofassessment', 'score')
-    search_fields = ('id__id', 'assessor_assessments__name')
+    #search_fields = ('assessor_id__name')
+    #filter_horizontal = ('services',)
     
     def assessor_name(self, obj):
-        return obj.assessor_assessments.name if obj.assessor_assessments else "-"
+        return obj.assessor_id.name if obj.assessor_id else "-"
     assessor_name.short_description = 'Assessor'
 
 # Methodology Admin
@@ -101,22 +102,45 @@ class SRIDomainAdmin(admin.ModelAdmin):
 class SRIServiceCatalogueAdmin(admin.ModelAdmin):
     list_display = ('id', 'description', 'version', 'service_count')
     search_fields = ('description', 'version')
+    raw_id_fields = ('id',)
     
     def service_count(self, obj):
         count = obj.sri_services.count()
         return format_html('<a href="{}?catalogue__id={}">{} services</a>',
                          '/admin/sridb/srisriservice/',
-                         obj.id,
+                         obj.id.id if obj.id else '',
                          count)
     service_count.short_description = 'Number of Services'
 
 # SRI Service Admin
 @admin.register(SRISriservice)
 class SRISriserviceAdmin(admin.ModelAdmin):
-    list_display = ('id', 'code', 'name', 'domaintype_category', 'servicegroup', 'part_status')
-    list_filter = ('domaintype_category', 'servicegroup')
-    search_fields = ('code', 'name', 'domaintype_category', 'domaintype_description')
-    inlines = [FunctionalityLevelInline]
+    list_display = ('code', 'name', 'sridomain', 'servicegroup', 'part_status')
+    list_filter = ('sridomain', 'servicegroup', 'building')
+    search_fields = ('code', 'name', 'sridomain', 'descriptionfunctionalityleve')
+    raw_id_fields = ('catalogue', 'building') 
+    fieldsets = (
+        ('Basic Information', {
+            'fields': ('code', 'name', 'sridomain', 'servicegroup')
+        }),
+        ('Relationships', {
+            'fields': ('catalogue', 'building')
+        }),
+        ('Functionality', {
+            'fields': ('functionalitylevel', 'descriptionfunctionalityleve', 'sharefunctionalitylevel')
+        }),
+        ('Method Settings', {
+            'fields': ('partofmethod', 'partofmethodb', 'userdefined', 'preconditions')
+        }),
+    )
+    
+    #def building_info(self, obj):
+    #    if obj.building:
+    #        return format_html('<a href="{}">{}</a>',
+    #                         f'/admin/sridb/sribuilding/{obj.building.id.id}/' if obj.building.id else '#',
+    #                         obj.building)
+    #    return "-"
+    #building_info.short_description = 'Building'
     
     def part_status(self, obj):
         parts = []
@@ -132,6 +156,7 @@ class SRISriserviceAdmin(admin.ModelAdmin):
 class SRIFunctionalitylevelAdmin(admin.ModelAdmin):
     list_display = ('service_name', 'functionalitylevel', 'description_preview')
     search_fields = ('sri_service__name', 'description', 'name')
+    raw_id_fields = ('sri_service',)
     
     def service_name(self, obj):
         return obj.sri_service.name if obj.sri_service else "-"

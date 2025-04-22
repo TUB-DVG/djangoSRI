@@ -1,4 +1,4 @@
--- This document was automatically created by the ADE-Manager tool of 3DCityDB (https://www.3dcitydb.org) on 2025-04-21 22:53:53 
+-- This document was automatically created by the ADE-Manager tool of 3DCityDB (https://www.3dcitydb.org) on 2025-04-22 21:23:43 
 -- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
 -- *********************************** Create tables ************************************** 
 -- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
@@ -86,7 +86,7 @@ CREATE TABLE SRI_dataconnector
 (
     id NUMBER(38) NOT NULL,
     modelschema VARCHAR2(1000),
-    urlmodelschema CLOB,
+    urlmodelschema VARCHAR2(1000),
     PRIMARY KEY (id)
 );
 
@@ -96,6 +96,9 @@ CREATE TABLE SRI_dataconnector
 CREATE TABLE SRI_datasource
 (
     id NUMBER(38) NOT NULL,
+    aquisitionmethod VARCHAR2(1000),
+    dataconnectort_urlmodelschem VARCHAR2(1000),
+    dataconnectortyp_modelschema VARCHAR2(1000),
     description VARCHAR2(1000),
     name VARCHAR2(1000),
     objectclass_id INTEGER,
@@ -118,17 +121,6 @@ CREATE TABLE SRI_device
 );
 
 -- -------------------------------------------------------------------- 
--- SRI_domain 
--- -------------------------------------------------------------------- 
-CREATE TABLE SRI_domain
-(
-    id NUMBER(38) NOT NULL,
-    category VARCHAR2(1000),
-    description VARCHAR2(1000),
-    PRIMARY KEY (id)
-);
-
--- -------------------------------------------------------------------- 
 -- SRI_energydata 
 -- -------------------------------------------------------------------- 
 CREATE TABLE SRI_energydata
@@ -147,9 +139,7 @@ CREATE TABLE SRI_functionalitylevel
     id NUMBER(38) NOT NULL,
     description VARCHAR2(1000),
     functionalitylevel INTEGER,
-    level_ VARCHAR2(1000),
     name VARCHAR2(1000),
-    sriservice_functionalityl_id NUMBER(38),
     PRIMARY KEY (id)
 );
 
@@ -172,6 +162,7 @@ CREATE TABLE SRI_informationneed
     id NUMBER(38) NOT NULL,
     description VARCHAR2(1000),
     objectclass_id INTEGER,
+    usecase_informationneed_id NUMBER(38),
     PRIMARY KEY (id)
 );
 
@@ -234,15 +225,37 @@ CREATE TABLE SRI_outdoorenvironmentald
 );
 
 -- -------------------------------------------------------------------- 
+-- SRI_servicecatalogue 
+-- -------------------------------------------------------------------- 
+CREATE TABLE SRI_servicecatalogue
+(
+    id NUMBER(38) NOT NULL,
+    description VARCHAR2(1000),
+    version INTEGER,
+    PRIMARY KEY (id)
+);
+
+-- -------------------------------------------------------------------- 
 -- SRI_sriassessment 
 -- -------------------------------------------------------------------- 
 CREATE TABLE SRI_sriassessment
 (
     id NUMBER(38) NOT NULL,
-    assessor_assessments_id NUMBER(38),
+    assessor_id NUMBER(38),
     dateofassessment TIMESTAMP,
-    methodology_assessments_id NUMBER(38),
+    methodology VARCHAR2(1000),
     score INTEGER,
+    PRIMARY KEY (id)
+);
+
+-- -------------------------------------------------------------------- 
+-- SRI_sridomain 
+-- -------------------------------------------------------------------- 
+CREATE TABLE SRI_sridomain
+(
+    id NUMBER(38) NOT NULL,
+    category VARCHAR2(1000),
+    description VARCHAR2(1000),
     PRIMARY KEY (id)
 );
 
@@ -252,33 +265,21 @@ CREATE TABLE SRI_sriassessment
 CREATE TABLE SRI_sriservice
 (
     id NUMBER(38) NOT NULL,
-    additonalassesssedfunctional INTEGER,
-    assesssedfunctionalitylevel INTEGER,
+    building_sriservice_id NUMBER(38),
     code VARCHAR2(1000),
-    domaintype_category VARCHAR2(1000),
-    domaintype_description VARCHAR2(1000),
+    descriptionfunctionalityleve VARCHAR2(1000),
+    functionalitylevel INTEGER,
     impact VARCHAR2(1000),
     name VARCHAR2(1000),
-    objectclass_id INTEGER,
     partofmethod NUMBER,
     partofmethodb NUMBER,
     preconditions VARCHAR2(1000),
+    servicecatalog_sriservice_id NUMBER(38),
     servicegroup VARCHAR2(1000),
-    shareadditionalfunctionality INTEGER,
-    sharemainfunctionalitylevel INTEGER,
-    sriservicecatalo_services_id NUMBER(38),
+    sharefunctionalitylevel INTEGER,
+    sriassessment_sriservice_id NUMBER(38),
+    sridomain VARCHAR2(1000),
     userdefined NUMBER,
-    PRIMARY KEY (id)
-);
-
--- -------------------------------------------------------------------- 
--- SRI_sriservicecatalogue 
--- -------------------------------------------------------------------- 
-CREATE TABLE SRI_sriservicecatalogue
-(
-    id NUMBER(38) NOT NULL,
-    description VARCHAR2(1000),
-    version INTEGER,
     PRIMARY KEY (id)
 );
 
@@ -309,12 +310,6 @@ CREATE TABLE SRI_usecase
 -- *********************************** Create foreign keys ******************************** 
 -- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
 -- -------------------------------------------------------------------- 
--- SRI_assessor 
--- -------------------------------------------------------------------- 
-ALTER TABLE SRI_assessor ADD CONSTRAINT SRI_assessor_fk FOREIGN KEY (id)
-REFERENCES cityobject (id);
-
--- -------------------------------------------------------------------- 
 -- SRI_assetdata 
 -- -------------------------------------------------------------------- 
 ALTER TABLE SRI_assetdata ADD CONSTRAINT SRI_assetdata_fk FOREIGN KEY (id)
@@ -341,47 +336,35 @@ REFERENCES SRI_informationneed (id);
 -- -------------------------------------------------------------------- 
 -- SRI_datacategorymeta 
 -- -------------------------------------------------------------------- 
-ALTER TABLE SRI_datacategorymeta ADD CONSTRAINT SRI_datacateg_objectcla_fk FOREIGN KEY (objectclass_id)
-REFERENCES objectclass (id);
-
 ALTER TABLE SRI_datacategorymeta ADD CONSTRAINT SRI_datacategorymeta_fk FOREIGN KEY (id)
 REFERENCES SRI_informationneed (id);
 
--- -------------------------------------------------------------------- 
--- SRI_dataconnector 
--- -------------------------------------------------------------------- 
-ALTER TABLE SRI_dataconnector ADD CONSTRAINT SRI_dataconnector_fk FOREIGN KEY (id)
-REFERENCES cityobject (id);
+ALTER TABLE SRI_datacategorymeta ADD CONSTRAINT SRI_datacateg_objectcla_fk FOREIGN KEY (objectclass_id)
+REFERENCES objectclass (id);
 
 -- -------------------------------------------------------------------- 
 -- SRI_datasource 
 -- -------------------------------------------------------------------- 
-ALTER TABLE SRI_datasource ADD CONSTRAINT SRI_datasourc_objectcla_fk FOREIGN KEY (objectclass_id)
-REFERENCES objectclass (id);
-
 ALTER TABLE SRI_datasource ADD CONSTRAINT SRI_datasource_fk FOREIGN KEY (id)
 REFERENCES cityobject (id);
+
+ALTER TABLE SRI_datasource ADD CONSTRAINT SRI_datasourc_objectcla_fk FOREIGN KEY (objectclass_id)
+REFERENCES objectclass (id);
 
 -- -------------------------------------------------------------------- 
 -- SRI_device 
 -- -------------------------------------------------------------------- 
-ALTER TABLE SRI_device ADD CONSTRAINT SRI_device_objectclass_fk FOREIGN KEY (objectclass_id)
-REFERENCES objectclass (id);
-
 ALTER TABLE SRI_device ADD CONSTRAINT SRI_device_fk FOREIGN KEY (id)
 REFERENCES SRI_datasource (id);
+
+ALTER TABLE SRI_device ADD CONSTRAINT SRI_device_objectclass_fk FOREIGN KEY (objectclass_id)
+REFERENCES objectclass (id);
 
 -- -------------------------------------------------------------------- 
 -- SRI_energydata 
 -- -------------------------------------------------------------------- 
 ALTER TABLE SRI_energydata ADD CONSTRAINT SRI_energydata_fk FOREIGN KEY (id)
 REFERENCES SRI_datacategorymeta (id);
-
--- -------------------------------------------------------------------- 
--- SRI_functionalitylevel 
--- -------------------------------------------------------------------- 
-ALTER TABLE SRI_functionalitylevel ADD CONSTRAINT SRI_functi_sriser_funct_fk FOREIGN KEY (sriservice_functionalityl_id)
-REFERENCES SRI_sriservice (id);
 
 -- -------------------------------------------------------------------- 
 -- SRI_indoorenvironmentalda 
@@ -392,11 +375,11 @@ REFERENCES SRI_informationneed (id);
 -- -------------------------------------------------------------------- 
 -- SRI_informationneed 
 -- -------------------------------------------------------------------- 
-ALTER TABLE SRI_informationneed ADD CONSTRAINT SRI_informationneed_fk FOREIGN KEY (id)
-REFERENCES cityobject (id);
-
 ALTER TABLE SRI_informationneed ADD CONSTRAINT SRI_informati_objectcla_fk FOREIGN KEY (objectclass_id)
 REFERENCES objectclass (id);
+
+ALTER TABLE SRI_informationneed ADD CONSTRAINT SRI_inform_usecas_infor_fk FOREIGN KEY (usecase_informationneed_id)
+REFERENCES SRI_usecase (id);
 
 -- -------------------------------------------------------------------- 
 -- SRI_methodology 
@@ -423,37 +406,32 @@ ALTER TABLE SRI_outdoorenvironmentald ADD CONSTRAINT SRI_outdoorenvironmenta_fk 
 REFERENCES SRI_informationneed (id);
 
 -- -------------------------------------------------------------------- 
+-- SRI_servicecatalogue 
+-- -------------------------------------------------------------------- 
+ALTER TABLE SRI_servicecatalogue ADD CONSTRAINT SRI_servicecatalogue_fk FOREIGN KEY (id)
+REFERENCES cityobject (id);
+
+-- -------------------------------------------------------------------- 
 -- SRI_sriassessment 
 -- -------------------------------------------------------------------- 
 ALTER TABLE SRI_sriassessment ADD CONSTRAINT SRI_sriassessment_fk FOREIGN KEY (id)
 REFERENCES cityobject (id);
 
-ALTER TABLE SRI_sriassessment ADD CONSTRAINT SRI_sriass_assess_asses_fk FOREIGN KEY (assessor_assessments_id)
+ALTER TABLE SRI_sriassessment ADD CONSTRAINT SRI_sriassessm_assessor_fk FOREIGN KEY (assessor_id)
 REFERENCES SRI_assessor (id)
-ON DELETE SET NULL;
-
-ALTER TABLE SRI_sriassessment ADD CONSTRAINT SRI_sriass_method_asses_fk FOREIGN KEY (methodology_assessments_id)
-REFERENCES SRI_methodology (id)
 ON DELETE SET NULL;
 
 -- -------------------------------------------------------------------- 
 -- SRI_sriservice 
 -- -------------------------------------------------------------------- 
-ALTER TABLE SRI_sriservice ADD CONSTRAINT SRI_sriservic_objectcla_fk FOREIGN KEY (objectclass_id)
-REFERENCES objectclass (id);
+ALTER TABLE SRI_sriservice ADD CONSTRAINT SRI_sriser_buildi_srise_fk FOREIGN KEY (building_sriservice_id)
+REFERENCES SRI_building (id);
 
-ALTER TABLE SRI_sriservice ADD CONSTRAINT SRI_sriservice_fk FOREIGN KEY (id)
-REFERENCES cityobject (id);
+ALTER TABLE SRI_sriservice ADD CONSTRAINT SRI_sriser_sriass_srise_fk FOREIGN KEY (sriassessment_sriservice_id)
+REFERENCES SRI_sriassessment (id);
 
-ALTER TABLE SRI_sriservice ADD CONSTRAINT SRI_sriser_sriser_servi_fk FOREIGN KEY (sriservicecatalo_services_id)
-REFERENCES SRI_sriservicecatalogue (id)
-ON DELETE SET NULL;
-
--- -------------------------------------------------------------------- 
--- SRI_sriservicecatalogue 
--- -------------------------------------------------------------------- 
-ALTER TABLE SRI_sriservicecatalogue ADD CONSTRAINT SRI_sriservicecatalogue_fk FOREIGN KEY (id)
-REFERENCES cityobject (id);
+ALTER TABLE SRI_sriservice ADD CONSTRAINT SRI_sriser_servic_srise_fk FOREIGN KEY (servicecatalog_sriservice_id)
+REFERENCES SRI_servicecatalogue (id);
 
 -- -------------------------------------------------------------------- 
 -- SRI_usecase 
@@ -480,36 +458,41 @@ CREATE INDEX SRI_datasourc_objectcl_fkx ON SRI_datasource (objectclass_id);
 CREATE INDEX SRI_device_objectclass_fkx ON SRI_device (objectclass_id);
 
 -- -------------------------------------------------------------------- 
--- SRI_functionalitylevel 
--- -------------------------------------------------------------------- 
-CREATE INDEX SRI_functi_srise_funct_fkx ON SRI_functionalitylevel (sriservice_functionalityl_id);
-
--- -------------------------------------------------------------------- 
 -- SRI_informationneed 
 -- -------------------------------------------------------------------- 
 CREATE INDEX SRI_informati_objectcl_fkx ON SRI_informationneed (objectclass_id);
 
+CREATE INDEX SRI_inform_useca_infor_fkx ON SRI_informationneed (usecase_informationneed_id);
+
 -- -------------------------------------------------------------------- 
 -- SRI_sriassessment 
 -- -------------------------------------------------------------------- 
-CREATE INDEX SRI_sriass_asses_asses_fkx ON SRI_sriassessment (assessor_assessments_id);
-
-CREATE INDEX SRI_sriass_metho_asses_fkx ON SRI_sriassessment (methodology_assessments_id);
+CREATE INDEX SRI_sriassess_assessor_fkx ON SRI_sriassessment (assessor_id);
 
 -- -------------------------------------------------------------------- 
 -- SRI_sriservice 
 -- -------------------------------------------------------------------- 
-CREATE INDEX SRI_sriservic_objectcl_fkx ON SRI_sriservice (objectclass_id);
+CREATE INDEX SRI_sriser_build_srise_fkx ON SRI_sriservice (building_sriservice_id);
 
-CREATE INDEX SRI_sriser_srise_servi_fkx ON SRI_sriservice (sriservicecatalo_services_id);
+CREATE INDEX SRI_sriser_servi_srise_fkx ON SRI_sriservice (servicecatalog_sriservice_id);
+
+CREATE INDEX SRI_sriser_srias_srise_fkx ON SRI_sriservice (sriassessment_sriservice_id);
 
 -- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
 -- *********************************** Create Sequences *********************************** 
 -- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
 
+CREATE SEQUENCE SRI_sriservice_seq INCREMENT BY 1 START WITH 1 MINVALUE 1 CACHE 10000;
+
+CREATE SEQUENCE SRI_assessor_seq INCREMENT BY 1 START WITH 1 MINVALUE 1 CACHE 10000;
+
+CREATE SEQUENCE SRI_informationneed_seq INCREMENT BY 1 START WITH 1 MINVALUE 1 CACHE 10000;
+
+CREATE SEQUENCE SRI_dataconnector_seq INCREMENT BY 1 START WITH 1 MINVALUE 1 CACHE 10000;
+
 CREATE SEQUENCE SRI_supportedaccess_seq INCREMENT BY 1 START WITH 1 MINVALUE 1 CACHE 10000;
 
-CREATE SEQUENCE SRI_domain_seq INCREMENT BY 1 START WITH 1 MINVALUE 1 CACHE 10000;
-
 CREATE SEQUENCE SRI_functionalityleve_seq INCREMENT BY 1 START WITH 1 MINVALUE 1 CACHE 10000;
+
+CREATE SEQUENCE SRI_sridomain_seq INCREMENT BY 1 START WITH 1 MINVALUE 1 CACHE 10000;
 

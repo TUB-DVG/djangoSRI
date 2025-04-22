@@ -1,13 +1,7 @@
--- This document was automatically created by the ADE-Manager tool of 3DCityDB (https://www.3dcitydb.org) on 2025-04-21 22:53:53 
+-- This document was automatically created by the ADE-Manager tool of 3DCityDB (https://www.3dcitydb.org) on 2025-04-22 21:23:43 
 -- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
 -- *********************************** Drop foreign keys ********************************** 
 -- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
--- -------------------------------------------------------------------- 
--- SRI_assessor 
--- -------------------------------------------------------------------- 
-ALTER TABLE SRI_assessor
-    DROP CONSTRAINT SRI_assessor_fk;
-
 -- -------------------------------------------------------------------- 
 -- SRI_assetdata 
 -- -------------------------------------------------------------------- 
@@ -36,46 +30,34 @@ ALTER TABLE SRI_cyberdevicedata
 -- SRI_datacategorymeta 
 -- -------------------------------------------------------------------- 
 ALTER TABLE SRI_datacategorymeta
-    DROP CONSTRAINT SRI_datacateg_objectcla_fk;
-
-ALTER TABLE SRI_datacategorymeta
     DROP CONSTRAINT SRI_datacategorymeta_fk;
 
--- -------------------------------------------------------------------- 
--- SRI_dataconnector 
--- -------------------------------------------------------------------- 
-ALTER TABLE SRI_dataconnector
-    DROP CONSTRAINT SRI_dataconnector_fk;
+ALTER TABLE SRI_datacategorymeta
+    DROP CONSTRAINT SRI_datacateg_objectcla_fk;
 
 -- -------------------------------------------------------------------- 
 -- SRI_datasource 
 -- -------------------------------------------------------------------- 
 ALTER TABLE SRI_datasource
-    DROP CONSTRAINT SRI_datasourc_objectcla_fk;
+    DROP CONSTRAINT SRI_datasource_fk;
 
 ALTER TABLE SRI_datasource
-    DROP CONSTRAINT SRI_datasource_fk;
+    DROP CONSTRAINT SRI_datasourc_objectcla_fk;
 
 -- -------------------------------------------------------------------- 
 -- SRI_device 
 -- -------------------------------------------------------------------- 
 ALTER TABLE SRI_device
-    DROP CONSTRAINT SRI_device_objectclass_fk;
+    DROP CONSTRAINT SRI_device_fk;
 
 ALTER TABLE SRI_device
-    DROP CONSTRAINT SRI_device_fk;
+    DROP CONSTRAINT SRI_device_objectclass_fk;
 
 -- -------------------------------------------------------------------- 
 -- SRI_energydata 
 -- -------------------------------------------------------------------- 
 ALTER TABLE SRI_energydata
     DROP CONSTRAINT SRI_energydata_fk;
-
--- -------------------------------------------------------------------- 
--- SRI_functionalitylevel 
--- -------------------------------------------------------------------- 
-ALTER TABLE SRI_functionalitylevel
-    DROP CONSTRAINT SRI_functi_sriser_funct_fk;
 
 -- -------------------------------------------------------------------- 
 -- SRI_indoorenvironmentalda 
@@ -87,10 +69,10 @@ ALTER TABLE SRI_indoorenvironmentalda
 -- SRI_informationneed 
 -- -------------------------------------------------------------------- 
 ALTER TABLE SRI_informationneed
-    DROP CONSTRAINT SRI_informationneed_fk;
+    DROP CONSTRAINT SRI_informati_objectcla_fk;
 
 ALTER TABLE SRI_informationneed
-    DROP CONSTRAINT SRI_informati_objectcla_fk;
+    DROP CONSTRAINT SRI_inform_usecas_infor_fk;
 
 -- -------------------------------------------------------------------- 
 -- SRI_methodology 
@@ -117,34 +99,31 @@ ALTER TABLE SRI_outdoorenvironmentald
     DROP CONSTRAINT SRI_outdoorenvironmenta_fk;
 
 -- -------------------------------------------------------------------- 
+-- SRI_servicecatalogue 
+-- -------------------------------------------------------------------- 
+ALTER TABLE SRI_servicecatalogue
+    DROP CONSTRAINT SRI_servicecatalogue_fk;
+
+-- -------------------------------------------------------------------- 
 -- SRI_sriassessment 
 -- -------------------------------------------------------------------- 
 ALTER TABLE SRI_sriassessment
     DROP CONSTRAINT SRI_sriassessment_fk;
 
 ALTER TABLE SRI_sriassessment
-    DROP CONSTRAINT SRI_sriass_assess_asses_fk;
-
-ALTER TABLE SRI_sriassessment
-    DROP CONSTRAINT SRI_sriass_method_asses_fk;
+    DROP CONSTRAINT SRI_sriassessm_assessor_fk;
 
 -- -------------------------------------------------------------------- 
 -- SRI_sriservice 
 -- -------------------------------------------------------------------- 
 ALTER TABLE SRI_sriservice
-    DROP CONSTRAINT SRI_sriservic_objectcla_fk;
+    DROP CONSTRAINT SRI_sriser_buildi_srise_fk;
 
 ALTER TABLE SRI_sriservice
-    DROP CONSTRAINT SRI_sriservice_fk;
+    DROP CONSTRAINT SRI_sriser_sriass_srise_fk;
 
 ALTER TABLE SRI_sriservice
-    DROP CONSTRAINT SRI_sriser_sriser_servi_fk;
-
--- -------------------------------------------------------------------- 
--- SRI_sriservicecatalogue 
--- -------------------------------------------------------------------- 
-ALTER TABLE SRI_sriservicecatalogue
-    DROP CONSTRAINT SRI_sriservicecatalogue_fk;
+    DROP CONSTRAINT SRI_sriser_servic_srise_fk;
 
 -- -------------------------------------------------------------------- 
 -- SRI_usecase 
@@ -201,11 +180,6 @@ DROP TABLE SRI_datasource;
 DROP TABLE SRI_device;
 
 -- -------------------------------------------------------------------- 
--- SRI_domain 
--- -------------------------------------------------------------------- 
-DROP TABLE SRI_domain;
-
--- -------------------------------------------------------------------- 
 -- SRI_energydata 
 -- -------------------------------------------------------------------- 
 DROP TABLE SRI_energydata;
@@ -251,19 +225,24 @@ DROP TABLE SRI_operationaldata;
 DROP TABLE SRI_outdoorenvironmentald;
 
 -- -------------------------------------------------------------------- 
+-- SRI_servicecatalogue 
+-- -------------------------------------------------------------------- 
+DROP TABLE SRI_servicecatalogue;
+
+-- -------------------------------------------------------------------- 
 -- SRI_sriassessment 
 -- -------------------------------------------------------------------- 
 DROP TABLE SRI_sriassessment;
 
 -- -------------------------------------------------------------------- 
+-- SRI_sridomain 
+-- -------------------------------------------------------------------- 
+DROP TABLE SRI_sridomain;
+
+-- -------------------------------------------------------------------- 
 -- SRI_sriservice 
 -- -------------------------------------------------------------------- 
 DROP TABLE SRI_sriservice;
-
--- -------------------------------------------------------------------- 
--- SRI_sriservicecatalogue 
--- -------------------------------------------------------------------- 
-DROP TABLE SRI_sriservicecatalogue;
 
 -- -------------------------------------------------------------------- 
 -- SRI_supportedaccess 
@@ -279,10 +258,18 @@ DROP TABLE SRI_usecase;
 -- *********************************** Drop Sequences ************************************* 
 -- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
 
+DROP SEQUENCE SRI_sriservice_seq;
+
+DROP SEQUENCE SRI_assessor_seq;
+
+DROP SEQUENCE SRI_informationneed_seq;
+
+DROP SEQUENCE SRI_dataconnector_seq;
+
 DROP SEQUENCE SRI_supportedaccess_seq;
 
-DROP SEQUENCE SRI_domain_seq;
-
 DROP SEQUENCE SRI_functionalityleve_seq;
+
+DROP SEQUENCE SRI_sridomain_seq;
 
 PURGE RECYCLEBIN;

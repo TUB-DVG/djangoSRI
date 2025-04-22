@@ -1,8 +1,8 @@
 from django.db import models
 from django.core import validators
 from citydb.modules.core.cityobject import CityObject
-
 from citydb.modules.bldg.building import Building
+from citydb.modules.core.objectclass import ObjectClass
 # ToDo Double check if all choices are implemented correctly
 
 
@@ -88,14 +88,6 @@ class SRIBuilding(models.Model):
     def __str__(self):
         """Return a string representation of the SRI building."""
         return f"SRI Building {self.pk}"
-        
-    @property
-    def assessments(self):
-        """Property to access assessments through the reverse relation.
-        This helps resolve potential naming conflicts.
-        """
-        # pylint: disable=no-member
-        return self.sri_assessments.all()
 
 
 # SRI_domain model
@@ -114,15 +106,13 @@ class SRIDomain(models.Model):
         ("electricity", "Electricity")
     )
     
-    id = models.OneToOneField(CityObject, primary_key=True, on_delete=models.CASCADE, db_column='id')
+    id = models.OneToOneField(CityObject, primary_key=True,
+                               on_delete=models.CASCADE, db_column='id')
     category = models.CharField(max_length=1000, blank=True, null=True, choices=sri_domain_choices)
     description = models.CharField(max_length=1000, blank=True, null=True)
 
     class Meta:
         db_table = 'sri_domain'
-
-
-
 
 
 # SRI_methodology model
@@ -137,101 +127,141 @@ class SRIMethodology(models.Model):
 
 # SRI_sriservice model - moved before SRISriAssessment to fix forward references
 class SRIServiceCatalogue(models.Model):
-    id = models.OneToOneField(CityObject, primary_key=True,
-                              on_delete=models.CASCADE, db_column='id')
+    id = models.OneToOneField(CityObject, primary_key=True, on_delete=models.CASCADE, db_column='id')
     description = models.CharField(max_length=1000, blank=True, null=True)
     version = models.FloatField(blank=True, null=True, validators=[
         validators.MinValueValidator(0.1, message="Version must be greater than 0")
     ])
 
     class Meta:
-        db_table = 'sri_sriservicecatalogue'
+        db_table = 'sri_servicecatalogue'
 
-
-class SRISriservice(models.Model):
-    # Primary key is AutoField
-    id = models.AutoField(primary_key=True)
-    catalogue = models.ForeignKey(
-        SRIServiceCatalogue,
-        on_delete=models.CASCADE,
-        null=False,
-        blank=False,
-        related_name='sri_services',
-        db_column='sriservicecatalo_services_id'
+# SRI_sriassessment model
+class SRISriAssessment(models.Model):
+    id = models.OneToOneField(CityObject, primary_key=True,
+                             on_delete=models.CASCADE, db_column='id')
+    
+    assessor_id = models.ForeignKey(
+        SRIAssessor,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        db_column='assessor_id',
+        related_name='assessments'
     )
-    additonalassesssedfunctional = models.IntegerField(null=True, blank=True)
-    assesssedfunctionalitylevel = models.IntegerField(null=True, blank=True)
+    dateofassessment = models.DateTimeField(null=True, blank=True)
+    methodology = models.CharField(max_length=1000, blank=True, null=True)
+    score = models.IntegerField(null=True, blank=True)
+    
+    # Link assessment to services (as shown in diagram)
+    #services = models.ManyToManyField(
+    #    SRISriservice,
+    #    blank=True,
+    #    related_name='assessments',
+    ##    db_column='sriassessment_sriservice_id'
+   # )
+
+    class Meta:
+        db_table = 'sri_sriassessment'
+        indexes = [
+            models.Index(fields=['assessor_id']),
+        ]
+
+    def save(self, *args, **kwargs):
+        # On first save, if no CityObject is linked, create one.
+        if not self.pk:
+            obj_class = ObjectClass.objects.get(classname='SRIAssessment')
+            city_obj = CityObject.objects.create(objectclass=obj_class)
+            self.id = city_obj
+        super().save(*args, **kwargs)
+
+    
+    def __str__(self):
+        return str(self.id)
+    
+class SRISriservice(models.Model):
+    # Primary key is AutoField - we'll use a OneToOneField instead to link to CityObject
+    id = models.OneToOneField(CityObject,
+                              primary_key=True,
+                              on_delete=models.CASCADE,
+                              db_column='id')
+    
+    sri_domain_choices = (
+        ("dynamicBuildingEnvelope", "Dynamic Building Envelope"),
+        ("heating", "Heating"),
+        ("electricVehicleCharging", "Electric Vehicle Charging"),
+        ("cooling", "Cooling"),
+        ("lighting", "Lighting"),
+        ("monitoringAndControl", "Monitoring and Control"),
+        ("ventilation", "Ventilation"),
+        ("domesticHotWater", "Domestic Hot Water"),
+        ("electricity", "Electricity"),
+        ("other", "Other")
+    )
+  
     code = models.CharField(max_length=1000, blank=True, null=True)
-    domaintype_category = models.CharField(max_length=1000, blank=True, null=True)
-    domaintype_description = models.CharField(max_length=1000, blank=True, null=True)
+    descriptionfunctionalityleve = models.CharField(max_length=1000, blank=True, null=True)
+    functionalitylevel = models.IntegerField(null=True, blank=True)
     impact = models.CharField(max_length=1000, blank=True, null=True)
     name = models.CharField(max_length=1000, blank=True, null=True)
-    objectclass_id = models.IntegerField(null=True, blank=True)
     partofmethod = models.IntegerField(null=True, blank=True)
     partofmethodb = models.IntegerField(null=True, blank=True)
     preconditions = models.CharField(max_length=1000, blank=True, null=True)
     servicegroup = models.CharField(max_length=1000, blank=True, null=True)
-    shareadditionalfunctionality = models.IntegerField(null=True, blank=True)
-    sharemainfunctionalitylevel = models.IntegerField(null=True, blank=True)
+    sharefunctionalitylevel = models.IntegerField(null=True, blank=True)
+    sridomain = models.CharField(max_length=1000, blank=True, null=True, choices=sri_domain_choices)
     userdefined = models.IntegerField(null=True, blank=True)
+    
+    # Relation to building
+    building = models.ForeignKey(
+        SRIBuilding,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='services',
+        db_column='building_sriservice_id'
+    )
+    # Relation to catalogue
+    catalogue = models.ForeignKey(
+        SRIServiceCatalogue,
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+        related_name='sri_services',
+        db_column='servicecatalog_sriservice_id'
+    )
+
+    # Relation to assessment
+    assessment = models.ForeignKey(
+        SRISriAssessment,
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+        related_name='services',
+        db_column='sriassessment_sriservice_id'
+    )
 
     class Meta:
         db_table = 'sri_sriservice'
         indexes = [
             models.Index(fields=['catalogue']),
+            models.Index(fields=['building']),
         ]
+    
+   
+    def save(self, *args, **kwargs):
+        # On first save, if no CityObject is linked, create one.
+        if not self.pk:
+            obj_class = ObjectClass.objects.get(classname='SRIService')
+            city_obj = CityObject.objects.create(objectclass=obj_class)
+            self.id = city_obj
+        super().save(*args, **kwargs)
+
+    
+    def __str__(self):
+        return str(self.name)
 
 
-# SRI_sriassessment model
-class SRISriAssessment(models.Model):
-    id = models.OneToOneField(CityObject, primary_key=True,
-                              on_delete=models.CASCADE, db_column='id')
-    # Link assessment to buildings (Direct M2M relationship)
-    buildings = models.ManyToManyField(
-        Building,
-        related_name='assessments',
-        blank=True
-    )
-    # The sri_building field doesn't exist in the actual database schema, so remove it
-    # sri_building = models.ForeignKey(
-    #     SRIBuilding,
-    #     on_delete=models.SET_NULL,
-    #     null=True,
-    #     blank=True,
-    #     db_column='sri_building',
-    #     related_name='sri_assessments'
-    # )
-    assessor_assessments = models.ForeignKey(
-        SRIAssessor,
-        on_delete=models.SET_NULL,
-        null=True,
-        blank=True,
-        db_column='assessor_assessments_id',
-        related_name='sri_assessments'
-    )
-    dateofassessment = models.DateTimeField(null=True, blank=True)
-    methodology_assessments = models.ForeignKey(
-        SRIMethodology,
-        on_delete=models.SET_NULL,
-        null=True,
-        blank=True,
-        db_column='methodology_assessments_id',
-        related_name='sri_assessments'
-    )
-    score = models.IntegerField(null=True, blank=True)
-    # Link assessment to multiple services (ManyToMany) with explicit through model
-    sri_services = models.ManyToManyField(
-        SRISriservice,
-        blank=True,
-        related_name='sri_assessments',
-    )
-
-    class Meta:
-        db_table = 'sri_sriassessment'
-        indexes = [
-            models.Index(fields=['assessor_assessments']),
-            models.Index(fields=['methodology_assessments']),
-        ]
 
 
 # SRI_usecase model
@@ -242,7 +272,6 @@ class SRIUsecase(models.Model):
 
     class Meta:
         db_table = 'sri_usecase'
-
 
 
 # SRI_functionalitylevel model
@@ -256,14 +285,12 @@ class SRIFunctionalitylevel(models.Model):
         ("functionalityLevel4", "Functionality level 4")
     )
 
-    # Primary key is AutoField
-    id = models.AutoField(primary_key=True)
     # ForeignKey to SRISriservice
     sri_service = models.ForeignKey(
         SRISriservice,
-        on_delete=models.CASCADE,
-        null=False,
-        blank=False,
+        models.DO_NOTHING,
+        null=True,
+        blank=True,
         related_name='functionality_levels',
         db_column='sriservice_functionalityl_id'
     )
@@ -276,3 +303,6 @@ class SRIFunctionalitylevel(models.Model):
         indexes = [
             models.Index(fields=['sri_service']),
         ]
+
+
+
