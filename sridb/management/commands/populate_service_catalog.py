@@ -2,14 +2,14 @@ from django.core.management.base import BaseCommand
 from django.utils import timezone
 from django.db import IntegrityError
 import pandas as pd
-from sridb.modules.sri.sri import SRISriservice, SRIFunctionalitylevel, SRIServiceCatalogue
+from sridb.modules.sri.sri import SRISriservice, SRIServiceCatalogue, SRIBuilding
 from django.db import transaction
 import sys
 import os
 from sridb.management.commands.cityobject import get_or_create_cityobject, get_building_by_gml_id
 from citydb.modules.core.objectclass import ObjectClass
 from citydb.models import CityObject
-from sridb.management.auxilary.data_cleaning import clean_data
+from sridb.management.auxilary.data_cleaning import clean_service_data, load_data, is_yes_or_one
 
 # Suppress linter warnings for Django's dynamic properties
 # pylint: disable=no-member
@@ -52,7 +52,7 @@ class Command(BaseCommand):
                     'description': "Default Service Catalogue populated from Excel",
                 }
             )
-            
+
             if created:
                 self.stdout.write(f"Created new default service catalogue with ID: {default_catalogue.id}")
             else:
@@ -63,26 +63,17 @@ class Command(BaseCommand):
                 if not os.path.exists(path_to_excel_file):
                     raise FileNotFoundError(f"File not found: {path_to_excel_file}")
                     
-                # Try different engines if one fails
-                try:
-                    df = pd.read_excel(path_to_excel_file, sheet_name='overview_of_services', engine='openpyxl')
-                except Exception as e:
-                    self.stdout.write(f"Failed with openpyxl engine: {e}")
-                    try:
-                        df = pd.read_excel(path_to_excel_file, sheet_name='overview_of_services', engine='xlrd')
-                    except Exception as e2:
-                        self.stdout.write(f"Failed with xlrd engine: {e2}")
-                        # Last resort
-                        df = pd.read_excel(path_to_excel_file, sheet_name='overview_of_services')
+                
+                service_df = load_data(path_to_excel_file, 'overview_of_services', 0)
                 
                 # Clean data if the function is available
                 try:
-                    df = clean_data(df)
+                    service_df = clean_service_data(service_df)
                 except ImportError:
                     self.stdout.write("Data cleaning module not found, proceeding with raw data")
                 
                 # Process each service from the Excel file
-                for index, row in df.iterrows():
+                for index, row in service_df.iterrows():
                     # Ensure required columns exist and handle potential NaN in code
                     if 'Code' not in row or pd.isna(row['Code']):
                         self.stdout.write(f"Skipping row {index} due to missing or invalid 'Code'.")
@@ -98,6 +89,9 @@ class Command(BaseCommand):
                                                  'Functionality level 3',
                                                  'Functionality level 4']
                     
+                    # Get the ObjectClass for SRISriservice once
+                    sri_service_objclass = ObjectClass.objects.get(classname='SRIService')
+
                     # Create functionality levels for this service
                     for functionality_level_num, level_name in enumerate(functionality_levels_names):
                         # Skip if the level description is missing
@@ -105,26 +99,34 @@ class Command(BaseCommand):
                         level_description = str(row[level_name])
                         level_formal_name = f"{row.get('Smart ready service', 'Service')} - {level_name}"
 
+                        # --- Create CityObject first (Re-added) ---
+                        # Use a combination of service code and level for a unique GMLID
+                        cityobj_gmlid = f"SRIService_{service_code}_{functionality_level_num}" 
+                        service_cityobj = get_or_create_cityobject(cityobj_gmlid)
+                        service_cityobj.objectclass = sri_service_objclass
+                        service_cityobj.save()
+                        # --- End CityObject creation ---
+
                         # Create or update the functionality level
                         # Note: The 'objects' manager is dynamically added by Django but may trigger linter warnings
                         try:
-                            # Create or update the service using the code and catalogue as unique identifier
+                            # Create or update the service using the code and catalogue as unique identifier                
                             sriservice, created = SRISriservice.objects.get_or_create(
+                                id = service_cityobj, # Use the created CityObject as ID
                                 code=service_code + '_' + str(functionality_level_num),
                                 catalogue=default_catalogue,
                                 defaults={
                                 'sridomain': row.get('Domain', 'Other'),
-                                'name': row.get('Smart ready service', ''),
-                                'partofmethod': row.get('part of the method A: 1 - YES; 0 - NO', 0),
-                                'partofmethodb': row.get('part of the method B: 1 - YES; 0 - NO', 0),
+                                'servicename': row.get('Smart ready service', ''),
+                                '_partofmethoda': row.get('part of the method A: 1 - YES; 0 - NO', 0),
+                                '_partofmethodb': row.get('part of the method B: 1 - YES; 0 - NO', 0),
                                 'preconditions': row.get('Preconditions / Dependency on other services or building types', ''),
                                 'servicegroup': row.get('Service group', ''),
                                 'functionalitylevel': functionality_level_num,
                                 'descriptionfunctionalityleve': level_description,
                                 'sharefunctionalitylevel': row.get('Share of functionality level', 0),
                                 # Handle potential NaN for userdefined
-                                'userdefined': 0 if pd.isna(row.get('part of the custom services list?: 1 - YES; 0 - NO')) 
-                                                else int(row.get('part of the custom services list?: 1 - YES; 0 - NO', 0))
+                                '_userdefined': 0 if pd.isna(row.get('part of the custom services list?: 1 - YES; 0 - NO', 0)) else row.get('part of the custom services list?: 1 - YES; 0 - NO', 0)
                                 }
                             )
                         except IntegrityError as e:

@@ -1,4 +1,4 @@
--- This document was automatically created by the ADE-Manager tool of 3DCityDB (https://www.3dcitydb.org) on 2025-04-22 21:23:43 
+-- This document was automatically created by the ADE-Manager tool of 3DCityDB (https://www.3dcitydb.org) on 2025-04-25 18:11:09 
 -- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
 -- *********************************** Drop foreign keys ********************************** 
 -- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
@@ -27,31 +27,28 @@ ALTER TABLE SRI_cyberdevicedata
     DROP CONSTRAINT SRI_cyberdevicedata_fk;
 
 -- -------------------------------------------------------------------- 
--- SRI_datacategorymeta 
--- -------------------------------------------------------------------- 
-ALTER TABLE SRI_datacategorymeta
-    DROP CONSTRAINT SRI_datacategorymeta_fk;
-
-ALTER TABLE SRI_datacategorymeta
-    DROP CONSTRAINT SRI_datacateg_objectcla_fk;
-
--- -------------------------------------------------------------------- 
 -- SRI_datasource 
 -- -------------------------------------------------------------------- 
 ALTER TABLE SRI_datasource
-    DROP CONSTRAINT SRI_datasource_fk;
+    DROP CONSTRAINT SRI_datasourc_objectcla_fk;
 
 ALTER TABLE SRI_datasource
-    DROP CONSTRAINT SRI_datasourc_objectcla_fk;
+    DROP CONSTRAINT SRI_datasource_fk;
+
+-- -------------------------------------------------------------------- 
+-- SRI_designbasisdata 
+-- -------------------------------------------------------------------- 
+ALTER TABLE SRI_designbasisdata
+    DROP CONSTRAINT SRI_designbasisdata_fk;
 
 -- -------------------------------------------------------------------- 
 -- SRI_device 
 -- -------------------------------------------------------------------- 
 ALTER TABLE SRI_device
-    DROP CONSTRAINT SRI_device_fk;
+    DROP CONSTRAINT SRI_device_objectclass_fk;
 
 ALTER TABLE SRI_device
-    DROP CONSTRAINT SRI_device_objectclass_fk;
+    DROP CONSTRAINT SRI_device_fk;
 
 -- -------------------------------------------------------------------- 
 -- SRI_energydata 
@@ -72,13 +69,19 @@ ALTER TABLE SRI_informationneed
     DROP CONSTRAINT SRI_informati_objectcla_fk;
 
 ALTER TABLE SRI_informationneed
-    DROP CONSTRAINT SRI_inform_usecas_infor_fk;
+    DROP CONSTRAINT SRI_inform_sriser_needs_fk;
 
 -- -------------------------------------------------------------------- 
 -- SRI_methodology 
 -- -------------------------------------------------------------------- 
 ALTER TABLE SRI_methodology
     DROP CONSTRAINT SRI_methodology_fk;
+
+-- -------------------------------------------------------------------- 
+-- SRI_occupantdata 
+-- -------------------------------------------------------------------- 
+ALTER TABLE SRI_occupantdata
+    DROP CONSTRAINT SRI_occupantdata_fk;
 
 -- -------------------------------------------------------------------- 
 -- SRI_onsiteenergygeneratio 
@@ -120,16 +123,19 @@ ALTER TABLE SRI_sriservice
     DROP CONSTRAINT SRI_sriser_buildi_srise_fk;
 
 ALTER TABLE SRI_sriservice
+    DROP CONSTRAINT SRI_sriser_inform_servi_fk;
+
+ALTER TABLE SRI_sriservice
     DROP CONSTRAINT SRI_sriser_sriass_srise_fk;
 
 ALTER TABLE SRI_sriservice
     DROP CONSTRAINT SRI_sriser_servic_srise_fk;
 
 -- -------------------------------------------------------------------- 
--- SRI_usecase 
+-- SRI_utilitygriddata 
 -- -------------------------------------------------------------------- 
-ALTER TABLE SRI_usecase
-    DROP CONSTRAINT SRI_usecase_fk;
+ALTER TABLE SRI_utilitygriddata
+    DROP CONSTRAINT SRI_utilitygriddata_fk;
 
 -- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
 -- *********************************** Drop tables *************************************** 
@@ -160,11 +166,6 @@ DROP TABLE SRI_controllogic;
 DROP TABLE SRI_cyberdevicedata;
 
 -- -------------------------------------------------------------------- 
--- SRI_datacategorymeta 
--- -------------------------------------------------------------------- 
-DROP TABLE SRI_datacategorymeta;
-
--- -------------------------------------------------------------------- 
 -- SRI_dataconnector 
 -- -------------------------------------------------------------------- 
 DROP TABLE SRI_dataconnector;
@@ -173,6 +174,11 @@ DROP TABLE SRI_dataconnector;
 -- SRI_datasource 
 -- -------------------------------------------------------------------- 
 DROP TABLE SRI_datasource;
+
+-- -------------------------------------------------------------------- 
+-- SRI_designbasisdata 
+-- -------------------------------------------------------------------- 
+DROP TABLE SRI_designbasisdata;
 
 -- -------------------------------------------------------------------- 
 -- SRI_device 
@@ -210,6 +216,11 @@ DROP TABLE SRI_interface;
 DROP TABLE SRI_methodology;
 
 -- -------------------------------------------------------------------- 
+-- SRI_occupantdata 
+-- -------------------------------------------------------------------- 
+DROP TABLE SRI_occupantdata;
+
+-- -------------------------------------------------------------------- 
 -- SRI_onsiteenergygeneratio 
 -- -------------------------------------------------------------------- 
 DROP TABLE SRI_onsiteenergygeneratio;
@@ -235,11 +246,6 @@ DROP TABLE SRI_servicecatalogue;
 DROP TABLE SRI_sriassessment;
 
 -- -------------------------------------------------------------------- 
--- SRI_sridomain 
--- -------------------------------------------------------------------- 
-DROP TABLE SRI_sridomain;
-
--- -------------------------------------------------------------------- 
 -- SRI_sriservice 
 -- -------------------------------------------------------------------- 
 DROP TABLE SRI_sriservice;
@@ -250,9 +256,9 @@ DROP TABLE SRI_sriservice;
 DROP TABLE SRI_supportedaccess;
 
 -- -------------------------------------------------------------------- 
--- SRI_usecase 
+-- SRI_utilitygriddata 
 -- -------------------------------------------------------------------- 
-DROP TABLE SRI_usecase;
+DROP TABLE SRI_utilitygriddata;
 
 -- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
 -- *********************************** Drop Sequences ************************************* 
@@ -269,5 +275,3 @@ DROP SEQUENCE SRI_dataconnector_seq;
 DROP SEQUENCE SRI_supportedaccess_seq;
 
 DROP SEQUENCE SRI_functionalityleve_seq;
-
-DROP SEQUENCE SRI_sridomain_seq;

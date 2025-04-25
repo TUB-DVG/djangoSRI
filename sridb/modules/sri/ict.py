@@ -2,18 +2,18 @@
 from django.db import models
 from citydb.modules.core.cityobject import CityObject
 from citydb.modules.core.objectclass import ObjectClass
+from sridb.modules.sri.information_need import SRIInformationNeed
 
 # SRI_informationneed model (base class for information need models)
-class SRIInformationNeed(models.Model):
-    id = models.OneToOneField(CityObject, primary_key=True, on_delete=models.CASCADE, db_column='id')
-    description = models.CharField(max_length=1000, blank=True, null=True)
-    objectclass = models.ForeignKey(ObjectClass, on_delete=models.CASCADE, db_column='objectclass_id', null=True)
-
-    class Meta:
-        db_table = 'sri_informationneed'
-        indexes = [
-            models.Index(fields=['objectclass']),
-        ]
+#class SRIInformationNeed(models.Model):
+#    id = models.OneToOneField(CityObject, primary_key=True, on_delete=models.CASCADE, db_column='id')
+#    description = models.CharField(max_length=1000, blank=True, null=True)
+#    objectclass = models.ForeignKey(ObjectClass, on_delete=models.CASCADE, db_column='objectclass_id', null=True)#
+#    class Meta:
+#        db_table = 'sri_informationneed'
+#        indexes = [
+#            models.Index(fields=['objectclass']),
+#        ]
 
 # SRI_supportedaccess model
 class SRISupportedAccess(models.Model):

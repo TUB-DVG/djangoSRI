@@ -7,14 +7,14 @@ from citydb.modules.energy.core.energybuilding import EnergyBuilding
 from citydb.modules.bldg.building import Building
 from sridb.modules.sri.sri import (
     SRISriservice, SRIBuilding, SRISriAssessment, 
-    SRIServiceCatalogue, SRIFunctionalitylevel, SRIMethodology,
-    SRIAssessor, SRIDomain, SRIUsecase
+    SRIServiceCatalogue, SRIMethodology,
+    SRIAssessor 
 )
 from sridb.modules.sri.information_need import (
     SRIAssetData, SRIIndoorEnvironmentalData, SRIControlLogic, 
     SRICyberDeviceData, SRIDatacategoryMeta, SRIEnergyData, 
     SRIOperationalData, SRIOutdoorenvironmentalData,
-     SRIOnsiteenergygeneration
+     SRIOnsiteenergygeneration, SRIUsecase
 )
 from sridb.serializers import (
     BuildingSerializer, SRIServiceSerializer, SRIBuildingSerializer, 
@@ -23,8 +23,8 @@ from sridb.serializers import (
     SRICyberDeviceDataSerializer, SRIDatacategoryMetaSerializer, 
     SRIEnergyDataSerializer, SRIOperationalDataSerializer, 
     SRIOutdoorenvironmentalDataSerializer, SRIOnsiteenergygenerationSerializer,
-    SRIMethodologySerializer, SRIAssessorSerializer, SRIFunctionalityLevelSerializer,
-    SRIDomainSerializer, SRIUsecaseSerializer, SRIServiceCatalogueSerializer
+    SRIMethodologySerializer, SRIAssessorSerializer, 
+      SRIUsecaseSerializer, SRIServiceCatalogueSerializer
 )
 from sridb.auxillary.gml_generator import generate_gml
 
@@ -52,13 +52,6 @@ class SRIAssessorViewSet(viewsets.ModelViewSet):
     queryset = SRIAssessor.objects.all()
     serializer_class = SRIAssessorSerializer
 
-class SRIFunctionalityLevelViewSet(viewsets.ModelViewSet):
-    queryset = SRIFunctionalitylevel.objects.all()
-    serializer_class = SRIFunctionalityLevelSerializer
-
-class SRIDomainViewSet(viewsets.ModelViewSet):
-    queryset = SRIDomain.objects.all()
-    serializer_class = SRIDomainSerializer
 
 class SRIUsecaseViewSet(viewsets.ModelViewSet):
     queryset = SRIUsecase.objects.all()

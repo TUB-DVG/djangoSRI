@@ -4,7 +4,6 @@ from sridb.views import (
     BuildingViewSet, SRIServiceViewSet, 
     SRIBuildingViewSet, SRIAssessmentViewSet,
     SRIMethodologyViewSet, SRIAssessorViewSet,
-    SRIFunctionalityLevelViewSet, SRIDomainViewSet,
     SRIUsecaseViewSet, SRIServiceCatalogueViewSet,
     assign_service_to_building, get_building_gml, get_available_services,
     SRIAssetDataViewSet, SRIIndoorEnvironmentalDataViewSet, SRIControlLogicViewSet, 
@@ -21,8 +20,6 @@ router.register(r'sri-services', SRIServiceViewSet)
 router.register(r'sri-assessments', SRIAssessmentViewSet)
 router.register(r'sri-methodologies', SRIMethodologyViewSet)
 router.register(r'sri-assessors', SRIAssessorViewSet)
-router.register(r'sri-functionality-levels', SRIFunctionalityLevelViewSet)
-router.register(r'sri-domains', SRIDomainViewSet)
 router.register(r'sri-usecases', SRIUsecaseViewSet)
 router.register(r'sri-service-catalogues', SRIServiceCatalogueViewSet)
 

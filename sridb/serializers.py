@@ -1,14 +1,14 @@
 from rest_framework import serializers
 from sridb.modules.sri.sri import (
-    SRIFunctionalitylevel, SRISriservice, SRIBuilding, SRISriAssessment,
-    SRIServiceCatalogue, SRIMethodology, SRIAssessor, SRIDomain, SRIUsecase
+    SRISriservice, SRIBuilding, SRISriAssessment,
+    SRIServiceCatalogue, SRIMethodology, SRIAssessor
 )
 from citydb.modules.bldg.building import Building
 # Import the information need models
 from sridb.modules.sri.information_need import (
     SRIAssetData, SRIIndoorEnvironmentalData, SRIControlLogic, 
     SRICyberDeviceData, SRIDatacategoryMeta, SRIEnergyData, 
-    SRIOperationalData, SRIOutdoorenvironmentalData, SRIOnsiteenergygeneration
+    SRIOperationalData, SRIOutdoorenvironmentalData, SRIOnsiteenergygeneration, SRIUsecase
 )
 
 """
@@ -25,15 +25,9 @@ class SRIServiceCatalogueSerializer(serializers.ModelSerializer):
         model = SRIServiceCatalogue
         fields = '__all__'
 
-class SRIFunctionalityLevelSerializer(serializers.ModelSerializer):
-    """Serializer for the SRI Functionality Level model."""
-    class Meta:
-        model = SRIFunctionalitylevel
-        fields = '__all__'
 
 class SRIServiceSerializer(serializers.ModelSerializer):
     """Serializer for the SRI Service model."""
-    functionality_levels = SRIFunctionalityLevelSerializer(many=True, read_only=True)
     catalogue_details = SRIServiceCatalogueSerializer(source='catalogue', read_only=True)
     
     class Meta:
@@ -83,11 +77,6 @@ class SRIAssessmentSerializer(serializers.ModelSerializer):
                   'assessor_assessments', 'assessor',
                   'methodology_assessments', 'methodology']
 
-class SRIDomainSerializer(serializers.ModelSerializer):
-    """Serializer for the SRI Domain model."""
-    class Meta:
-        model = SRIDomain
-        fields = '__all__'
 
 class SRIUsecaseSerializer(serializers.ModelSerializer):
     """Serializer for the SRI Usecase model."""
