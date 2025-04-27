@@ -1,8 +1,8 @@
 from django.db import models
 from django.core import validators
 from citydb.modules.core.cityobject import CityObject
-
 from citydb.modules.bldg.building import Building
+from citydb.modules.core.objectclass import ObjectClass
 # ToDo Double check if all choices are implemented correctly
 
 
@@ -16,9 +16,7 @@ class SRIAssessor(models.Model):
     phonenumber = models.CharField(max_length=1000, blank=True, null=True)
 
     class Meta:
-        db_table = 'SRI_assessor'
-
-
+        db_table = 'sri_assessor'
 
 
 # SRI_building model
@@ -26,9 +24,9 @@ class SRIBuilding(models.Model):
     """
     Model representing a building in the Smart Readiness Indicator (SRI) assessment.
     
-    This model extends the Building model with SRI-specific attributes such as
-    building state, usage type, climate zone, and other characteristics needed
-    for SRI assessment calculations.
+    This model is linked to the Building model with a OneToOneField relation.
+    The SRIBuilding contains SRI-specific attributes such as building state, 
+    usage type, climate zone, and other characteristics needed for SRI assessment.
     
     The model uses predefined choice fields to ensure data consistency and
     facilitate standardized SRI assessments across different building types.
@@ -71,7 +69,8 @@ class SRIBuilding(models.Model):
         ("Other", "Other")
     )
     
-    # One-to-one relationship with Building model
+    # Use OneToOneField to Building with the same primary key
+    # This matches the database structure where sri_building.id relates to building.id
     id = models.OneToOneField(Building, primary_key=True, on_delete=models.CASCADE, db_column='id')
     
     # Building characteristics fields
@@ -80,19 +79,15 @@ class SRIBuilding(models.Model):
     climatezone = models.CharField(max_length=1000, blank=True, null=True, choices=climatezone_tag_choices)
     location = models.CharField(max_length=1000, blank=True, null=True)
     sribuildingtype = models.CharField(max_length=1000, blank=True, null=True, choices=sribuildingtype_tag_choices)
-    usefulfloorarea = models.CharField(max_length=1000, blank=True, null=True,
-                                       description="Category of useful floor area in square meters")
-    description = models.CharField(max_length=1000, blank=True, null=True)
+    usefulfloorarea = models.CharField(max_length=1000, blank=True, null=True)
+    sridescription = models.CharField(max_length=1000, blank=True, null=True, default="")
 
     class Meta:
-        db_table = 'SRI_building'
+        db_table = 'sri_building'
         
     def __str__(self):
         """Return a string representation of the SRI building."""
-        return f"SRI Building {self.id}"
-
-
-
+        return f"SRI Building {self.pk}"
 
 
 
@@ -103,138 +98,205 @@ class SRIMethodology(models.Model):
     preferredweightings = models.CharField(max_length=1000, blank=True, null=True)
 
     class Meta:
-        db_table = 'SRI_methodology'
+        db_table = 'sri_methodology'
 
-
-
-
-# SRI_sriassessment model
-class SRISriAssessment(models.Model):
-    id = models.OneToOneField(CityObject, primary_key=True, on_delete=models.CASCADE, db_column='id')
-    assessor_assessments = models.ForeignKey(
-        SRIAssessor,
-        on_delete=models.SET_NULL,
-        null=True,
-        blank=True,
-        db_column='assessor_assessments_id',
-        related_name='sri_assessments'
-    )
-    dateofassessment = models.DateTimeField(null=True, blank=True)
-    methodology_assessments = models.ForeignKey(
-        SRIMethodology,
-        on_delete=models.SET_NULL,
-        null=True,
-        blank=True,
-        db_column='methodology_assessments_id',
-        related_name='sri_assessments'
-    )
-    score = models.IntegerField(null=True, blank=True)
-    sriservice_assessments = models.ForeignKey(
-        'SRISriservice',
-        on_delete=models.SET_NULL,
-        null=True,
-        blank=True,
-        db_column='sriservice_assessments_id',
-        related_name='sri_assessments'
-    )
-
-    class Meta:
-        db_table = 'SRI_sriassessment'
-        indexes = [
-            models.Index(fields=['assessor_assessments']),
-            models.Index(fields=['methodology_assessments']),
-            models.Index(fields=['sriservice_assessments']),
-        ]
-
-
-# SRI_sriservice model
-class SRISriservice(models.Model):
-    name = models.OneToOneField(CityObject, primary_key=True, on_delete=models.CASCADE, db_column='id')
-    code = models.CharField(max_length=1000, blank=True, null=True)
-    domain = models.CharField(max_length=1000, blank=True, null=True)
-    impact = models.CharField(max_length=1000, blank=True, null=True)
-    name = models.CharField(max_length=1000, blank=True, null=True)
-    partofmethod = models.IntegerField(null=True, blank=True)
-    partofmethodb = models.IntegerField(null=True, blank=True)
-    preconditions = models.CharField(max_length=1000, blank=True, null=True)
-    servicegroup = models.CharField(max_length=1000, blank=True, null=True)
-    sriassessment_sriservices = models.ForeignKey(
-        SRISriassessment,
-        on_delete=models.SET_NULL,
-        null=True,
-        blank=True,
-        db_column='sriassessment_sriservices_id',
-        related_name='sri_services'
-    )
-    userdefined = models.IntegerField(null=True, blank=True)
-
-    class Meta:
-        db_table = 'SRI_sriservice'
-        indexes = [
-            models.Index(fields=['sriassessment_sriservices']),
-        ]
-
-# SRI_functionalitylevel model
-class SRIFunctionalitylevel(models.Model):
-
-    functionalitylevel_tag_choices = (
-        ("Functionality level 0", "Functionality level 0 (as non-smart default)"),
-        ("functionalityLevel1", "Functionality level 1"),
-        ("functionalityLevel2", "Functionality level 2"),
-        ("functionalityLevel3", "Functionality level 3"),
-        ("functionalityLevel4", "Functionality level 4")
-    )
-
-    id = models.OneToOneField(SRISriservice, primary_key=True, on_delete=models.CASCADE, db_column='id')
-    description = models.CharField(max_length=1000, blank=True, null=True)
-    functionalitylevel = models.IntegerField(blank=True, null=True)
-    id_1 = models.CharField(max_length=1000, blank=True, null=True)
-    name = models.CharField(max_length=1000, blank=True, null=True)
-
-    class Meta:
-        db_table = 'SRI_functionalitylevel'
-
-# SRI_usecase model
-class SRIUsecase(models.Model):
-    id = models.OneToOneField(CityObject, primary_key=True, on_delete=models.CASCADE, db_column='id')
-    description = models.CharField(max_length=1000, blank=True, null=True)
-    title = models.CharField(max_length=1000, blank=True, null=True)
-
-    class Meta:
-        db_table = 'SRI_usecase'
-
-
-# SRI_domain model
-class SRIDomain(models.Model):
-
-    # Does it make sense to have other as a choice?
-    sri_domain_choices = (
-        ("dynamicBuildingEnvelope", "Dynamic Building Envelope"),
-        ("heating", "Heating"),
-        ("electricVehicleCharging", "Electric Vehicle Charging"),
-        ("cooling", "Cooling"),
-        ("lighting", "Lighting"),
-        ("monitoringAndControl", "Monitoring and Control"),
-        ("ventilation", "Ventilation"),
-        ("domesticHotWater", "Domestic Hot Water"),
-        ("electricity", "Electricity")
-    )
-    
-    id = models.OneToOneField(CityObject, primary_key=True, on_delete=models.CASCADE, db_column='id')
-    category = models.CharField(max_length=1000, blank=True, null=True, choices=sri_domain_choices)
-    description = models.CharField(max_length=1000, blank=True, null=True)
-
-    class Meta:
-        db_table = 'SRI_domain'
-
-
+# SRI_servicecatalogue model - moved before SRISriAssessment to fix forward references
 class SRIServiceCatalogue(models.Model):
-    id = models.OneToOneField(CityObject, primary_key=True,
-                              on_delete=models.CASCADE, db_column='id')
+    id = models.OneToOneField(
+        Building, 
+        primary_key=True, 
+        on_delete=models.CASCADE, 
+        db_column='id'
+    )
     description = models.CharField(max_length=1000, blank=True, null=True)
     version = models.FloatField(blank=True, null=True, validators=[
         validators.MinValueValidator(0.1, message="Version must be greater than 0")
     ])
 
     class Meta:
-        db_table = 'SRI_service_catalogue'
+        db_table = 'sri_servicecatalogue'
+
+
+# SRI_sriassessment model
+class SRISriAssessment(models.Model):
+    id = models.OneToOneField(CityObject, primary_key=True,
+                             on_delete=models.CASCADE, db_column='id')
+
+ 
+    assessor_id = models.ForeignKey(
+        SRIAssessor,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        db_column='assessor_id',
+        related_name='assessments'
+    )
+    dateofassessment = models.DateTimeField(null=True, blank=True)
+    methodology = models.CharField(max_length=1000, blank=True, null=True)
+    score = models.IntegerField(null=True, blank=True)
+    
+    # Link assessment to services (as shown in diagram)
+    #services = models.ManyToManyField(
+    #    SRISriservice,
+    #    blank=True,
+    #    related_name='assessments',
+    ##    db_column='sriassessment_sriservice_id'
+   # )
+
+    class Meta:
+        db_table = 'sri_sriassessment'
+        indexes = [
+            models.Index(fields=['assessor_id']),
+        ]
+
+    def save(self, *args, **kwargs):
+        # On first save, if no CityObject is linked, create one.
+        if not self.pk:
+            obj_class = ObjectClass.objects.get(classname='SRIAssessment')
+            city_obj = CityObject.objects.create(objectclass=obj_class)
+            self.id = city_obj
+        super().save(*args, **kwargs)
+
+    
+    def __str__(self):
+        return str(self.id)
+    
+class SRISriservice(models.Model):
+    """
+    SRI Service assignment for a building
+    """
+    
+    # — Choice fields —
+    sri_domain_choices = (
+        ("dynamicBuildingEnvelope", "Dynamic Building Envelope"),
+        ("heating",                  "Heating"),
+        ("electricVehicleCharging",  "Electric Vehicle Charging"),
+        ("cooling",                  "Cooling"),
+        ("lighting",                 "Lighting"),
+        ("monitoringAndControl",     "Monitoring and Control"),
+        ("ventilation",              "Ventilation"),
+        ("domesticHotWater",         "Domestic Hot Water"),
+        ("electricity",              "Electricity"),
+        ("other",                    "Other"),
+    )
+
+    functionalitylevel_tag_choices = (
+        (0, "Functionality level 0 (as non-smart default)"),
+        (1, "Functionality level 1"),
+        (2, "Functionality level 2"),
+        (3, "Functionality level 3"),
+        (4, "Functionality level 4")
+    )
+
+
+    # -- Primary Key --
+    # To-Do: This leads to a mass import of CityObject instances.
+    # This is not the intended behavior.
+    # Rather they should all be linked to a Building instance.
+    id = models.OneToOneField(CityObject, primary_key=True, on_delete=models.CASCADE, db_column='id')
+
+    # — Attributes —
+    code                         = models.CharField(max_length=1000, blank=True, null=True)
+    servicename                  = models.CharField(max_length=1000, blank=True, null=True)
+    descriptionfunctionalityleve = models.CharField(max_length=1000, blank=True, null=True)
+    functionalitylevel           = models.IntegerField(null=True, blank=True, choices=functionalitylevel_tag_choices)
+    impact                       = models.CharField(max_length=1000, blank=True, null=True)
+    _partofmethoda               = models.IntegerField(db_column='partofmethoda', null=True, blank=True)
+    _partofmethodb               = models.IntegerField(db_column='partofmethodb', null=True, blank=True)
+    preconditions                = models.CharField(max_length=1000, blank=True, null=True)
+    servicegroup                 = models.CharField(max_length=1000, blank=True, null=True)
+    sharefunctionalitylevel      = models.IntegerField(null=True, blank=True)
+    sridomain                    = models.CharField(
+        max_length=1000,
+        blank=True,
+        null=True,
+        choices=sri_domain_choices
+    )
+    _userdefined                  = models.IntegerField(db_column='userdefined', null=True, blank=True)
+
+    # — Relationships —
+    building = models.ForeignKey(
+        SRIBuilding,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='services',
+        db_column='building_sriservice_id'
+    )
+
+    catalogue = models.ForeignKey(
+        SRIServiceCatalogue,
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+        related_name='sri_services',
+        db_column='servicecatalog_sriservice_id'
+    )
+
+    assessment = models.ForeignKey(
+        SRISriAssessment,
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+        related_name='services',
+        db_column='sriassessment_sriservice_id'
+    )
+
+    class Meta:
+        db_table = 'sri_sriservice'
+        indexes = [
+            models.Index(fields=['catalogue']),
+            models.Index(fields=['building']),
+        ]
+
+    def __str__(self):
+        return self.servicename or f"SRIService {str(self.id)}"
+    
+    @property
+    def partofmethoda(self):
+        """Return _is_cooled.
+
+        Value is 1 if thermal zone has energy system for space
+        cooling, else 0.
+        """
+        if self._partofmethoda is None:
+            return None
+        translate = {0: False, 1: True}
+        value = translate[self._partofmethoda]
+        return value
+    
+    @property
+    def partofmethodb(self):
+        """Return _is_partofmethodb.
+
+        Value is 1 if thermal zone has energy system for space
+        cooling, else 0.
+        """
+        if self._partofmethodb is None:
+            return None
+        translate = {0: False, 1: True,
+                     True: True,
+                     False: False,
+                     "0": False,
+                     "1": True}
+        print(self._partofmethodb)
+        value = translate[self._partofmethodb]
+        return value
+    
+    @property
+    def userdefined(self):
+        """Return _is_userdefined.
+
+        Value is 1 if thermal zone has energy system for space
+        cooling, else 0.
+        """
+        if self._userdefined is None:
+            return None
+        translate = {0: False, 1: True,
+                     True: True,
+                     False: False}
+        value = translate[self._userdefined]
+        return value
+
+
+

@@ -2,18 +2,18 @@
 from django.db import models
 from citydb.modules.core.cityobject import CityObject
 from citydb.modules.core.objectclass import ObjectClass
+from sridb.modules.sri.information_need import SRIInformationNeed
 
 # SRI_informationneed model (base class for information need models)
-class SRIInformationNeed(models.Model):
-    id = models.OneToOneField(CityObject, primary_key=True, on_delete=models.CASCADE, db_column='id')
-    description = models.CharField(max_length=1000, blank=True, null=True)
-    objectclass = models.ForeignKey(ObjectClass, on_delete=models.CASCADE, db_column='objectclass_id', null=True)
-
-    class Meta:
-        db_table = 'SRI_informationneed'
-        indexes = [
-            models.Index(fields=['objectclass']),
-        ]
+#class SRIInformationNeed(models.Model):
+#    id = models.OneToOneField(CityObject, primary_key=True, on_delete=models.CASCADE, db_column='id')
+#    description = models.CharField(max_length=1000, blank=True, null=True)
+#    objectclass = models.ForeignKey(ObjectClass, on_delete=models.CASCADE, db_column='objectclass_id', null=True)#
+#    class Meta:
+#        db_table = 'sri_informationneed'
+#        indexes = [
+#            models.Index(fields=['objectclass']),
+#        ]
 
 # SRI_supportedaccess model
 class SRISupportedAccess(models.Model):
@@ -23,7 +23,7 @@ class SRISupportedAccess(models.Model):
     hasendpoint = models.IntegerField(blank=True, null=True, db_column='hasendpoint')
 
     class Meta:
-        db_table = 'SRI_supportedaccess'
+        db_table = 'sri_supportedaccess'
 
 # SRI_datasource model (base class for data sources)
 class SRIDataSource(models.Model):
@@ -33,17 +33,18 @@ class SRIDataSource(models.Model):
     objectclass = models.ForeignKey(ObjectClass, on_delete=models.CASCADE, db_column='objectclass_id', null=True)
 
     class Meta:
-        db_table = 'SRI_datasource'
+        db_table = 'sri_datasource'
         indexes = [
             models.Index(fields=['objectclass']),
         ]
 
 # SRI_model model (inherits from SRIDataSource)
+# To-Do: Rework the model that work for this
 class SRIModel(models.Model):
     id = models.OneToOneField(SRIDataSource, primary_key=True, on_delete=models.CASCADE, db_column='id')
 
     class Meta:
-        db_table = 'SRI_model'
+        db_table = 'sri_model'
 
 # SRI_interface model
 class SRIInterface(models.Model):
@@ -53,7 +54,7 @@ class SRIInterface(models.Model):
     supportedaccesstype_hasapi = models.IntegerField(blank=True, null=True)
 
     class Meta:
-        db_table = 'SRI_interface'
+        db_table = 'sri_interface'
 
 # SRI_device model
 class SRIDevice(models.Model):
@@ -66,7 +67,7 @@ class SRIDevice(models.Model):
     supportedprotcolls = models.TextField(blank=True, null=True)
 
     class Meta:
-        db_table = 'SRI_device'
+        db_table = 'sri_device'
         indexes = [
             models.Index(fields=['objectclass']),
         ]
@@ -78,4 +79,4 @@ class SRIDataConnector(models.Model):
     urlmodelschema = models.TextField(blank=True, null=True)
 
     class Meta:
-        db_table = 'SRI_dataconnector'
+        db_table = 'sri_dataconnector'
