@@ -12,12 +12,12 @@
     <parameter name="inputFile" value="C:/Users/felix/Programmieren/djangoSRI/citygml/UML/SRI_ADE.qea"/>
     <parameter name="appSchemaName" value="SRIADE"/>
     <parameter name="checkingConstraints" value="disabled"/>
+    <parameter name="addTaggedValues" value="itemType"/>
     
 	<parameter name="representTaggedValues" value="topLevel,relationType,maxOccurs"/>
     <xi:include href="http://shapechange.net/resources/config/StandardAliases.xml"/>
     <stereotypeAliases>
       <StereotypeAlias wellknown="property" alias="Property"/>
-      <StereotypeAlias wellknown="" alias="Property"/>
       <StereotypeAlias wellknown="version" alias="Version"/>
       <StereotypeAlias wellknown="FeatureType" alias="TopLevelFeatureType"/>
     </stereotypeAliases>
