@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><ShapeChangeResult xmlns="http://www.interactive-instruments.de/ShapeChange/Result" xmlns:r="http://www.interactive-instruments.de/ShapeChange/Result" config="C:\Users\felix\Programmieren\djangoSRI\citygml\ShapeChange\ShapeChangeConfigurationFile_SRI_ADE.xml" end="Tue Apr 29 20:19:02 CEST 2025" resultCode="0" start="Tue Apr 29 20:14:46 CEST 2025" version="4.0.0">
+<?xml version="1.0" encoding="UTF-8"?><ShapeChangeResult xmlns="http://www.interactive-instruments.de/ShapeChange/Result" xmlns:r="http://www.interactive-instruments.de/ShapeChange/Result" config="C:\Users\felix\Programmieren\djangoSRI\citygml\ShapeChange\ShapeChangeConfigurationFile_SRI_ADEDataType.xml" end="Tue Apr 29 20:25:57 CEST 2025" resultCode="0" start="Tue Apr 29 20:21:53 CEST 2025" version="4.0.0">
   <Messages>
     <ProcessFlowInfo message="---------- Semantic validation of ShapeChange configuration: START ----------"/>
     <Info message="Validating input parameters."/>
@@ -12,14 +12,18 @@
     <Info message="Connected to C:\Users\felix\Programmieren\djangoSRI\citygml\UML\SRI_ADE.qea"/>
     <Info message="Starting reading C:\Users\felix\Programmieren\djangoSRI\citygml\UML\SRI_ADE.qea"/>
     <Info message="Finished reading C:\Users\felix\Programmieren\djangoSRI\citygml\UML\SRI_ADE.qea"/>
-    <ProcessFlowInfo message="Application schema found, package name: 'SRIADE', target namespace: 'http://www.citygml.org/ade/SRIADE/0.1'"/>
+    <Warning message="The multiplicity value of 'o' is neither a number nor a known string. '*' is used instead.">
+      <Detail message="Context: Class 'Model::CityGML::SRIADEDataType::ServiceCatalogue'"/>
+    </Warning>
+    <ProcessFlowInfo message="Application schema found, package name: 'SRIADEDataType', target namespace: 'http://www.citygml.org/ade/SRIADE/0.1'"/>
     <ProcessFlowInfo message="Now processing target 'XML Schema' for input 'INPUT'."/>
     <ProcessFlowInfo message="Executed target class 'de.interactive_instruments.shapechange.core.target.xmlschema.XmlSchema' for input ID: 'INPUT'.&#10;-------------------------------------------------"/>
-    <ProcessFlowInfo message="Application schema found, package name: 'SRIADE', target namespace: 'http://www.citygml.org/ade/SRIADE/0.1'"/>
+    <ProcessFlowInfo message="Application schema found, package name: 'SRIADEDataType', target namespace: 'http://www.citygml.org/ade/SRIADE/0.1'"/>
     <ProcessFlowInfo message="Now processing target 'Code List Dictionary' for input 'INPUT'."/>
+    <Info message="Code list 'AcquisitionMethodParameter' is not configured to be encoded as a dictionary. Either parameter 'codelists' is set to false, or tagged value asDictionary on the code list is false. It will be ignored."/>
     <ProcessFlowInfo message="Executed target class 'de.interactive_instruments.shapechange.core.target.codelists.CodelistDictionaries' for input ID: 'INPUT'.&#10;-------------------------------------------------"/>
   </Messages>
   <Results>
-    <Result href="file:/C:/Users/felix/Programmieren/djangoSRI/citygml/ShapeChange/output/INPUT/CityGML-SRIADE.xsd" scope="http://www.citygml.org/ade/SRIADE/0.1" target="XML Schema">CityGML-SRIADE.xsd</Result>
+    <Result href="file:/C:/Users/felix/Programmieren/djangoSRI/citygml/ShapeChange/output/DataType/INPUT/CityGML-SRIADEDataType.xsd" scope="http://www.citygml.org/ade/SRIADE/0.1" target="XML Schema">CityGML-SRIADEDataType.xsd</Result>
   </Results>
 </ShapeChangeResult>

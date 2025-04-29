@@ -10,11 +10,11 @@
   <input>
     <parameter name="inputModelType" value="EA7"/>
     <parameter name="inputFile" value="C:/Users/felix/Programmieren/djangoSRI/citygml/UML/SRI_ADE.qea"/>
-    <parameter name="appSchemaName" value="SRIADE"/>
+    <parameter name="appSchemaName" value="SRIADEDataType"/>
     <parameter name="checkingConstraints" value="disabled"/>
     <parameter name="addTaggedValues" value="itemType"/>
     
-	<parameter name="representTaggedValues" value="topLevel,relationType,maxOccurs,minOccurs"/>
+	<parameter name="representTaggedValues" value="topLevel,relationType,maxOccurs"/>
     <xi:include href="http://shapechange.net/resources/config/StandardAliases.xml"/>
     <stereotypeAliases>
       <StereotypeAlias wellknown="property" alias="Property"/>
@@ -25,30 +25,23 @@
 
   <log>
     <parameter name="reportLevel" value="INFO"/>
-    <parameter name="logFile" value="C:/Users/felix/Programmieren/djangoSRI/citygml/ShapeChange/logs/Log_CityGML_SRI_ADE.xml"/>
+    <parameter name="logFile" value="C:/Users/felix/Programmieren/djangoSRI/citygml/ShapeChange/logs/Log_CityGML_SRI_ADEDataType.xml"/>
   </log>
 
   <targets>
     <TargetXmlSchema class="de.interactive_instruments.shapechange.core.target.xmlschema.XmlSchema" mode="enabled">
-      <targetParameter name="outputDirectory" value="C:/Users/felix/Programmieren/djangoSRI/citygml/ShapeChange/output"/>
-      <targetParameter name="defaultEncodingRule" value="citygml"/>
+      <targetParameter name="outputDirectory" value="C:/Users/felix/Programmieren/djangoSRI/citygml/ShapeChange/output/DataType"/>
+      <targetParameter name="defaultEncodingRule" value="custom"/>
       <rules>
-	    <EncodingRule extends="citygml-ade" name="citygml">
+	    <EncodingRule extends="citygml-ade" name="custom">
 		      <rule name="rule-xsd-all-tagged-values" />
           <rule name="rule-xsd-rel-association-classes"/>
           <rule name="rule-xsd-cls-basictype"/>
-          <rule name="rule-trf-CityGML-createADE"/>
-          <rule name="rule-xsd-prop-initialValue"/>
-          <rule name="rule-xsd-prop-att-map-entry"/>
-          <rule name="rule-xsd-prop-constrainingFacets"/>
-          <rule name="rule-xsd-all-notEncoded"/>
-          <rule name="rule-xsd-cls-union-asGroup"/>
-          
         </EncodingRule>
       </rules>
       <xi:include href="http://shapechange.net/resources/config/StandardRules.xml"/>
-      <xi:include href="http://shapechange.net/resources/config/StandardNamespaces.xml"/>
-      <xi:include href="http://shapechange.net/resources/config/StandardMapEntries.xml"/>
+      <xi:include href="http://shapechange.net/resources/config/StandardNamespaces-v31.xml"/>
+      <xi:include href="http://shapechange.net/resources/config/StandardMapEntries-v31.xml"/>
       <xmlNamespaces>
         <XmlNamespace nsabr="core" ns="http://www.opengis.net/citygml/2.0" location="http://schemas.opengis.net/citygml/2.0/cityGMLBase.xsd"/>
         <XmlNamespace nsabr="app" ns="http://www.opengis.net/citygml/appearance/2.0" location="http://schemas.opengis.net/citygml/appearance/2.0/appearance.xsd"/>

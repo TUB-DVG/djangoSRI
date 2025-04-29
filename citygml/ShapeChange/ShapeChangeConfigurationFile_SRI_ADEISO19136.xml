@@ -24,8 +24,8 @@
   </input>
 
   <log>
-    <parameter name="reportLevel" value="INFO"/>
-    <parameter name="logFile" value="C:/Users/felix/Programmieren/djangoSRI/citygml/ShapeChange/logs/Log_CityGML_SRI_ADE.xml"/>
+    <parameter name="reportLevel" value="DEBUG"/>
+    <parameter name="logFile" value="C:/Users/felix/Programmieren/djangoSRI/citygml/ShapeChange/logs/Log_CityGML_SRI_ADEISO19136.xml"/>
   </log>
 
   <targets>
@@ -33,7 +33,7 @@
       <targetParameter name="outputDirectory" value="C:/Users/felix/Programmieren/djangoSRI/citygml/ShapeChange/output"/>
       <targetParameter name="defaultEncodingRule" value="citygml"/>
       <rules>
-	    <EncodingRule extends="citygml-ade" name="citygml">
+	    <EncodingRule extends="iso19136_2007" name="citygml">
 		      <rule name="rule-xsd-all-tagged-values" />
           <rule name="rule-xsd-rel-association-classes"/>
           <rule name="rule-xsd-cls-basictype"/>
@@ -43,8 +43,9 @@
           <rule name="rule-xsd-prop-constrainingFacets"/>
           <rule name="rule-xsd-all-notEncoded"/>
           <rule name="rule-xsd-cls-union-asGroup"/>
-          
-        </EncodingRule>
+
+          </EncodingRule>
+
       </rules>
       <xi:include href="http://shapechange.net/resources/config/StandardRules.xml"/>
       <xi:include href="http://shapechange.net/resources/config/StandardNamespaces.xml"/>
@@ -69,6 +70,7 @@
       	<XsdMapEntry type="AbstractSite" xsdEncodingRules="iso19136_2007" xmlElement="core:_Site" xmlType="core:AbstractSiteType"/>
         <XsdMapEntry type="AbstractCityObject" xsdEncodingRules="iso19136_2007" xmlElement="core:_CityObject" xmlType="core:AbstractCityObjectType"/>
 		<XsdMapEntry type="AbstractBuilding" xsdEncodingRules="iso19136_2007" xmlElement="bldg:_AbstractBuilding" xmlType="bldg:AbstractBuildingType"/>
+        <XsdMapEntry type="AbstractBuildingProperties" xsdEncodingRules="iso19136_2007" xmlElement="bldg:_BuildingProperties" xmlType="bldg:BuildingPropertiesType"/>
         <XsdMapEntry type="URI" xsdEncodingRules="iso19136_2007" xmlPropertyType="anyURI" xmlType="anyURI" xmlTypeType="simple" xmlTypeContent="simple"/>
         <XsdMapEntry type="QuantityExtent" xsdEncodingRules="iso19136_2007" xmlType="gml:QuantityExtentType" xmlPropertyType="gml:QuantityExtentType" xmlTypeType="complex" xmlTypeContent="simple"/>
         <XsdMapEntry type="Code" xsdEncodingRules="iso19136_2007" xmlType="gml:CodeType" xmlPropertyType="gml:CodeType" xmlTypeType="complex" xmlTypeContent="simple"/>

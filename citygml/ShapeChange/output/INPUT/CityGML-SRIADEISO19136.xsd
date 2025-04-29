@@ -9,33 +9,49 @@
   <import namespace="http://www.opengis.net/citygml/building/2.0" schemaLocation="http://schemas.opengis.net/citygml/building/2.0/building.xsd"/>
   <import namespace="http://www.opengis.net/gml/3.2" schemaLocation="http://schemas.opengis.net/gml/3.2.1/gml.xsd"/>
   <!--XML Schema document created by ShapeChange - http://shapechange.net/-->
-  <element name="buildingUsage" substitutionGroup="bldg:_GenericApplicationPropertyOfAbstractBuilding" type="SRIADE:SRIBuildingUsageType"/>
-  <element name="usefulFloorArea" substitutionGroup="bldg:_GenericApplicationPropertyOfAbstractBuilding" type="string">
-    <annotation>
-      <appinfo>
-        <sc:taggedValue tag="maxOccurs">1</sc:taggedValue>
-      </appinfo>
-    </annotation>
-  </element>
-  <element name="location" substitutionGroup="bldg:_GenericApplicationPropertyOfAbstractBuilding" type="string">
-    <annotation>
-      <documentation>Location of the Building, e.g. Country and City.</documentation>
-    </annotation>
-  </element>
-  <element name="SRIBuildingType" substitutionGroup="bldg:_GenericApplicationPropertyOfAbstractBuilding" type="SRIADE:SRIBuildingTypeType">
-    <annotation>
-      <appinfo>
-        <sc:taggedValue tag="maxOccurs">1</sc:taggedValue>
-      </appinfo>
-    </annotation>
-  </element>
-  <element name="climateZone" substitutionGroup="bldg:_GenericApplicationPropertyOfAbstractBuilding" type="SRIADE:SRIClimateZoneTypeType"/>
-  <element name="buildingState" substitutionGroup="bldg:_GenericApplicationPropertyOfAbstractBuilding" type="SRIADE:SRIBuildingStateType"/>
-  <element name="sriDescription" substitutionGroup="bldg:_GenericApplicationPropertyOfAbstractBuilding" type="string">
-    <annotation>
-      <documentation>Description of the building and it's SRI relevant information.</documentation>
-    </annotation>
-  </element>
+  <element name="AbstractBuildingProperties" substitutionGroup="gml:AbstractGML" type="SRIADE:AbstractBuildingPropertiesType"/>
+  <complexType name="AbstractBuildingPropertiesType">
+    <complexContent>
+      <extension base="gml:AbstractGMLType">
+        <sequence>
+          <element minOccurs="0" name="buildingUsage" type="SRIADE:SRIBuildingUsageType"/>
+          <element minOccurs="0" name="usefulFloorArea" type="string">
+            <annotation>
+              <appinfo>
+                <sc:taggedValue tag="maxOccurs">1</sc:taggedValue>
+              </appinfo>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="location" type="string">
+            <annotation>
+              <documentation>Location of the Building, e.g. Country and City.</documentation>
+            </annotation>
+          </element>
+          <element name="SRIBuildingType" type="SRIADE:SRIBuildingTypeType">
+            <annotation>
+              <appinfo>
+                <sc:taggedValue tag="maxOccurs">1</sc:taggedValue>
+              </appinfo>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="climateZone" type="SRIADE:SRIClimateZoneTypeType"/>
+          <element minOccurs="0" name="buildingState" type="SRIADE:SRIBuildingStateType"/>
+          <element name="sriDescription" type="string">
+            <annotation>
+              <documentation>Description of the building and it's SRI relevant information.</documentation>
+            </annotation>
+          </element>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="AbstractBuildingPropertiesPropertyType">
+    <sequence minOccurs="0">
+      <element ref="SRIADE:AbstractBuildingProperties"/>
+    </sequence>
+    <attributeGroup ref="gml:AssociationAttributeGroup"/>
+    <attributeGroup ref="gml:OwnershipAttributeGroup"/>
+  </complexType>
   <element name="Assessor" substitutionGroup="gml:AbstractObject" type="SRIADE:AssessorType"/>
   <complexType name="AssessorType">
     <sequence>
@@ -192,7 +208,6 @@
               <appinfo>
                 <reversePropertyName xmlns="http://www.opengis.net/gml/3.2">SRIADE:providesData</reversePropertyName>
                 <sc:taggedValue tag="maxOccurs">*</sc:taggedValue>
-                <sc:taggedValue tag="minOccurs">0</sc:taggedValue>
               </appinfo>
             </annotation>
             <complexType>
@@ -426,22 +441,24 @@ Outdoor: illuminances, luminance, cloud cover, etc.</documentation>
         <sequence>
           <element maxOccurs="unbounded" minOccurs="0" name="dataRequirements" type="SRIADE:InformationNeedDataCategoryPropertyType"/>
           <element name="descriptionInformationNeed" type="string"/>
-          <element maxOccurs="unbounded" minOccurs="0" name="specifiesInformation" type="gml:ReferenceType">
+          <element maxOccurs="unbounded" minOccurs="0" name="specifiesInformation">
             <annotation>
               <appinfo>
-                <targetElement xmlns="http://www.opengis.net/gml/3.2">SRIADE:SRIService</targetElement>
                 <reversePropertyName xmlns="http://www.opengis.net/gml/3.2">SRIADE:needs</reversePropertyName>
-                <sc:taggedValue tag="minOccurs">0</sc:taggedValue>
               </appinfo>
             </annotation>
+            <complexType>
+              <sequence>
+                <element ref="SRIADE:SRIService"/>
+              </sequence>
+              <attributeGroup ref="gml:OwnershipAttributeGroup"/>
+            </complexType>
           </element>
           <element maxOccurs="unbounded" minOccurs="0" name="providesData">
             <annotation>
               <appinfo>
                 <reversePropertyName xmlns="http://www.opengis.net/gml/3.2">SRIADE:requiresData</reversePropertyName>
                 <sc:taggedValue tag="maxOccurs">*</sc:taggedValue>
-                <sc:taggedValue tag="minOccurs">0</sc:taggedValue>
-                <sc:taggedValue tag="minOccurs">0</sc:taggedValue>
               </appinfo>
             </annotation>
             <complexType>
@@ -638,15 +655,19 @@ Outdoor: illuminances, luminance, cloud cover, etc.</documentation>
           <element minOccurs="0" name="dateOfAssessment" type="date"/>
           <element minOccurs="0" name="assessor" type="SRIADE:AssessorPropertyType"/>
           <element name="methodology" type="string"/>
-          <element maxOccurs="unbounded" minOccurs="0" name="isPartOfAssessment" type="gml:ReferenceType">
+          <element maxOccurs="unbounded" minOccurs="0" name="isPartOfAssessment">
             <annotation>
               <appinfo>
-                <targetElement xmlns="http://www.opengis.net/gml/3.2">SRIADE:SRIService</targetElement>
                 <reversePropertyName xmlns="http://www.opengis.net/gml/3.2">SRIADE:isAssessed</reversePropertyName>
                 <sc:taggedValue tag="maxOccurs">*</sc:taggedValue>
-                <sc:taggedValue tag="minOccurs">0</sc:taggedValue>
               </appinfo>
             </annotation>
+            <complexType>
+              <sequence>
+                <element ref="SRIADE:SRIService"/>
+              </sequence>
+              <attributeGroup ref="gml:OwnershipAttributeGroup"/>
+            </complexType>
           </element>
         </sequence>
       </extension>
@@ -660,9 +681,6 @@ Outdoor: illuminances, luminance, cloud cover, etc.</documentation>
     <attributeGroup ref="gml:OwnershipAttributeGroup"/>
   </complexType>
   <simpleType name="SRIBuildingStateType">
-    <annotation>
-      <documentation>Reference designation of the degree of refurbishment. This reference may be European (from the Tabula project) or local (used for the Energy Action Plan of a city).</documentation>
-    </annotation>
     <restriction base="string">
       <enumeration value="Original"/>
       <enumeration value="AdvancedRefurbishment"/>
@@ -751,22 +769,25 @@ Outdoor: illuminances, luminance, cloud cover, etc.</documentation>
               <documentation>Share of functionality level in  % of building.</documentation>
             </annotation>
           </element>
-          <element maxOccurs="unbounded" minOccurs="0" name="needs" type="gml:ReferenceType">
+          <element maxOccurs="unbounded" minOccurs="0" name="needs">
             <annotation>
               <appinfo>
-                <targetElement xmlns="http://www.opengis.net/gml/3.2">SRIADE:InformationNeed</targetElement>
                 <reversePropertyName xmlns="http://www.opengis.net/gml/3.2">SRIADE:specifiesInformation</reversePropertyName>
                 <sc:taggedValue tag="maxOccurs">*</sc:taggedValue>
-                <sc:taggedValue tag="minOccurs">0</sc:taggedValue>
               </appinfo>
             </annotation>
+            <complexType>
+              <sequence>
+                <element ref="SRIADE:InformationNeed"/>
+              </sequence>
+              <attributeGroup ref="gml:OwnershipAttributeGroup"/>
+            </complexType>
           </element>
           <element maxOccurs="unbounded" minOccurs="0" name="consistsOf">
             <annotation>
               <appinfo>
                 <reversePropertyName xmlns="http://www.opengis.net/gml/3.2">SRIADE:isPartOfCatalogue</reversePropertyName>
                 <sc:taggedValue tag="maxOccurs">*</sc:taggedValue>
-                <sc:taggedValue tag="minOccurs">0</sc:taggedValue>
               </appinfo>
             </annotation>
             <complexType>
@@ -776,15 +797,19 @@ Outdoor: illuminances, luminance, cloud cover, etc.</documentation>
               <attributeGroup ref="gml:OwnershipAttributeGroup"/>
             </complexType>
           </element>
-          <element maxOccurs="unbounded" minOccurs="0" name="isAssessed" type="gml:ReferenceType">
+          <element maxOccurs="unbounded" minOccurs="0" name="isAssessed">
             <annotation>
               <appinfo>
-                <targetElement xmlns="http://www.opengis.net/gml/3.2">SRIADE:SRIAssessment</targetElement>
                 <reversePropertyName xmlns="http://www.opengis.net/gml/3.2">SRIADE:isPartOfAssessment</reversePropertyName>
                 <sc:taggedValue tag="maxOccurs">*</sc:taggedValue>
-                <sc:taggedValue tag="minOccurs">0</sc:taggedValue>
               </appinfo>
             </annotation>
+            <complexType>
+              <sequence>
+                <element ref="SRIADE:SRIAssessment"/>
+              </sequence>
+              <attributeGroup ref="gml:OwnershipAttributeGroup"/>
+            </complexType>
           </element>
         </sequence>
       </extension>
@@ -808,14 +833,19 @@ Outdoor: illuminances, luminance, cloud cover, etc.</documentation>
         <sequence>
           <element name="version" type="integer"/>
           <element name="description" type="string"/>
-          <element maxOccurs="unbounded" minOccurs="0" name="isPartOfCatalogue" type="SRIADE:SRIServicePropertyType">
+          <element maxOccurs="unbounded" minOccurs="0" name="isPartOfCatalogue">
             <annotation>
               <appinfo>
                 <reversePropertyName xmlns="http://www.opengis.net/gml/3.2">SRIADE:consistsOf</reversePropertyName>
                 <sc:taggedValue tag="maxOccurs">*</sc:taggedValue>
-                <sc:taggedValue tag="minOccurs">0</sc:taggedValue>
               </appinfo>
             </annotation>
+            <complexType>
+              <sequence>
+                <element ref="SRIADE:SRIService"/>
+              </sequence>
+              <attributeGroup ref="gml:OwnershipAttributeGroup"/>
+            </complexType>
           </element>
         </sequence>
       </extension>
