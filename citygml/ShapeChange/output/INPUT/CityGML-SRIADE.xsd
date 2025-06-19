@@ -33,6 +33,13 @@
       <documentation>Description of the building and it's SRI relevant information.</documentation>
     </annotation>
   </element>
+  <simpleType name="AcessTypeType">
+    <restriction base="string">
+      <enumeration value="Tool"/>
+      <enumeration value="Webbased"/>
+      <enumeration value="Other"/>
+    </restriction>
+  </simpleType>
   <element name="Assessor" substitutionGroup="gml:_Object" type="SRIADE:AssessorType"/>
   <complexType name="AssessorType">
     <sequence>
@@ -78,6 +85,31 @@
       <enumeration value="Other"/>
     </restriction>
   </simpleType>
+  <element name="CommunicationProtocol" substitutionGroup="SRIADE:DataSource" type="SRIADE:CommunicationProtocolType">
+    <annotation>
+      <documentation>Specifies the communication protocol used by the device or system for data exchange.</documentation>
+    </annotation>
+  </element>
+  <complexType name="CommunicationProtocolType">
+    <complexContent>
+      <extension base="SRIADE:DataSourceType">
+        <sequence>
+          <element name="protocolType" type="string"/>
+          <element name="protocolVersion" type="string">
+            <annotation>
+              <documentation>Version number or identifier for the specified communication protocol, crucial for ensuring compatibility and interoperability among devices and systems.</documentation>
+            </annotation>
+          </element>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="CommunicationProtocolPropertyType">
+    <sequence minOccurs="0">
+      <element ref="SRIADE:CommunicationProtocol"/>
+    </sequence>
+    <attributeGroup ref="gml:AssociationAttributeGroup"/>
+  </complexType>
   <element name="ControlLogic" substitutionGroup="SRIADE:InformationNeedDataCategory" type="SRIADE:ControlLogicType">
     <annotation>
       <documentation>Abbreviation for Control setting and logic data</documentation>
@@ -164,7 +196,16 @@
   <complexType name="DataConnectorType">
     <sequence>
       <element name="modelSchema" type="string"/>
-      <element name="urlModelSchema" type="anyURI"/>
+      <element name="modelURI" type="string">
+        <annotation>
+          <documentation>Web-based reference (URL/URI) pointing directly to the specific definition or documentation of the semantic standard used (e.g., Brick Schema ontology). Provides clear semantic linkage and documentation.</documentation>
+        </annotation>
+      </element>
+      <element name="documentationURL" type="string">
+        <annotation>
+          <documentation>Documentation for the DataSource.</documentation>
+        </annotation>
+      </element>
     </sequence>
   </complexType>
   <complexType name="DataConnectorPropertyType">
@@ -181,7 +222,11 @@
     <complexContent>
       <extension base="gml:AbstractFeatureType">
         <sequence>
-          <element name="name" type="string"/>
+          <element name="name" type="string">
+            <annotation>
+              <documentation>Name of the Data Source, e.g., Brick in case of Brick Model Schema</documentation>
+            </annotation>
+          </element>
           <element name="description" type="string"/>
           <element name="dataConnector" type="SRIADE:DataConnectorPropertyType"/>
           <element maxOccurs="unbounded" minOccurs="0" name="requiresData">
@@ -253,28 +298,19 @@
       <enumeration value="OtherDesign"/>
     </restriction>
   </simpleType>
-  <element name="Device" substitutionGroup="SRIADE:DataSource" type="SRIADE:DeviceType"/>
-  <complexType name="DeviceType">
-    <complexContent>
-      <extension base="SRIADE:DataSourceType">
-        <sequence>
-          <element name="manufacturer" type="string"/>
-          <element name="supportedProtcols" type="string">
-            <annotation>
-              <documentation>List of protocols supported by the device, if any.</documentation>
-            </annotation>
-          </element>
-          <element name="supportedAccess" type="SRIADE:SupportedAccessPropertyType"/>
-        </sequence>
-      </extension>
-    </complexContent>
-  </complexType>
-  <complexType name="DevicePropertyType">
-    <sequence minOccurs="0">
-      <element ref="SRIADE:Device"/>
-    </sequence>
-    <attributeGroup ref="gml:AssociationAttributeGroup"/>
-  </complexType>
+  <simpleType name="DeviceCategoryType">
+    <annotation>
+      <documentation>DeviceCategory classifies the ICT device into categories:  Sensor: Device measuring environmental or operational parameters, Actuator (Device capable of affecting building operation by controlling equipment.),   Gateway: (Device responsible for translating or aggregating data across multiple communication protocols),  EMS (Energy Management System) (Device or software managing and optimizing energy consumption), API ( Application Programming Interface), or other.</documentation>
+    </annotation>
+    <restriction base="string">
+      <enumeration value="Sensor"/>
+      <enumeration value="Actuator"/>
+      <enumeration value="EMS"/>
+      <enumeration value="Gateway"/>
+      <enumeration value="API"/>
+      <enumeration value="Other"/>
+    </restriction>
+  </simpleType>
   <element name="EnergyData" substitutionGroup="SRIADE:InformationNeedDataCategory" type="SRIADE:EnergyDataType"/>
   <complexType name="EnergyDataType">
     <complexContent>
@@ -395,6 +431,41 @@ Outdoor: illuminances, luminance, cloud cover, etc.</documentation>
       <element ref="SRIADE:FunctionalityLevel"/>
     </sequence>
   </complexType>
+  <element name="ICTEquipment" substitutionGroup="SRIADE:DataSource" type="SRIADE:ICTEquipmentType">
+    <annotation>
+      <documentation>Relates to https://ontology.brickschema.org/brick/ICT_Equipment.html : Information and Communications Technology (ICT) equipment operates with a processor to process data or logic and create digital signals.</documentation>
+    </annotation>
+  </element>
+  <complexType name="ICTEquipmentType">
+    <complexContent>
+      <extension base="SRIADE:DataSourceType">
+        <sequence>
+          <element name="manufacturer" type="string">
+            <annotation>
+              <documentation>Name of the manufacturer or vendor of the device. Essential for interoperability, compatibility checks, and maintenance processes.</documentation>
+            </annotation>
+          </element>
+          <element name="supportedProtcols" type="string">
+            <annotation>
+              <documentation>List of protocols supported by the device, if any.</documentation>
+            </annotation>
+          </element>
+          <element name="deviceCategory" type="SRIADE:DeviceCategoryType">
+            <annotation>
+              <documentation>DeviceCategory classifies the ICT device into categories:  Sensor: Device measuring environmental or operational parameters, Actuator (Device capable of affecting building operation by controlling equipment.),   Gateway: (Device responsible for translating or aggregating data across multiple communication protocols),  EMS (Energy Management System) (Device or software managing and optimizing energy consumption), API ( Application Programming Interface), or other.</documentation>
+            </annotation>
+          </element>
+          <element name="supportedAccess" type="SRIADE:SupportedAccessPropertyType"/>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="ICTEquipmentPropertyType">
+    <sequence minOccurs="0">
+      <element ref="SRIADE:ICTEquipment"/>
+    </sequence>
+    <attributeGroup ref="gml:AssociationAttributeGroup"/>
+  </complexType>
   <element name="IndoorEnvironmentalData" substitutionGroup="SRIADE:InformationNeedDataCategory" type="SRIADE:IndoorEnvironmentalDataType"/>
   <complexType name="IndoorEnvironmentalDataType">
     <complexContent>
@@ -418,13 +489,7 @@ Outdoor: illuminances, luminance, cloud cover, etc.</documentation>
         <sequence>
           <element maxOccurs="unbounded" minOccurs="0" name="dataRequirements" type="SRIADE:InformationNeedDataCategoryPropertyType"/>
           <element name="descriptionInformationNeed" type="string"/>
-          <element maxOccurs="unbounded" minOccurs="0" name="specifiesInformation">
-            <complexType>
-              <sequence>
-                <element ref="SRIADE:SRIService"/>
-              </sequence>
-            </complexType>
-          </element>
+          <element maxOccurs="unbounded" minOccurs="0" name="specifiesInformation" type="SRIADE:SRIServicePropertyType"/>
           <element maxOccurs="unbounded" minOccurs="0" name="providesData">
             <annotation>
               <appinfo>
@@ -462,6 +527,7 @@ Outdoor: illuminances, luminance, cloud cover, etc.</documentation>
       <extension base="SRIADE:DataSourceType">
         <sequence>
           <element name="supportedAccess" type="SRIADE:SupportedAccessPropertyType"/>
+          <element name="interfaceType" type="string"/>
         </sequence>
       </extension>
     </complexContent>
@@ -479,6 +545,16 @@ Outdoor: illuminances, luminance, cloud cover, etc.</documentation>
         <sequence>
           <element name="aquisitionMethod" type="string"/>
           <element name="software" type="string"/>
+          <element name="type" type="string">
+            <annotation>
+              <documentation>ModelType:  Indicates the semantic or schema standard used for representing data from ICT devices, e.g., Brick.</documentation>
+            </annotation>
+          </element>
+          <element name="version" type="string">
+            <annotation>
+              <documentation>Version of the semantic model or standard used, important for compatibility and integration accuracy.</documentation>
+            </annotation>
+          </element>
         </sequence>
       </extension>
     </complexContent>
@@ -621,17 +697,12 @@ Outdoor: illuminances, luminance, cloud cover, etc.</documentation>
           <element minOccurs="0" name="dateOfAssessment" type="date"/>
           <element minOccurs="0" name="assessor" type="SRIADE:AssessorPropertyType"/>
           <element name="methodology" type="string"/>
-          <element maxOccurs="unbounded" minOccurs="0" name="isPartOfAssessment">
+          <element maxOccurs="unbounded" minOccurs="0" name="isPartOfAssessment" type="SRIADE:SRIServicePropertyType">
             <annotation>
               <appinfo>
                 <sc:taggedValue tag="maxOccurs">*</sc:taggedValue>
               </appinfo>
             </annotation>
-            <complexType>
-              <sequence>
-                <element ref="SRIADE:SRIService"/>
-              </sequence>
-            </complexType>
           </element>
         </sequence>
       </extension>
@@ -644,6 +715,9 @@ Outdoor: illuminances, luminance, cloud cover, etc.</documentation>
     <attributeGroup ref="gml:AssociationAttributeGroup"/>
   </complexType>
   <simpleType name="SRIBuildingStateType">
+    <annotation>
+      <documentation>Reference designation of the degree of refurbishment. This reference may be European (from the Tabula project) or local (used for the Energy Action Plan of a city).</documentation>
+    </annotation>
     <restriction base="string">
       <enumeration value="Original"/>
       <enumeration value="AdvancedRefurbishment"/>
@@ -732,17 +806,12 @@ Outdoor: illuminances, luminance, cloud cover, etc.</documentation>
               <documentation>Share of functionality level in  % of building.</documentation>
             </annotation>
           </element>
-          <element maxOccurs="unbounded" minOccurs="0" name="needs">
+          <element maxOccurs="unbounded" minOccurs="0" name="needs" type="SRIADE:InformationNeedPropertyType">
             <annotation>
               <appinfo>
                 <sc:taggedValue tag="maxOccurs">*</sc:taggedValue>
               </appinfo>
             </annotation>
-            <complexType>
-              <sequence>
-                <element ref="SRIADE:InformationNeed"/>
-              </sequence>
-            </complexType>
           </element>
           <element maxOccurs="unbounded" minOccurs="0" name="consistsOf">
             <annotation>
@@ -756,17 +825,12 @@ Outdoor: illuminances, luminance, cloud cover, etc.</documentation>
               </sequence>
             </complexType>
           </element>
-          <element maxOccurs="unbounded" minOccurs="0" name="isAssessed">
+          <element maxOccurs="unbounded" minOccurs="0" name="isAssessed" type="SRIADE:SRIAssessmentPropertyType">
             <annotation>
               <appinfo>
                 <sc:taggedValue tag="maxOccurs">*</sc:taggedValue>
               </appinfo>
             </annotation>
-            <complexType>
-              <sequence>
-                <element ref="SRIADE:SRIAssessment"/>
-              </sequence>
-            </complexType>
           </element>
         </sequence>
       </extension>
@@ -789,17 +853,12 @@ Outdoor: illuminances, luminance, cloud cover, etc.</documentation>
         <sequence>
           <element name="version" type="integer"/>
           <element name="description" type="string"/>
-          <element maxOccurs="unbounded" minOccurs="0" name="isPartOfCatalogue">
+          <element maxOccurs="unbounded" minOccurs="0" name="isPartOfCatalogue" type="SRIADE:SRIServicePropertyType">
             <annotation>
               <appinfo>
                 <sc:taggedValue tag="maxOccurs">*</sc:taggedValue>
               </appinfo>
             </annotation>
-            <complexType>
-              <sequence>
-                <element ref="SRIADE:SRIService"/>
-              </sequence>
-            </complexType>
           </element>
         </sequence>
       </extension>
@@ -829,6 +888,11 @@ Outdoor: illuminances, luminance, cloud cover, etc.</documentation>
     <sequence>
       <element name="description" type="string"/>
       <element name="hasAPI" type="boolean"/>
+      <element name="accessType" type="SRIADE:AcessTypeType">
+        <annotation>
+          <documentation>Type of the Access: Web Based, Tool Based or other.</documentation>
+        </annotation>
+      </element>
       <element name="hasEndpoint" type="boolean"/>
     </sequence>
   </complexType>

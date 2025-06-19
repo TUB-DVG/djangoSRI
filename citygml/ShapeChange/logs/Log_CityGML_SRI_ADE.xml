@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><ShapeChangeResult xmlns="http://www.interactive-instruments.de/ShapeChange/Result" xmlns:r="http://www.interactive-instruments.de/ShapeChange/Result" config="C:\Users\felix\Programmieren\djangoSRI\citygml\ShapeChange\ShapeChangeConfigurationFile_SRI_ADE.xml" end="Sat Apr 19 15:05:14 CEST 2025" resultCode="0" start="Sat Apr 19 15:01:25 CEST 2025" version="4.0.0">
+<?xml version="1.0" encoding="UTF-8"?><ShapeChangeResult xmlns="http://www.interactive-instruments.de/ShapeChange/Result" xmlns:r="http://www.interactive-instruments.de/ShapeChange/Result" config="C:\Users\felix\Programmieren\djangoSRI\citygml\ShapeChange\ShapeChangeConfigurationFile_SRI_ADE.xml" end="Thu Jun 19 11:19:51 CEST 2025" resultCode="0" start="Thu Jun 19 11:16:20 CEST 2025" version="4.0.0">
   <Messages>
     <ProcessFlowInfo message="---------- Semantic validation of ShapeChange configuration: START ----------"/>
     <Info message="Validating input parameters."/>
@@ -12,27 +12,8 @@
     <Info message="Connected to C:\Users\felix\Programmieren\djangoSRI\citygml\UML\SRI_ADE.qea"/>
     <Info message="Starting reading C:\Users\felix\Programmieren\djangoSRI\citygml\UML\SRI_ADE.qea"/>
     <Info message="Finished reading C:\Users\felix\Programmieren\djangoSRI\citygml\UML\SRI_ADE.qea"/>
-    <Warning message="Restriction of property 'other' in class 'EnergyData' from supertype 'DataCategoryMeta'."/>
     <ProcessFlowInfo message="Application schema found, package name: 'SRIADE', target namespace: 'http://www.citygml.org/ade/SRIADE/0.1'"/>
     <ProcessFlowInfo message="Now processing target 'XML Schema' for input 'INPUT'."/>
-    <Error message="XML Schema Target: The class 'URL' referenced from class 'DataConnector' is not part of any package nor is it mapped to a well-known XML Schema type. The class is ignored.">
-      <Detail message="Context: Class 'Model::ISO TC211::ISO 19115-All Metadata (parts and versions)::ISO 19115:2003 Metadata::Citation and responsible party information::URL'"/>
-    </Error>
-    <Error message="The class 'BooleanValue' is referenced, but is not part of any schema in the model nor is it mapped to a well-known XML Schema type. The class is ignored.">
-      <Detail message="Context: Class 'Model::ISO TC211::ISO 19136 GML::valueObjects::BooleanValue'"/>
-    </Error>
-    <Error message="The class 'Category' is referenced, but is not part of any schema in the model nor is it mapped to a well-known XML Schema type. The class is ignored.">
-      <Detail message="Context: Class 'Model::ISO TC211::ISO 19136 GML::valueObjects::Category'"/>
-    </Error>
-    <Error message="The class 'Count' is referenced, but is not part of any schema in the model nor is it mapped to a well-known XML Schema type. The class is ignored.">
-      <Detail message="Context: Class 'Model::ISO TC211::ISO 19136 GML::valueObjects::Count'"/>
-    </Error>
-    <Error message="The class 'Quantity' is referenced, but is not part of any schema in the model nor is it mapped to a well-known XML Schema type. The class is ignored.">
-      <Detail message="Context: Class 'Model::ISO TC211::ISO 19136 GML::valueObjects::Quantity'"/>
-    </Error>
-    <Error message="XML Schema Target: The class 'PositiveInteger' referenced from class 'SRIServiceCatalogue' is not part of any package nor is it mapped to a well-known XML Schema type. The class is ignored.">
-      <Detail message="Context: Class 'Model::ISO TC211::ISO 19136 GML::basicTypes::PositiveInteger'"/>
-    </Error>
     <ProcessFlowInfo message="Executed target class 'de.interactive_instruments.shapechange.core.target.xmlschema.XmlSchema' for input ID: 'INPUT'.&#10;-------------------------------------------------"/>
     <ProcessFlowInfo message="Application schema found, package name: 'SRIADE', target namespace: 'http://www.citygml.org/ade/SRIADE/0.1'"/>
     <ProcessFlowInfo message="Now processing target 'Code List Dictionary' for input 'INPUT'."/>
