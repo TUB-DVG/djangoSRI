@@ -10,20 +10,13 @@ from sridb.modules.sri.sri import (
 from sridb.management.commands.cityobject import get_or_create_building, get_or_create_cityobject
 
 from sridb.modules.sri.information_need import (
-    SRIInformationNeed,
-    SRIAssetData,
-    SRIIndoorEnvironmentalData,
-    SRIControlLogic,
-    SRICyberDeviceData,
-    SRIDatacategoryMeta,
-    SRIEnergyData,
-    SRIOperationalData,
-    SRIOutdoorenvironmentalData,
-    SRIOnsiteenergygeneration,
-    SRICyberDeviceData,
-    SRIUtilityGridData
+    SRIAssetData, SRIIndoorEnvironmentalData, SRIControlLogic,
+    SRICyberDeviceData, SRIEnergyData, SRIOperationalData,
+    SRIOutdoorenvironmentalData, SRIOnsiteenergygeneration,
+    SRIInformationNeed, SRIUtilityGridData,
+    SRIInformationNeedData
 )
-
+# must add SRIUsecase, if put in database layer
 from citydb.modules.core.objectclass import ObjectClass
 
 PARENT_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
@@ -77,97 +70,47 @@ def build_choice_lookup_for_model(model_class):
 
 
 class Command(BaseCommand):
-    help = "Import InformationNeed entries from the Excel archetype mapping."
+    help = 'Creates an archetype for a given data category'
 
     def add_arguments(self, parser):
-        parser.add_argument('gml_id', type=str,
-                            help='GML ID of the building to import for')
+        parser.add_argument('category', type=str, help='The data category to create an archetype for')
 
     def handle(self, *args, **options):
-        gml_id = options['gml_id']
+        category = options['category']
+        
+        # Map category names to their respective models
+        category_map = {
+            "Asset data":                     SRIAssetData,
+            "Indoor environmental data":       SRIIndoorEnvironmentalData,
+            "Outdoor environmental data":      SRIOutdoorenvironmentalData,
+            "Control logic":                  SRIControlLogic,
+            "Cyber device data":              SRICyberDeviceData,
+            "Energy data":                    SRIEnergyData,
+            "Operational data":               SRIOperationalData,
+            "Utility grid data":              SRIUtilityGridData,
+            "Onsite energy generation":       SRIOnsiteenergygeneration,
+            "Information need":               SRIInformationNeed,
+            "Information need data":          SRIInformationNeedData
+        }
+        # must add SRIUsecase, if put in database layer
+        if category not in category_map:
+            self.stdout.write(self.style.ERROR(f'Unknown category: {category}'))
+            self.stdout.write(self.style.NOTICE('Available categories:'))
+            for cat in category_map.keys():
+                self.stdout.write(self.style.NOTICE(f'  - {cat}'))
+            return
 
-        # 1) Resolve building & its services
-        building = get_or_create_building(gml_id)
+        model = category_map[category]
+        
+        # Create the archetype
         try:
-            sri_building = SRIBuilding.objects.get(id=building)
-        except SRIBuilding.DoesNotExist:
-            self.stderr.write(f"No SRI building for GML ID {gml_id}")
-            return
-
-        services = SRISriservice.objects.filter(building=sri_building)
-        if not services:
-            self.stderr.write(f"No services found for building {gml_id}")
-            return
-
-        # 2) Preload ADE ObjectClass 
-        oc_info_need = ObjectClass.objects.get(classname='InformationNeed')
-
-        created = 0
-        skipped = 0
-
-        with transaction.atomic():
-            for svc in services:
-                df = ARCHETYPE_CATALOGUE[
-                    (ARCHETYPE_CATALOGUE['FunctionalityLevel'] == svc.functionalitylevel) &
-                    (ARCHETYPE_CATALOGUE['Smart ready service'] == svc.servicename)
-                ]
-                if df.empty:
-                    self.stderr.write(
-                        f"  • No archetype row for service {svc.servicename!r} @ level {svc.functionalitylevel}"
-                    )
-                    continue
-                row = df.iloc[0]
-
-
-                # For each info‐need column:
-                for col in INFORMATION_NEED_COLUMNS[1:]:
-                    cell = row.get(col, '')
-                    if not isinstance(cell, str) or ':' not in cell:
-                        continue
-
-                    # Split into multiple label:desc by semicolon
-                    segments = [seg.strip() for seg in cell.split(';') if ':' in seg]
-                    for seg in segments:
-                        label, desc = [t.strip() for t in seg.split(':', 1)]
-                        SubModel = INFORMATION_NEED_OBJECTS[col]
-                        lookup   = build_choice_lookup_for_model(SubModel)
-                        field_name, key = lookup.get(label.lower(), (None, None))
-                        if not field_name:
-                            self.stderr.write(
-                                f"    – Unmapped label {label!r} for {SubModel.__name__}"
-                            )
-                            continue
-
-                        # 3) Create a fresh CityObject for this InformationNeed
-                        cityobj = get_or_create_cityobject(
-                            f"IN_{svc.id}_{col[:3]}_{label[:3]}"
-                        )
-                        # 4) Create the base record
-                        base = SRIInformationNeed.objects.create(
-                            id=cityobj,
-                            descriptioninformationneed=desc,
-                            objectclass=oc_info_need,
-                        )
-                        break
-
-                        # 5) Decide if this is a direct subtype or a two-step via SRIDatacategoryMeta
-                        parent = SubModel._meta.get_field('id').remote_field.model
-                        if parent is SRIDatacategoryMeta:
-                            # create the intermediate datacategory row
-                            datacat = SRIDatacategoryMeta.objects.create(
-                                id=base,
-                                datascale=None,
-                                other=None
-                            )
-                            # now the real subtype
-                            SubModel.objects.create(id=datacat, **{field_name: key})
-                        else:
-                            # direct subtype
-                            SubModel.objects.create(id=base, **{field_name: key})
-
-                        created += 1
-
-        self.stdout.write(self.style.SUCCESS(
-            f"Imported {created} InformationNeed entries "
-            f"for building {gml_id}"
-        ))
+            # Get the parent class if it exists
+            parent = model.__bases__[0]
+            
+            # Create the object
+            obj = model.objects.create()
+            
+            self.stdout.write(self.style.SUCCESS(f'Successfully created archetype for {category}'))
+            
+        except Exception as e:
+            self.stdout.write(self.style.ERROR(f'Failed to create archetype: {str(e)}'))
