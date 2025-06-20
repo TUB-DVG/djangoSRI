@@ -683,7 +683,7 @@ Outdoor: illuminances, luminance, cloud cover, etc.</documentation>
           <element minOccurs="0" name="score" type="integer"/>
           <element minOccurs="0" name="dateOfAssessment" type="date"/>
           <element minOccurs="0" name="assessor" type="SRIADE:AssessorPropertyType"/>
-          <element name="methodology"/>
+          <element name="sriMethodology" type="SRIADE:SRIMethodologyType"/>
           <element maxOccurs="unbounded" minOccurs="0" name="isPartOfAssessment" type="SRIADE:SRIServicePropertyType">
             <annotation>
               <appinfo>
@@ -760,6 +760,17 @@ Outdoor: illuminances, luminance, cloud cover, etc.</documentation>
       <enumeration value="Other"/>
     </restriction>
   </simpleType>
+  <simpleType name="SRIMethodologyType">
+    <restriction base="string">
+      <enumeration value="MethodA"/>
+      <enumeration value="MethodB"/>
+      <enumeration value="Other">
+        <annotation>
+          <documentation>Methodology of the SRI Assessment.</documentation>
+        </annotation>
+      </enumeration>
+    </restriction>
+  </simpleType>
   <element name="SRIService" substitutionGroup="gml:_Feature" type="SRIADE:SRIServiceType">
     <annotation>
       <documentation>Contains the information on a specific service, the minimum information include, Code (e.g., MC-3), Domain (e.g., Monitoring and control), service group (e.g., HVAC interaction control), Name (e.g., Run time management of HVAC systems), Preconditions (e.g. " "), part of Method A (e.g., True), part of Method B (e.g., False).</documentation>
@@ -833,7 +844,10 @@ Outdoor: illuminances, luminance, cloud cover, etc.</documentation>
   <complexType name="SRI_SriAssessment_BuildingType">
     <complexContent>
       <extension base="gml:AbstractGMLType">
-        <sequence/>
+        <sequence>
+          <element name="buildingAssessment" type="gml:ReferenceType"/>
+          <element name="sriBuilding" type="gml:ReferenceType"/>
+        </sequence>
       </extension>
     </complexContent>
   </complexType>
