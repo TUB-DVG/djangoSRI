@@ -1,4 +1,4 @@
--- This document was automatically created by the ADE-Manager tool of 3DCityDB (https://www.3dcitydb.org) on 2025-06-20 01:49:58 
+-- This document was automatically created by the ADE-Manager tool of 3DCityDB (https://www.3dcitydb.org) on 2025-06-20 15:04:01 
 -- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
 -- *********************************** Drop foreign keys ********************************** 
 -- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
@@ -130,6 +130,12 @@ ALTER TABLE sri_outdoorenvironmentald
 -- -------------------------------------------------------------------- 
 ALTER TABLE sri_servicecatalogue
     DROP CONSTRAINT sri_servicecatalogue_fk;
+
+-- -------------------------------------------------------------------- 
+-- sri_sri_sriasses_building 
+-- -------------------------------------------------------------------- 
+ALTER TABLE sri_sri_sriasses_building
+    DROP CONSTRAINT sri_sri_sriasse_buildin_fk;
 
 -- -------------------------------------------------------------------- 
 -- sri_sriassessment 
@@ -271,6 +277,11 @@ DROP TABLE sri_outdoorenvironmentald;
 -- sri_servicecatalogue 
 -- -------------------------------------------------------------------- 
 DROP TABLE sri_servicecatalogue;
+
+-- -------------------------------------------------------------------- 
+-- sri_sri_sriasses_building 
+-- -------------------------------------------------------------------- 
+DROP TABLE sri_sri_sriasses_building;
 
 -- -------------------------------------------------------------------- 
 -- sri_sriassessment 

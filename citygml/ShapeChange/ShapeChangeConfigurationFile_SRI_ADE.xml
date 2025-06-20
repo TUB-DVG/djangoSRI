@@ -14,7 +14,7 @@
     <parameter name="checkingConstraints" value="disabled"/>
     <parameter name="addTaggedValues" value="itemType"/>
     
-	<parameter name="representTaggedValues" value="topLevel,relationType,maxOccurs"/>
+	<parameter name="representTaggedValues" value="topLevel,relationType,maxOccurs,joinTable"/>
     <xi:include href="http://shapechange.net/resources/config/StandardAliases.xml"/>
     <stereotypeAliases>
       <StereotypeAlias wellknown="property" alias="Property"/>

@@ -1,4 +1,4 @@
--- This document was automatically created by the ADE-Manager tool of 3DCityDB (https://www.3dcitydb.org) on 2025-06-20 01:49:58 
+-- This document was automatically created by the ADE-Manager tool of 3DCityDB (https://www.3dcitydb.org) on 2025-06-20 15:04:01 
 -- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
 -- *********************************** Create tables ************************************** 
 -- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
@@ -270,6 +270,15 @@ CREATE TABLE sri_servicecatalogue
 );
 
 -- -------------------------------------------------------------------- 
+-- sri_sri_sriasses_building 
+-- -------------------------------------------------------------------- 
+CREATE TABLE sri_sri_sriasses_building
+(
+    id NUMBER(38) NOT NULL,
+    PRIMARY KEY (id)
+);
+
+-- -------------------------------------------------------------------- 
 -- sri_sriassessment 
 -- -------------------------------------------------------------------- 
 CREATE TABLE sri_sriassessment
@@ -463,6 +472,12 @@ REFERENCES sri_informationneeddataca (id);
 -- sri_servicecatalogue 
 -- -------------------------------------------------------------------- 
 ALTER TABLE sri_servicecatalogue ADD CONSTRAINT sri_servicecatalogue_fk FOREIGN KEY (id)
+REFERENCES cityobject (id);
+
+-- -------------------------------------------------------------------- 
+-- sri_sri_sriasses_building 
+-- -------------------------------------------------------------------- 
+ALTER TABLE sri_sri_sriasses_building ADD CONSTRAINT sri_sri_sriasse_buildin_fk FOREIGN KEY (id)
 REFERENCES cityobject (id);
 
 -- -------------------------------------------------------------------- 

@@ -829,6 +829,20 @@ Outdoor: illuminances, luminance, cloud cover, etc.</documentation>
     </sequence>
     <attributeGroup ref="gml:AssociationAttributeGroup"/>
   </complexType>
+  <element name="SRI_SriAssessment_Building" substitutionGroup="gml:_GML" type="SRIADE:SRI_SriAssessment_BuildingType"/>
+  <complexType name="SRI_SriAssessment_BuildingType">
+    <complexContent>
+      <extension base="gml:AbstractGMLType">
+        <sequence/>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="SRI_SriAssessment_BuildingPropertyType">
+    <sequence minOccurs="0">
+      <element ref="SRIADE:SRI_SriAssessment_Building"/>
+    </sequence>
+    <attributeGroup ref="gml:AssociationAttributeGroup"/>
+  </complexType>
   <element name="ServiceCatalogue" substitutionGroup="gml:_Feature" type="SRIADE:ServiceCatalogueType">
     <annotation>
       <documentation>The service catalogue from which the Service is obtained from.</documentation>

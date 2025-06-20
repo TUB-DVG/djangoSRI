@@ -110,7 +110,7 @@
             <attribute column="source" type="string" path="source" schema="sri"/>
             <attribute column="other" type="string" minOccurs="1" maxOccurs="1" path="other" schema="sri"/>
         </complexType>
-        <complexType id="sri_UtilityGridDataType" table="sri_utilitygriddata" objectClassId="13131336" path="UtilityGridData" schema="sri">
+        <complexType id="sri_UtilityGridDataType" table="sri_utilitygriddata" objectClassId="13131337" path="UtilityGridData" schema="sri">
             <extension base="sri_InformationNeedDataCategoryType">
                 <join table="sri_informationneeddataca" fromColumn="id" toColumn="id" toRole="parent"/>
             </extension>
@@ -119,6 +119,13 @@
             <attribute column="other" type="string" minOccurs="1" maxOccurs="1" path="other" schema="sri"/>
         </complexType>
     </complexTypes>
+    <objectTypes>
+        <objectType id="sri_SRI_SriAssessment_BuildingType" table="sri_sri_sriasses_building" objectClassId="13131335" path="SRI_SriAssessment_Building" schema="sri">
+            <extension base="AbstractGMLType">
+                <join table="cityobject" fromColumn="id" toColumn="id" toRole="parent"/>
+            </extension>
+        </objectType>
+    </objectTypes>
     <featureTypes>
         <featureType id="sri_CommunicationProtocolType" table="sri_communicationprotocol" objectClassId="13131316" path="CommunicationProtocol" schema="sri">
             <extension base="sri_ICTEquipmentType">
@@ -233,7 +240,7 @@
             <attribute column="type" type="string" minOccurs="1" maxOccurs="1" path="type" schema="sri"/>
             <attribute column="version" type="string" minOccurs="1" maxOccurs="1" path="version" schema="sri"/>
         </featureType>
-        <featureType id="sri_ServiceCatalogueType" table="sri_servicecatalogue" objectClassId="13131335" path="ServiceCatalogue" schema="sri">
+        <featureType id="sri_ServiceCatalogueType" table="sri_servicecatalogue" objectClassId="13131336" path="ServiceCatalogue" schema="sri">
             <extension base="AbstractFeatureType">
                 <join table="cityobject" fromColumn="id" toColumn="id" toRole="parent"/>
             </extension>
