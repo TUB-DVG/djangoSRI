@@ -17,6 +17,7 @@ class SRIAssessor(models.Model):
 
     class Meta:
         db_table = 'sri_assessor'
+        managed = False  # Since the table already exists in the database
 
 
 # SRI_building model
@@ -84,6 +85,7 @@ class SRIBuilding(models.Model):
 
     class Meta:
         db_table = 'sri_building'
+        managed = False  # Since the table already exists in the database
         
     def __str__(self):
         """Return a string representation of the SRI building."""
@@ -91,14 +93,15 @@ class SRIBuilding(models.Model):
 
 
 
-# SRI_methodology model
-class SRIMethodology(models.Model):
-    id = models.OneToOneField(CityObject, primary_key=True, on_delete=models.CASCADE, db_column='id')
-    preferredservicecatalogue = models.CharField(max_length=1000, blank=True, null=True)
-    preferredweightings = models.CharField(max_length=1000, blank=True, null=True)
-
-    class Meta:
-        db_table = 'sri_methodology'
+# SRI_methodology model -> currently not included - put in service layer 
+#class SRIMethodology(models.Model):
+#    id = models.OneToOneField(CityObject, primary_key=True, on_delete=models.CASCADE, db_column='id')
+#    preferredservicecatalogue = models.CharField(max_length=1000, blank=True, null=True)#
+#    preferredweightings = models.CharField(max_length=1000, blank=True, null=True)
+#
+#    class Meta:
+#        db_table = 'sri_methodology'
+        managed = False  # Since the table already exists in the database
 
 # SRI_servicecatalogue model - moved before SRISriAssessment to fix forward references
 class SRIServiceCatalogue(models.Model):
@@ -115,52 +118,40 @@ class SRIServiceCatalogue(models.Model):
 
     class Meta:
         db_table = 'sri_servicecatalogue'
+        managed = False  # Since the table already exists in the database
 
 
 # SRI_sriassessment model
 class SRISriAssessment(models.Model):
-    id = models.OneToOneField(CityObject, primary_key=True,
-                             on_delete=models.CASCADE, db_column='id')
-
- 
+    """Model for SRI assessments"""
+    id = models.OneToOneField(
+        CityObject,
+        primary_key=True,
+        on_delete=models.CASCADE,
+        db_column='id'
+    )
+    dateofassessment = models.DateTimeField(blank=True, null=True)
+    score = models.FloatField(blank=True, null=True)
     assessor_id = models.ForeignKey(
-        SRIAssessor,
+        'SRIAssessor',
         on_delete=models.SET_NULL,
         null=True,
         blank=True,
-        db_column='assessor_id',
-        related_name='assessments'
+        db_column='assessor_id'
     )
-    dateofassessment = models.DateTimeField(null=True, blank=True)
-    methodology = models.CharField(max_length=1000, blank=True, null=True)
-    score = models.IntegerField(null=True, blank=True)
-    
-    # Link assessment to services (as shown in diagram)
-    #services = models.ManyToManyField(
-    #    SRISriservice,
-    #    blank=True,
-    #    related_name='assessments',
-    ##    db_column='sriassessment_sriservice_id'
-   # )
+    buildings = models.ManyToManyField(
+        'SRIBuilding',
+        related_name='assessments',
+        db_table='sri_sriassessment_building'
+    )
 
     class Meta:
         db_table = 'sri_sriassessment'
-        indexes = [
-            models.Index(fields=['assessor_id']),
-        ]
+        managed = False
 
-    def save(self, *args, **kwargs):
-        # On first save, if no CityObject is linked, create one.
-        if not self.pk:
-            obj_class = ObjectClass.objects.get(classname='SRIAssessment')
-            city_obj = CityObject.objects.create(objectclass=obj_class)
-            self.id = city_obj
-        super().save(*args, **kwargs)
-
-    
     def __str__(self):
-        return str(self.id)
-    
+        return f"Assessment on {self.dateofassessment} (Score: {self.score})"
+
 class SRISriservice(models.Model):
     """
     SRI Service assignment for a building
@@ -215,43 +206,36 @@ class SRISriservice(models.Model):
     _userdefined                  = models.IntegerField(db_column='userdefined', null=True, blank=True)
 
     # — Relationships —
-    building = models.ForeignKey(
-        SRIBuilding,
-        on_delete=models.SET_NULL,
-        null=True,
-        blank=True,
-        related_name='services',
-        db_column='building_sriservice_id'
-    )
-
     catalogue = models.ForeignKey(
-        SRIServiceCatalogue,
+        'SRIServiceCatalogue', 
         on_delete=models.CASCADE,
         null=True,
         blank=True,
         related_name='sri_services',
-        db_column='servicecatalog_sriservice_id'
+        db_column='servicecatal_ispartofcata_id'
     )
-
     assessment = models.ForeignKey(
-        SRISriAssessment,
-        on_delete=models.CASCADE,
+        'SRISriAssessment',
+        on_delete=models.SET_NULL, 
         null=True,
         blank=True,
         related_name='services',
-        db_column='sriassessment_sriservice_id'
+        db_column='sriassessmen_ispartofasse_id'
     )
+
+    #building = models.ForeignKey(
+    #    'SRIBuilding',
+    #    on_delete=models.SET_NULL,
+    #    null=True,
+    #    blank=True,
+    #    related_name='services',
+    #    db_column='building_sriservice_id'
+    #)
 
     class Meta:
         db_table = 'sri_sriservice'
-        indexes = [
-            models.Index(fields=['catalogue']),
-            models.Index(fields=['building']),
-        ]
+        managed = False  # Since the table already exists in the database
 
-    def __str__(self):
-        return self.servicename or f"SRIService {str(self.id)}"
-    
     @property
     def partofmethoda(self):
         """Return _is_cooled.

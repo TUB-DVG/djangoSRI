@@ -1,14 +1,29 @@
 from rest_framework import serializers
 from sridb.modules.sri.sri import (
     SRISriservice, SRIBuilding, SRISriAssessment,
-    SRIServiceCatalogue, SRIMethodology, SRIAssessor
+    SRIServiceCatalogue,  SRIAssessor
 )
+# SRIMethodology, if put in database layer
 from citydb.modules.bldg.building import Building
 # Import the information need models
 from sridb.modules.sri.information_need import (
     SRIAssetData, SRIIndoorEnvironmentalData, SRIControlLogic, 
-    SRICyberDeviceData, SRIDatacategoryMeta, SRIEnergyData, 
-    SRIOperationalData, SRIOutdoorenvironmentalData, SRIOnsiteenergygeneration, SRIUsecase
+    SRICyberDeviceData, SRIEnergyData, SRIOperationalData,
+    SRIOutdoorenvironmentalData, SRIOnsiteenergygeneration,
+     SRIInformationNeed, SRIUtilityGridData,
+    SRIInformationNeedData, SRIDesignBasisData
+)
+# add SRIUsecase, if put in database layer
+from sridb.modules.sri.ict import (
+    SRIIctequipment,
+    SRIDataSource,
+    SRICommunicationProtocol,
+    SRIInterface,
+    SRIModel,
+    SRIDevice,
+    SRIDataConnector,
+    SRIIctequipment,
+    SRISupportedAccess
 )
 
 """
@@ -57,32 +72,33 @@ class SRIAssessorSerializer(serializers.ModelSerializer):
         model = SRIAssessor
         fields = '__all__'
 
-class SRIMethodologySerializer(serializers.ModelSerializer):
-    """Serializer for the SRI Methodology model."""
-    class Meta:
-        model = SRIMethodology
-        fields = '__all__'
+#class SRIMethodologySerializer(serializers.ModelSerializer):
+#    """Serializer for the SRI Methodology model."""
+#    class Meta:
+#        model = SRIMethodology
+#        fields = '__all__'
 
 class SRIAssessmentSerializer(serializers.ModelSerializer):
     """Serializer for the SRI Assessment model with related services."""
     services = SRIServiceSerializer(source='sri_services', many=True, read_only=True)
     buildings = SRIBuildingSerializer(many=True, read_only=True)
     assessor = SRIAssessorSerializer(source='assessor_assessments', read_only=True)
-    methodology = SRIMethodologySerializer(source='methodology_assessments', read_only=True)
+    #methodology = SRIMethodologySerializer(source='methodology_assessments', read_only=True)
     
     class Meta:
         model = SRISriAssessment
         fields = ['id', 'dateofassessment', 'score', 'services', 
                   'buildings',
                   'assessor_assessments', 'assessor',
-                  'methodology_assessments', 'methodology']
+                  'methodology_assessments']
+        # must add methodology if but in database layer
 
 
-class SRIUsecaseSerializer(serializers.ModelSerializer):
-    """Serializer for the SRI Usecase model."""
-    class Meta:
-        model = SRIUsecase
-        fields = '__all__'
+#class SRIUsecaseSerializer(serializers.ModelSerializer):
+ #   """Serializer for the SRI Usecase model."""
+#    class Meta:
+#        model = SRIUsecase
+#        fields = '__all__'
 
 # Information Need model serializers
 class SRIAssetDataSerializer(serializers.ModelSerializer):
@@ -105,11 +121,6 @@ class SRICyberDeviceDataSerializer(serializers.ModelSerializer):
         model = SRICyberDeviceData
         fields = '__all__'
 
-class SRIDatacategoryMetaSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = SRIDatacategoryMeta
-        fields = '__all__'
-
 class SRIEnergyDataSerializer(serializers.ModelSerializer):
     class Meta:
         model = SRIEnergyData
@@ -128,4 +139,67 @@ class SRIOutdoorenvironmentalDataSerializer(serializers.ModelSerializer):
 class SRIOnsiteenergygenerationSerializer(serializers.ModelSerializer):
     class Meta:
         model = SRIOnsiteenergygeneration
+        fields = '__all__'
+
+
+class SRIInformationNeedSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SRIInformationNeed
+        fields = '__all__'
+
+class SRIUtilityGridDataSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SRIUtilityGridData
+        fields = '__all__'
+
+class SRIDesignBasisDataSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SRIDesignBasisData
+        fields = '__all__'
+
+class SRIInformationNeedDataSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SRIInformationNeedData
+        fields = '__all__'
+
+
+# ICT model serializers
+class SRIDataSourceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SRIDataSource
+        fields = '__all__'
+
+class SRIDeviceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SRIDevice
+        fields = '__all__'  
+
+class SRIDataConnectorSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SRIDataConnector
+        fields = '__all__'
+
+class SRIIctequipmentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SRIIctequipment
+        fields = '__all__'
+
+class SRICommunicationProtocolSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SRICommunicationProtocol
+        fields = '__all__'
+
+class SRIInterfaceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SRIInterface
+        fields = '__all__'
+
+class SRIModelSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SRIModel
+        fields = '__all__'
+
+class SRISupportedAccessSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SRISupportedAccess
         fields = '__all__'
