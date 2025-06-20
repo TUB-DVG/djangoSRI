@@ -1,4 +1,4 @@
--- This document was automatically created by the ADE-Manager tool of 3DCityDB (https://www.3dcitydb.org) on 2025-06-19 11:23:13 
+-- This document was automatically created by the ADE-Manager tool of 3DCityDB (https://www.3dcitydb.org) on 2025-06-20 01:49:58 
 -- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
 -- *********************************** Drop foreign keys ********************************** 
 -- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
@@ -218,11 +218,6 @@ DROP TABLE sri_designbasisdata;
 DROP TABLE sri_energydata;
 
 -- -------------------------------------------------------------------- 
--- sri_functionalitylevel 
--- -------------------------------------------------------------------- 
-DROP TABLE sri_functionalitylevel;
-
--- -------------------------------------------------------------------- 
 -- sri_ictequipment 
 -- -------------------------------------------------------------------- 
 DROP TABLE sri_ictequipment;
@@ -306,8 +301,6 @@ DROP SEQUENCE sri_assessor_seq;
 DROP SEQUENCE sri_informationneedda_seq;
 
 DROP SEQUENCE sri_dataconnector_seq;
-
-DROP SEQUENCE sri_functionalityleve_seq;
 
 DROP SEQUENCE sri_supportedaccess_seq;
 

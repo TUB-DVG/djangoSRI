@@ -38,9 +38,14 @@
       <enumeration value="Tool"/>
       <enumeration value="Webbased"/>
       <enumeration value="Other"/>
+      <enumeration value="Endpoint"/>
     </restriction>
   </simpleType>
-  <element name="Assessor" substitutionGroup="gml:_Object" type="SRIADE:AssessorType"/>
+  <element name="Assessor" substitutionGroup="gml:_Object" type="SRIADE:AssessorType">
+    <annotation>
+      <documentation>The assessor, information according to the SRI 4.5 sheet.</documentation>
+    </annotation>
+  </element>
   <complexType name="AssessorType">
     <sequence>
       <element name="name" type="string"/>
@@ -85,14 +90,14 @@
       <enumeration value="Other"/>
     </restriction>
   </simpleType>
-  <element name="CommunicationProtocol" substitutionGroup="SRIADE:DataSource" type="SRIADE:CommunicationProtocolType">
+  <element name="CommunicationProtocol" substitutionGroup="SRIADE:ICTEquipment" type="SRIADE:CommunicationProtocolType">
     <annotation>
       <documentation>Specifies the communication protocol used by the device or system for data exchange.</documentation>
     </annotation>
   </element>
   <complexType name="CommunicationProtocolType">
     <complexContent>
-      <extension base="SRIADE:DataSourceType">
+      <extension base="SRIADE:ICTEquipmentType">
         <sequence>
           <element name="protocolType" type="string"/>
           <element name="protocolVersion" type="string">
@@ -411,26 +416,6 @@ Outdoor: illuminances, luminance, cloud cover, etc.</documentation>
       </enumeration>
     </restriction>
   </simpleType>
-  <element name="FunctionalityLevel" substitutionGroup="gml:_Object" type="SRIADE:FunctionalityLevelType">
-    <annotation>
-      <documentation>Description of the functionality level of a Smart Readiness Indicator (SRI). Description contains information such as Level Number, textual description and further remarks.</documentation>
-      <appinfo>
-        <sc:taggedValue tag="topLevel">true</sc:taggedValue>
-      </appinfo>
-    </annotation>
-  </element>
-  <complexType name="FunctionalityLevelType">
-    <sequence>
-      <element name="name" type="string"/>
-      <element name="description" type="string"/>
-      <element name="functionalityLevel" type="integer"/>
-    </sequence>
-  </complexType>
-  <complexType name="FunctionalityLevelPropertyType">
-    <sequence>
-      <element ref="SRIADE:FunctionalityLevel"/>
-    </sequence>
-  </complexType>
   <element name="ICTEquipment" substitutionGroup="SRIADE:DataSource" type="SRIADE:ICTEquipmentType">
     <annotation>
       <documentation>Relates to https://ontology.brickschema.org/brick/ICT_Equipment.html : Information and Communications Technology (ICT) equipment operates with a processor to process data or logic and create digital signals.</documentation>
@@ -528,6 +513,8 @@ Outdoor: illuminances, luminance, cloud cover, etc.</documentation>
         <sequence>
           <element name="supportedAccess" type="SRIADE:SupportedAccessPropertyType"/>
           <element name="interfaceType" type="string"/>
+          <element name="version" type="string"/>
+          <element name="software" type="string"/>
         </sequence>
       </extension>
     </complexContent>
@@ -693,10 +680,10 @@ Outdoor: illuminances, luminance, cloud cover, etc.</documentation>
     <complexContent>
       <extension base="gml:AbstractFeatureType">
         <sequence>
-          <element name="score" type="integer"/>
+          <element minOccurs="0" name="score" type="integer"/>
           <element minOccurs="0" name="dateOfAssessment" type="date"/>
           <element minOccurs="0" name="assessor" type="SRIADE:AssessorPropertyType"/>
-          <element name="methodology" type="string"/>
+          <element name="methodology"/>
           <element maxOccurs="unbounded" minOccurs="0" name="isPartOfAssessment" type="SRIADE:SRIServicePropertyType">
             <annotation>
               <appinfo>

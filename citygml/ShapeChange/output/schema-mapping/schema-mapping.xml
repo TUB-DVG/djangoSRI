@@ -12,21 +12,21 @@
         </schema>
     </applicationSchemas>
     <complexTypes>
-        <complexType id="sri_AssessorType" table="sri_assessor" objectClassId="1313131313" path="Assessor" schema="sri">
+        <complexType id="sri_AssessorType" table="sri_assessor" objectClassId="13131313" path="Assessor" schema="sri">
             <attribute column="name" type="string" minOccurs="1" maxOccurs="1" path="name" schema="sri"/>
             <attribute column="organisation" type="string" minOccurs="1" maxOccurs="1" path="organisation" schema="sri"/>
             <attribute column="email" type="string" minOccurs="1" maxOccurs="1" path="eMail" schema="sri"/>
             <attribute column="phonenumber" type="string" minOccurs="1" maxOccurs="1" path="phoneNumber" schema="sri"/>
         </complexType>
-        <complexType id="sri_AssetDataType" table="sri_assetdata" objectClassId="1313131314" path="AssetData" schema="sri">
+        <complexType id="sri_AssetDataType" table="sri_assetdata" objectClassId="13131314" path="AssetData" schema="sri">
             <extension base="sri_InformationNeedDataCategoryType">
                 <join table="sri_informationneeddataca" fromColumn="id" toColumn="id" toRole="parent"/>
             </extension>
             <attribute column="assettype" type="string" path="assetType" schema="sri"/>
             <attribute column="other" type="string" minOccurs="1" maxOccurs="1" path="other" schema="sri"/>
         </complexType>
-        <complexType id="sri_InformationNeedDataCategoryType" table="sri_informationneeddataca" objectClassId="1313131315" path="InformationNeedDataCategory" schema="sri"/>
-        <complexType id="sri_ControlLogicType" table="sri_controllogic" objectClassId="1313131318" path="ControlLogic" schema="sri">
+        <complexType id="sri_InformationNeedDataCategoryType" table="sri_informationneeddataca" objectClassId="13131315" path="InformationNeedDataCategory" schema="sri"/>
+        <complexType id="sri_ControlLogicType" table="sri_controllogic" objectClassId="13131319" path="ControlLogic" schema="sri">
             <extension base="sri_InformationNeedDataCategoryType">
                 <join table="sri_informationneeddataca" fromColumn="id" toColumn="id" toRole="parent"/>
             </extension>
@@ -35,19 +35,19 @@
             <attribute column="datascale" type="string" path="dataScale" schema="sri"/>
             <attribute column="other" type="string" minOccurs="1" maxOccurs="1" path="other" schema="sri"/>
         </complexType>
-        <complexType id="sri_CyberDeviceDataType" table="sri_cyberdevicedata" objectClassId="1313131319" path="CyberDeviceData" schema="sri">
+        <complexType id="sri_CyberDeviceDataType" table="sri_cyberdevicedata" objectClassId="13131320" path="CyberDeviceData" schema="sri">
             <extension base="sri_InformationNeedDataCategoryType">
                 <join table="sri_informationneeddataca" fromColumn="id" toColumn="id" toRole="parent"/>
             </extension>
             <attribute column="other" type="string" minOccurs="1" maxOccurs="1" path="other" schema="sri"/>
             <attribute column="cyberdevicetype" type="string" path="cyberDeviceType" schema="sri"/>
         </complexType>
-        <complexType id="sri_DataConnectorType" table="sri_dataconnector" objectClassId="1313131320" path="DataConnector" schema="sri">
+        <complexType id="sri_DataConnectorType" table="sri_dataconnector" objectClassId="13131321" path="DataConnector" schema="sri">
             <attribute column="modelschema" type="string" minOccurs="1" maxOccurs="1" path="modelSchema" schema="sri"/>
             <attribute column="modeluri" type="string" minOccurs="1" maxOccurs="1" path="modelURI" schema="sri"/>
             <attribute column="documentationurl" type="string" minOccurs="1" maxOccurs="1" path="documentationURL" schema="sri"/>
         </complexType>
-        <complexType id="sri_DesignBasisDataType" table="sri_designbasisdata" objectClassId="1313131321" path="DesignBasisData" schema="sri">
+        <complexType id="sri_DesignBasisDataType" table="sri_designbasisdata" objectClassId="13131322" path="DesignBasisData" schema="sri">
             <extension base="sri_InformationNeedDataCategoryType">
                 <join table="sri_informationneeddataca" fromColumn="id" toColumn="id" toRole="parent"/>
             </extension>
@@ -55,7 +55,7 @@
             <attribute column="datascale" type="string" path="dataScale" schema="sri"/>
             <attribute column="other" type="string" minOccurs="1" maxOccurs="1" path="other" schema="sri"/>
         </complexType>
-        <complexType id="sri_EnergyDataType" table="sri_energydata" objectClassId="1313131322" path="EnergyData" schema="sri">
+        <complexType id="sri_EnergyDataType" table="sri_energydata" objectClassId="13131323" path="EnergyData" schema="sri">
             <extension base="sri_InformationNeedDataCategoryType">
                 <join table="sri_informationneeddataca" fromColumn="id" toColumn="id" toRole="parent"/>
             </extension>
@@ -64,25 +64,20 @@
             <attribute column="enduse" type="string" path="endUse" schema="sri"/>
             <attribute column="other" type="string" minOccurs="1" maxOccurs="1" path="other" schema="sri"/>
         </complexType>
-        <complexType id="sri_FunctionalityLevelType" table="sri_functionalitylevel" objectClassId="1313131323" path="FunctionalityLevel" schema="sri">
-            <attribute column="name" type="string" minOccurs="1" maxOccurs="1" path="name" schema="sri"/>
-            <attribute column="description" type="string" minOccurs="1" maxOccurs="1" path="description" schema="sri"/>
-            <attribute column="functionalitylevel" type="integer" minOccurs="1" maxOccurs="1" path="functionalityLevel" schema="sri"/>
-        </complexType>
-        <complexType id="sri_SupportedAccessType" table="sri_supportedaccess" objectClassId="1313131325" path="SupportedAccess" schema="sri">
+        <complexType id="sri_SupportedAccessType" table="sri_supportedaccess" objectClassId="13131324" path="SupportedAccess" schema="sri">
             <attribute column="description" type="string" minOccurs="1" maxOccurs="1" path="description" schema="sri"/>
             <attribute column="hasapi" type="boolean" minOccurs="1" maxOccurs="1" path="hasAPI" schema="sri"/>
             <attribute column="accesstype" type="string" minOccurs="1" maxOccurs="1" path="accessType" schema="sri"/>
             <attribute column="hasendpoint" type="boolean" minOccurs="1" maxOccurs="1" path="hasEndpoint" schema="sri"/>
         </complexType>
-        <complexType id="sri_IndoorEnvironmentalDataType" table="sri_indoorenvironmentalda" objectClassId="1313131326" path="IndoorEnvironmentalData" schema="sri">
+        <complexType id="sri_IndoorEnvironmentalDataType" table="sri_indoorenvironmentalda" objectClassId="13131325" path="IndoorEnvironmentalData" schema="sri">
             <extension base="sri_InformationNeedDataCategoryType">
                 <join table="sri_informationneeddataca" fromColumn="id" toColumn="id" toRole="parent"/>
             </extension>
             <attribute column="environmentaldatatype" type="string" path="environmentalDataType" schema="sri"/>
             <attribute column="other" type="string" minOccurs="1" maxOccurs="1" path="other" schema="sri"/>
         </complexType>
-        <complexType id="sri_OccupantDataType" table="sri_occupantdata" objectClassId="1313131332" path="OccupantData" schema="sri">
+        <complexType id="sri_OccupantDataType" table="sri_occupantdata" objectClassId="13131331" path="OccupantData" schema="sri">
             <extension base="sri_InformationNeedDataCategoryType">
                 <join table="sri_informationneeddataca" fromColumn="id" toColumn="id" toRole="parent"/>
             </extension>
@@ -90,7 +85,7 @@
             <attribute column="datascale" type="string" path="dataScale" schema="sri"/>
             <attribute column="other" type="string" minOccurs="1" maxOccurs="1" path="other" schema="sri"/>
         </complexType>
-        <complexType id="sri_OnsiteEnergyGenerationType" table="sri_onsiteenergygeneratio" objectClassId="1313131333" path="OnsiteEnergyGeneration" schema="sri">
+        <complexType id="sri_OnsiteEnergyGenerationType" table="sri_onsiteenergygeneratio" objectClassId="13131332" path="OnsiteEnergyGeneration" schema="sri">
             <extension base="sri_InformationNeedDataCategoryType">
                 <join table="sri_informationneeddataca" fromColumn="id" toColumn="id" toRole="parent"/>
             </extension>
@@ -98,7 +93,7 @@
             <attribute column="nonrenewableenergy" type="string" path="nonRenewableEnergy" schema="sri"/>
             <attribute column="other" type="string" minOccurs="1" maxOccurs="1" path="other" schema="sri"/>
         </complexType>
-        <complexType id="sri_OperationalDataType" table="sri_operationaldata" objectClassId="1313131334" path="OperationalData" schema="sri">
+        <complexType id="sri_OperationalDataType" table="sri_operationaldata" objectClassId="13131333" path="OperationalData" schema="sri">
             <extension base="sri_InformationNeedDataCategoryType">
                 <join table="sri_informationneeddataca" fromColumn="id" toColumn="id" toRole="parent"/>
             </extension>
@@ -107,7 +102,7 @@
             <attribute column="datascale" type="string" path="dataScale" schema="sri"/>
             <attribute column="other" type="string" minOccurs="1" maxOccurs="1" path="other" schema="sri"/>
         </complexType>
-        <complexType id="sri_OutdoorEnvironmentalDataType" table="sri_outdoorenvironmentald" objectClassId="1313131335" path="OutdoorEnvironmentalData" schema="sri">
+        <complexType id="sri_OutdoorEnvironmentalDataType" table="sri_outdoorenvironmentald" objectClassId="13131334" path="OutdoorEnvironmentalData" schema="sri">
             <extension base="sri_InformationNeedDataCategoryType">
                 <join table="sri_informationneeddataca" fromColumn="id" toColumn="id" toRole="parent"/>
             </extension>
@@ -115,7 +110,7 @@
             <attribute column="source" type="string" path="source" schema="sri"/>
             <attribute column="other" type="string" minOccurs="1" maxOccurs="1" path="other" schema="sri"/>
         </complexType>
-        <complexType id="sri_UtilityGridDataType" table="sri_utilitygriddata" objectClassId="1313131337" path="UtilityGridData" schema="sri">
+        <complexType id="sri_UtilityGridDataType" table="sri_utilitygriddata" objectClassId="13131336" path="UtilityGridData" schema="sri">
             <extension base="sri_InformationNeedDataCategoryType">
                 <join table="sri_informationneeddataca" fromColumn="id" toColumn="id" toRole="parent"/>
             </extension>
@@ -125,28 +120,14 @@
         </complexType>
     </complexTypes>
     <featureTypes>
-        <featureType id="sri_CommunicationProtocolType" table="sri_communicationprotocol" objectClassId="1313131316" path="CommunicationProtocol" schema="sri">
-            <extension base="sri_DataSourceType">
-                <join table="sri_datasource" fromColumn="id" toColumn="id" toRole="parent"/>
+        <featureType id="sri_CommunicationProtocolType" table="sri_communicationprotocol" objectClassId="13131316" path="CommunicationProtocol" schema="sri">
+            <extension base="sri_ICTEquipmentType">
+                <join table="sri_ictequipment" fromColumn="id" toColumn="id" toRole="parent"/>
             </extension>
             <attribute column="protocoltype" type="string" minOccurs="1" maxOccurs="1" path="protocolType" schema="sri"/>
             <attribute column="protocolversion" type="string" minOccurs="1" maxOccurs="1" path="protocolVersion" schema="sri"/>
         </featureType>
-        <featureType id="sri_DataSourceType" table="sri_datasource" objectClassId="1313131317" path="DataSource" schema="sri">
-            <extension base="AbstractFeatureType">
-                <join table="cityobject" fromColumn="id" toColumn="id" toRole="parent"/>
-            </extension>
-            <attribute column="name" type="string" minOccurs="1" maxOccurs="1" path="name" schema="sri"/>
-            <attribute column="description" type="string" minOccurs="1" maxOccurs="1" path="description" schema="sri"/>
-            <complexProperty minOccurs="1" maxOccurs="1" path="dataConnector" schema="sri">
-                <type path="DataConnector" schema="sri">
-                    <attribute column="dataconnectortyp_modelschema" type="string" minOccurs="1" maxOccurs="1" path="modelSchema" schema="sri"/>
-                    <attribute column="dataconnectortype_modeluri" type="string" minOccurs="1" maxOccurs="1" path="modelURI" schema="sri"/>
-                    <attribute column="dataconnectort_documentation" type="string" minOccurs="1" maxOccurs="1" path="documentationURL" schema="sri"/>
-                </type>
-            </complexProperty>
-        </featureType>
-        <featureType id="sri_ICTEquipmentType" table="sri_ictequipment" objectClassId="1313131324" path="ICTEquipment" schema="sri">
+        <featureType id="sri_ICTEquipmentType" table="sri_ictequipment" objectClassId="13131317" path="ICTEquipment" schema="sri">
             <extension base="sri_DataSourceType">
                 <join table="sri_datasource" fromColumn="id" toColumn="id" toRole="parent"/>
             </extension>
@@ -162,7 +143,21 @@
                 </type>
             </complexProperty>
         </featureType>
-        <featureType id="sri_InformationNeedType" table="sri_informationneed" objectClassId="1313131327" path="InformationNeed" schema="sri">
+        <featureType id="sri_DataSourceType" table="sri_datasource" objectClassId="13131318" path="DataSource" schema="sri">
+            <extension base="AbstractFeatureType">
+                <join table="cityobject" fromColumn="id" toColumn="id" toRole="parent"/>
+            </extension>
+            <attribute column="name" type="string" minOccurs="1" maxOccurs="1" path="name" schema="sri"/>
+            <attribute column="description" type="string" minOccurs="1" maxOccurs="1" path="description" schema="sri"/>
+            <complexProperty minOccurs="1" maxOccurs="1" path="dataConnector" schema="sri">
+                <type path="DataConnector" schema="sri">
+                    <attribute column="dataconnectortyp_modelschema" type="string" minOccurs="1" maxOccurs="1" path="modelSchema" schema="sri"/>
+                    <attribute column="dataconnectortype_modeluri" type="string" minOccurs="1" maxOccurs="1" path="modelURI" schema="sri"/>
+                    <attribute column="dataconnectort_documentation" type="string" minOccurs="1" maxOccurs="1" path="documentationURL" schema="sri"/>
+                </type>
+            </complexProperty>
+        </featureType>
+        <featureType id="sri_InformationNeedType" table="sri_informationneed" objectClassId="13131326" path="InformationNeed" schema="sri">
             <extension base="AbstractFeatureType">
                 <join table="cityobject" fromColumn="id" toColumn="id" toRole="parent"/>
             </extension>
@@ -176,7 +171,7 @@
                 <join table="sri_sriservice" fromColumn="id" toColumn="informationn_specifiesinf_id" toRole="child"/>
             </featureProperty>
         </featureType>
-        <featureType id="sri_SRIServiceType" table="sri_sriservice" objectClassId="1313131328" path="SRIService" schema="sri">
+        <featureType id="sri_SRIServiceType" table="sri_sriservice" objectClassId="13131327" path="SRIService" schema="sri">
             <extension base="AbstractFeatureType">
                 <join table="cityobject" fromColumn="id" toColumn="id" toRole="parent"/>
             </extension>
@@ -199,21 +194,21 @@
                 <join table="sri_sriassessment" fromColumn="id" toColumn="sriservice_isassessed_id" toRole="child"/>
             </featureProperty>
         </featureType>
-        <featureType id="sri_SRIAssessmentType" table="sri_sriassessment" objectClassId="1313131329" topLevel="true" path="SRIAssessment" schema="sri">
+        <featureType id="sri_SRIAssessmentType" table="sri_sriassessment" objectClassId="13131328" topLevel="true" path="SRIAssessment" schema="sri">
             <extension base="AbstractFeatureType">
                 <join table="cityobject" fromColumn="id" toColumn="id" toRole="parent"/>
             </extension>
-            <attribute column="score" type="integer" minOccurs="1" maxOccurs="1" path="score" schema="sri"/>
+            <attribute column="score" type="integer" maxOccurs="1" path="score" schema="sri"/>
             <attribute column="dateofassessment" type="timestamp" maxOccurs="1" path="dateOfAssessment" schema="sri"/>
             <complexProperty refType="sri_AssessorType" maxOccurs="1" path="assessor" schema="sri">
                 <join table="sri_assessor" fromColumn="assessor_id" toColumn="id" toRole="parent"/>
             </complexProperty>
-            <attribute column="methodology" type="string" minOccurs="1" maxOccurs="1" path="methodology" schema="sri"/>
+            <attribute column="methodology" type="clob" minOccurs="1" maxOccurs="1" path="methodology" schema="sri"/>
             <featureProperty target="sri_SRIServiceType" path="isPartOfAssessment" schema="sri">
                 <join table="sri_sriservice" fromColumn="id" toColumn="sriassessmen_ispartofasse_id" toRole="child"/>
             </featureProperty>
         </featureType>
-        <featureType id="sri_InterfaceType" table="sri_interface" objectClassId="1313131330" path="Interface" schema="sri">
+        <featureType id="sri_InterfaceType" table="sri_interface" objectClassId="13131329" path="Interface" schema="sri">
             <extension base="sri_DataSourceType">
                 <join table="sri_datasource" fromColumn="id" toColumn="id" toRole="parent"/>
             </extension>
@@ -226,8 +221,10 @@
                 </type>
             </complexProperty>
             <attribute column="interfacetype" type="string" minOccurs="1" maxOccurs="1" path="interfaceType" schema="sri"/>
+            <attribute column="version" type="string" minOccurs="1" maxOccurs="1" path="version" schema="sri"/>
+            <attribute column="software" type="string" minOccurs="1" maxOccurs="1" path="software" schema="sri"/>
         </featureType>
-        <featureType id="sri_ModelType" table="sri_model" objectClassId="1313131331" path="Model" schema="sri">
+        <featureType id="sri_ModelType" table="sri_model" objectClassId="13131330" path="Model" schema="sri">
             <extension base="sri_DataSourceType">
                 <join table="sri_datasource" fromColumn="id" toColumn="id" toRole="parent"/>
             </extension>
@@ -236,7 +233,7 @@
             <attribute column="type" type="string" minOccurs="1" maxOccurs="1" path="type" schema="sri"/>
             <attribute column="version" type="string" minOccurs="1" maxOccurs="1" path="version" schema="sri"/>
         </featureType>
-        <featureType id="sri_ServiceCatalogueType" table="sri_servicecatalogue" objectClassId="1313131336" path="ServiceCatalogue" schema="sri">
+        <featureType id="sri_ServiceCatalogueType" table="sri_servicecatalogue" objectClassId="13131335" path="ServiceCatalogue" schema="sri">
             <extension base="AbstractFeatureType">
                 <join table="cityobject" fromColumn="id" toColumn="id" toRole="parent"/>
             </extension>

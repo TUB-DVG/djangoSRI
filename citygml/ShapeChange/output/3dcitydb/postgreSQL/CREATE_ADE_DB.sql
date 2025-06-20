@@ -1,4 +1,4 @@
--- This document was automatically created by the ADE-Manager tool of 3DCityDB (https://www.3dcitydb.org) on 2025-06-19 11:23:13 
+-- This document was automatically created by the ADE-Manager tool of 3DCityDB (https://www.3dcitydb.org) on 2025-06-20 01:49:58 
 -- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
 -- *********************************** Create tables ************************************** 
 -- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
@@ -130,18 +130,6 @@ CREATE TABLE sri_energydata
 );
 
 -- -------------------------------------------------------------------- 
--- sri_functionalitylevel 
--- -------------------------------------------------------------------- 
-CREATE TABLE sri_functionalitylevel
-(
-    id BIGINT NOT NULL,
-    description VARCHAR(1000),
-    functionalitylevel INTEGER,
-    name VARCHAR(1000),
-    PRIMARY KEY (id)
-);
-
--- -------------------------------------------------------------------- 
 -- sri_ictequipment 
 -- -------------------------------------------------------------------- 
 CREATE TABLE sri_ictequipment
@@ -199,10 +187,12 @@ CREATE TABLE sri_interface
     id BIGINT NOT NULL,
     interfacetype VARCHAR(1000),
     objectclass_id INTEGER,
+    software VARCHAR(1000),
     supportedaccesst_description VARCHAR(1000),
     supportedaccesst_hasendpoint NUMERIC,
     supportedaccessty_accesstype VARCHAR(1000),
     supportedaccesstype_hasapi NUMERIC,
+    version VARCHAR(1000),
     PRIMARY KEY (id)
 );
 
@@ -287,7 +277,7 @@ CREATE TABLE sri_sriassessment
     id BIGINT NOT NULL,
     assessor_id BIGINT,
     dateofassessment TIMESTAMP WITH TIME ZONE,
-    methodology VARCHAR(1000),
+    methodology TEXT,
     score INTEGER,
     sriservice_isassessed_id BIGINT,
     PRIMARY KEY (id)
@@ -361,7 +351,7 @@ REFERENCES building (id);
 -- sri_communicationprotocol 
 -- -------------------------------------------------------------------- 
 ALTER TABLE sri_communicationprotocol ADD CONSTRAINT sri_communicationprotoc_fk FOREIGN KEY (id)
-REFERENCES sri_datasource (id);
+REFERENCES sri_ictequipment (id);
 
 -- -------------------------------------------------------------------- 
 -- sri_controllogic 
@@ -628,16 +618,6 @@ OWNED BY NONE;
 
 
 CREATE SEQUENCE sri_dataconnector_seq
-INCREMENT BY 1
-MINVALUE 0
-MAXVALUE 9223372036854775807
-START WITH 1
-CACHE 1
-NO CYCLE
-OWNED BY NONE;
-
-
-CREATE SEQUENCE sri_functionalityleve_seq
 INCREMENT BY 1
 MINVALUE 0
 MAXVALUE 9223372036854775807
