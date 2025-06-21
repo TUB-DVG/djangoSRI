@@ -210,7 +210,7 @@
             <complexProperty refType="sri_AssessorType" maxOccurs="1" path="assessor" schema="sri">
                 <join table="sri_assessor" fromColumn="assessor_id" toColumn="id" toRole="parent"/>
             </complexProperty>
-            <attribute column="methodology" type="clob" minOccurs="1" maxOccurs="1" path="methodology" schema="sri"/>
+            <attribute column="srimethodology" type="string" minOccurs="1" maxOccurs="1" path="sriMethodology" schema="sri"/>
             <featureProperty target="sri_SRIServiceType" path="isPartOfAssessment" schema="sri">
                 <join table="sri_sriservice" fromColumn="id" toColumn="sriassessmen_ispartofasse_id" toRole="child"/>
             </featureProperty>

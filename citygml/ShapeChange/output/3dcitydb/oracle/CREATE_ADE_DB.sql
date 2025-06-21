@@ -1,4 +1,4 @@
--- This document was automatically created by the ADE-Manager tool of 3DCityDB (https://www.3dcitydb.org) on 2025-06-20 15:04:01 
+-- This document was automatically created by the ADE-Manager tool of 3DCityDB (https://www.3dcitydb.org) on 2025-06-21 16:07:32 
 -- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
 -- *********************************** Create tables ************************************** 
 -- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
@@ -286,8 +286,8 @@ CREATE TABLE sri_sriassessment
     id NUMBER(38) NOT NULL,
     assessor_id NUMBER(38),
     dateofassessment TIMESTAMP,
-    methodology CLOB,
     score INTEGER,
+    srimethodology VARCHAR2(1000),
     sriservice_isassessed_id NUMBER(38),
     PRIMARY KEY (id)
 );

@@ -33,6 +33,7 @@
       <documentation>Description of the building and it's SRI relevant information.</documentation>
     </annotation>
   </element>
+  <element name="assessedBy" substitutionGroup="bldg:_GenericApplicationPropertyOfAbstractBuilding" type="gml:ReferenceType"/>
   <simpleType name="AcessTypeType">
     <restriction base="string">
       <enumeration value="Tool"/>
@@ -238,6 +239,7 @@
             <annotation>
               <appinfo>
                 <sc:taggedValue tag="maxOccurs">*</sc:taggedValue>
+                <sc:taggedValue tag="minOccurs">0</sc:taggedValue>
               </appinfo>
             </annotation>
             <complexType>
@@ -474,11 +476,19 @@ Outdoor: illuminances, luminance, cloud cover, etc.</documentation>
         <sequence>
           <element maxOccurs="unbounded" minOccurs="0" name="dataRequirements" type="SRIADE:InformationNeedDataCategoryPropertyType"/>
           <element name="descriptionInformationNeed" type="string"/>
-          <element maxOccurs="unbounded" minOccurs="0" name="specifiesInformation" type="SRIADE:SRIServicePropertyType"/>
+          <element maxOccurs="unbounded" minOccurs="0" name="specifiesInformation" type="SRIADE:SRIServicePropertyType">
+            <annotation>
+              <appinfo>
+                <sc:taggedValue tag="minOccurs">0</sc:taggedValue>
+              </appinfo>
+            </annotation>
+          </element>
           <element maxOccurs="unbounded" minOccurs="0" name="providesData">
             <annotation>
               <appinfo>
                 <sc:taggedValue tag="maxOccurs">*</sc:taggedValue>
+                <sc:taggedValue tag="minOccurs">0</sc:taggedValue>
+                <sc:taggedValue tag="minOccurs">0</sc:taggedValue>
               </appinfo>
             </annotation>
             <complexType>
@@ -688,9 +698,11 @@ Outdoor: illuminances, luminance, cloud cover, etc.</documentation>
             <annotation>
               <appinfo>
                 <sc:taggedValue tag="maxOccurs">*</sc:taggedValue>
+                <sc:taggedValue tag="minOccurs">0</sc:taggedValue>
               </appinfo>
             </annotation>
           </element>
+          <element maxOccurs="unbounded" minOccurs="0" name="assesses" type="gml:ReferenceType"/>
         </sequence>
       </extension>
     </complexContent>
@@ -808,6 +820,7 @@ Outdoor: illuminances, luminance, cloud cover, etc.</documentation>
             <annotation>
               <appinfo>
                 <sc:taggedValue tag="maxOccurs">*</sc:taggedValue>
+                <sc:taggedValue tag="minOccurs">0</sc:taggedValue>
               </appinfo>
             </annotation>
           </element>
@@ -815,6 +828,7 @@ Outdoor: illuminances, luminance, cloud cover, etc.</documentation>
             <annotation>
               <appinfo>
                 <sc:taggedValue tag="maxOccurs">*</sc:taggedValue>
+                <sc:taggedValue tag="minOccurs">0</sc:taggedValue>
               </appinfo>
             </annotation>
             <complexType>
@@ -827,6 +841,7 @@ Outdoor: illuminances, luminance, cloud cover, etc.</documentation>
             <annotation>
               <appinfo>
                 <sc:taggedValue tag="maxOccurs">*</sc:taggedValue>
+                <sc:taggedValue tag="minOccurs">0</sc:taggedValue>
               </appinfo>
             </annotation>
           </element>
@@ -845,8 +860,8 @@ Outdoor: illuminances, luminance, cloud cover, etc.</documentation>
     <complexContent>
       <extension base="gml:AbstractGMLType">
         <sequence>
-          <element name="buildingAssessment" type="gml:ReferenceType"/>
-          <element name="sriBuilding" type="gml:ReferenceType"/>
+          <element name="assessedBy" type="gml:ReferenceType"/>
+          <element name="assesses" type="gml:ReferenceType"/>
         </sequence>
       </extension>
     </complexContent>
@@ -872,6 +887,7 @@ Outdoor: illuminances, luminance, cloud cover, etc.</documentation>
             <annotation>
               <appinfo>
                 <sc:taggedValue tag="maxOccurs">*</sc:taggedValue>
+                <sc:taggedValue tag="minOccurs">0</sc:taggedValue>
               </appinfo>
             </annotation>
           </element>
