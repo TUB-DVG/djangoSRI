@@ -1,6 +1,8 @@
 from django.db import models
 from citydb.modules.core.cityobject import CityObject
 from citydb.modules.core.objectclass import ObjectClass
+from sridb.modules.sri.sri import SRISriservice
+from django.contrib import admin
 
 
 environmentaldatatype_tag_choices = (
@@ -122,9 +124,7 @@ designtype_tag_choices = (
 
 
 class SRIInformationNeed(models.Model):
-    """
-    Base table for all InformationNeed entries.
-    """
+    """Base model for information needs"""
     id = models.OneToOneField(
         CityObject,
         primary_key=True,
@@ -135,58 +135,96 @@ class SRIInformationNeed(models.Model):
         max_length=1000,
         db_column='descriptioninformationneed'
     )
+    sriservice_needs = models.ForeignKey(
+        'SRISriservice',
+        on_delete=models.CASCADE,
+        db_column='sriservice_needs_id',
+        related_name='information_needs',
+        null=True,
+        blank=True
+    )
+
+    class Meta:
+        db_table = 'sri_informationneed'
+        managed = False  # Since the table already exists in the database
+
+    def __str__(self):
+        return f"Information Need: {self.descriptioninformationneed[:50]}..."
+
+
+class SRIInformationNeedData(models.Model):
+    """Intermediate model for information need data"""
+    id = models.OneToOneField(
+        CityObject,
+        primary_key=True,
+        on_delete=models.CASCADE,
+        db_column='id'
+    )
     objectclass = models.ForeignKey(
         ObjectClass,
         on_delete=models.CASCADE,
         db_column='objectclass_id'
     )
-    #usecase_informationneed = models.ForeignKey(
-    #    SRIUsecase,
-    #    on_delete=models.CASCADE,
-    #    db_column='usecase_informationneed_id'
-    #)
+    information_datarequired = models.ForeignKey(
+        SRIInformationNeed,
+        on_delete=models.CASCADE,
+        db_column='informationn_datarequirem_id'
+    )
 
     class Meta:
-        db_table = 'sri_informationneed'
-
+        db_table = 'sri_informationneeddataca'
+        managed = False  # Since the table already exists in the database
 
 
 class SRIAssetData(models.Model):
+    """Model for asset data"""
     id = models.OneToOneField(
-        SRIInformationNeed,
+        CityObject,
         primary_key=True,
         on_delete=models.CASCADE,
         db_column='id'
     )
     assettype = models.CharField(
         max_length=1000,
-        blank=True, null=True,
-        choices=asset_tag_choices,
+        blank=True,
+        null=True,
         db_column='assettype'
     )
-    other = models.CharField(max_length=1000, blank=True, null=True, db_column='other')
+    other = models.CharField(
+        max_length=1000,
+        blank=True,
+        null=True,
+        db_column='other'
+    )
 
     class Meta:
         db_table = 'sri_assetdata'
+        managed = False  # Since the table already exists in the database
 
 
 class SRIIndoorEnvironmentalData(models.Model):
     id = models.OneToOneField(
-        SRIInformationNeed,
+        SRIInformationNeedData,
         primary_key=True,
         on_delete=models.CASCADE,
         db_column='id'
     )
     environmentaldatatype = models.CharField(
         max_length=1000,
-        blank=True, null=True,
-        choices=environmentaldatatype_tag_choices,
+        blank=True,
+        null=True,
         db_column='environmentaldatatype'
     )
-    other = models.CharField(max_length=1000, blank=True, null=True, db_column='other')
+    other = models.CharField(
+        max_length=1000,
+        blank=True,
+        null=True,
+        db_column='other'
+    )
 
     class Meta:
         db_table = 'sri_indoorenvironmentalda'
+        managed = False  # Since the table already exists in the database
 
 
 class SRIOutdoorenvironmentalData(models.Model):
@@ -207,83 +245,106 @@ class SRIOutdoorenvironmentalData(models.Model):
 
     class Meta:
         db_table = 'sri_outdoorenvironmentald'
+        managed = False  # Since the table already exists in the database
 
 
 class SRIControlLogic(models.Model):
     id = models.OneToOneField(
-        SRIInformationNeed,
+        SRIInformationNeedData,
         primary_key=True,
         on_delete=models.CASCADE,
         db_column='id'
     )
     controlsystem = models.CharField(
         max_length=1000,
-        blank=True, null=True,
-        choices=controlsystem_tag_choices,
+        blank=True,
+        null=True,
         db_column='controlsystem'
     )
     controltype = models.CharField(
         max_length=1000,
-        blank=True, null=True,
-        choices=controltype_tag_choices,
+        blank=True,
+        null=True,
         db_column='controltype'
     )
     datascale = models.CharField(
         max_length=1000,
-        blank=True, null=True,
-        choices=scale_tag_choices,
+        blank=True,
+        null=True,
         db_column='datascale'
     )
-    other = models.CharField(max_length=1000, blank=True, null=True, db_column='other')
+    other = models.CharField(
+        max_length=1000,
+        blank=True,
+        null=True,
+        db_column='other'
+    )
 
     class Meta:
         db_table = 'sri_controllogic'
+        managed = False  # Since the table already exists in the database
 
 
-class SRIDatacategoryMeta(models.Model):
+#class SRIDatacategoryMeta(models.Model):
+#    id = models.OneToOneField(
+#        SRIInformationNeed,
+#        primary_key=True,
+#        on_delete=models.CASCADE,
+#        db_column='id'
+#    )
+#    datascale = models.CharField(
+#        max_length=1000,
+#        blank=True, null=True,
+#        choices=scale_tag_choices,
+#        db_column='datascale'
+#    )
+#    other = models.CharField(max_length=1000, blank=True, null=True, db_column='other')
+#
+#    class Meta:
+#        db_table = 'sri_datacategorymeta'
+#        managed = False  # Since the table already exists in the database
+
+
+class SRIEnergyData(models.Model):
     id = models.OneToOneField(
-        SRIInformationNeed,
+        SRIInformationNeedData,
         primary_key=True,
         on_delete=models.CASCADE,
         db_column='id'
     )
     datascale = models.CharField(
         max_length=1000,
-        blank=True, null=True,
-        choices=scale_tag_choices,
+        blank=True,
+        null=True,
         db_column='datascale'
     )
-    other = models.CharField(max_length=1000, blank=True, null=True, db_column='other')
-
-    class Meta:
-        db_table = 'sri_datacategorymeta'
-
-
-class SRIEnergyData(models.Model):
-    id = models.OneToOneField(
-        SRIDatacategoryMeta,
-        primary_key=True,
-        on_delete=models.CASCADE,
-        db_column='id'
-    )
-    enduse       = models.CharField(
-        max_length=1000, blank=True, null=True,
-        choices=enduse_tag_choices,
+    enduse = models.CharField(
+        max_length=1000,
+        blank=True,
+        null=True,
         db_column='enduse'
     )
     energysource = models.CharField(
-        max_length=1000, blank=True, null=True,
-        choices=energysource_tag_choices,
+        max_length=1000,
+        blank=True,
+        null=True,
         db_column='energysource'
+    )
+    other = models.CharField(
+        max_length=1000,
+        blank=True,
+        null=True,
+        db_column='other'
     )
 
     class Meta:
         db_table = 'sri_energydata'
+        managed = False  # Since the table already exists in the database
 
 
 class SRIOperationalData(models.Model):
     id = models.OneToOneField(
-        SRIDatacategoryMeta,
+        CityObject,
         primary_key=True,
         on_delete=models.CASCADE,
         db_column='id'
@@ -299,9 +360,15 @@ class SRIOperationalData(models.Model):
         db_column='systemtype'
     )
     other = models.CharField(max_length=1000, blank=True, null=True, db_column='other')
+    datascale = models.CharField(
+        max_length=1000, blank=True, null=True,
+        choices=scale_tag_choices,
+        db_column='datascale'
+    )
 
     class Meta:
         db_table = 'sri_operationaldata'
+        managed = False  # Since the table already exists in the database
 
 
 class SRIUtilityGridData(models.Model):
@@ -325,6 +392,7 @@ class SRIUtilityGridData(models.Model):
 
     class Meta:
         db_table = 'sri_utilitygriddata'
+        managed = False  # Since the table already exists in the database
 
 
 class SRIOnsiteenergygeneration(models.Model):
@@ -347,39 +415,122 @@ class SRIOnsiteenergygeneration(models.Model):
 
     class Meta:
         db_table = 'sri_onsiteenergygeneratio'
+        managed = False  # Since the table already exists in the database
 
 
 class SRICyberDeviceData(models.Model):
     id = models.OneToOneField(
-        SRIInformationNeed,
+        SRIInformationNeedData,
         primary_key=True,
         on_delete=models.CASCADE,
         db_column='id'
     )
     cyberdevicetype = models.CharField(
-        max_length=1000, blank=True, null=True,
-        choices=(
-            ("proxy",       "Proxy"),
-            ("cyberAttack", "Cyber Attack"),
-            ("other",       "Other"),
-        ),
+        max_length=1000,
+        blank=True,
+        null=True,
         db_column='cyberdevicetype'
     )
-    other = models.CharField(max_length=1000, blank=True, null=True, db_column='other')
+    other = models.CharField(
+        max_length=1000,
+        blank=True,
+        null=True,
+        db_column='other'
+    )
 
     class Meta:
         db_table = 'sri_cyberdevicedata'
+        managed = False  # Since the table already exists in the database
+
+# must uncommenct, if added back to daabase layer
+#class SRIUsecase(models.Model):
+#    id = models.OneToOneField(
+#        CityObject,
+#        primary_key=True,
+#        on_delete=models.CASCADE,
+#        db_column='id'
+#    )
+#    title       = models.CharField(max_length=1000, blank=True, null=True, db_column='title')
+#    description = models.CharField(max_length=1000, blank=True, null=True, db_column='description')
+
+#    class Meta:
+#        db_table = 'sri_usecase'
+#        managed = False  # Since the table already exists in the database
 
 
-class SRIUsecase(models.Model):
+class SRIDesignBasisData(models.Model):
     id = models.OneToOneField(
-        CityObject,
+        SRIInformationNeedData,
         primary_key=True,
         on_delete=models.CASCADE,
         db_column='id'
     )
-    title       = models.CharField(max_length=1000, blank=True, null=True, db_column='title')
-    description = models.CharField(max_length=1000, blank=True, null=True, db_column='description')
+    datascale = models.CharField(
+        max_length=1000,
+        blank=True,
+        null=True,
+        db_column='datascale'
+    )
+    designtype = models.CharField(
+        max_length=1000,
+        blank=True,
+        null=True,
+        db_column='designtype'
+    )
+    other = models.CharField(
+        max_length=1000,
+        blank=True,
+        null=True,
+        db_column='other'
+    )
 
     class Meta:
-        db_table = 'sri_usecase'
+        db_table = 'sri_designbasisdata'
+        managed = False  # Since the table already exists in the database
+
+
+class SRIOccupantData(models.Model):
+    id = models.OneToOneField(
+        SRIInformationNeedData,
+        primary_key=True,
+        on_delete=models.CASCADE,
+        db_column='id'
+    )
+    datascale = models.CharField(
+        max_length=1000,
+        blank=True,
+        null=True,
+        db_column='datascale'
+    )
+    occupanttype = models.CharField(
+        max_length=1000,
+        blank=True,
+        null=True,
+        db_column='occupanttype'
+    )
+    other = models.CharField(
+        max_length=1000,
+        blank=True,
+        null=True,
+        db_column='other'
+    )
+
+    class Meta:
+        db_table = 'sri_occupantdata'
+        managed = False  # Since the table already exists in the database
+
+
+class SRIInformationNeedInline(admin.TabularInline):
+    model = SRIInformationNeed
+    extra = 1
+    fields = ('id', 'descriptioninformationneed', 'get_objectclass')
+    readonly_fields = ('id', 'descriptioninformationneed', 'get_objectclass')
+    can_delete = False
+    verbose_name = "Information Need"
+
+    def get_objectclass(self, obj):
+        try:
+            return obj.sri_informationneeddata.objectclass
+        except SRIInformationNeedData.DoesNotExist:
+            return None
+    get_objectclass.short_description = 'Object Class'

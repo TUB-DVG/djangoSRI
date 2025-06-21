@@ -7,25 +7,45 @@ from citydb.modules.energy.core.energybuilding import EnergyBuilding
 from citydb.modules.bldg.building import Building
 from sridb.modules.sri.sri import (
     SRISriservice, SRIBuilding, SRISriAssessment, 
-    SRIServiceCatalogue, SRIMethodology,
+    SRIServiceCatalogue,
     SRIAssessor 
 )
+# must add SRIMethodology, if put in database layer
 from sridb.modules.sri.information_need import (
-    SRIAssetData, SRIIndoorEnvironmentalData, SRIControlLogic, 
-    SRICyberDeviceData, SRIDatacategoryMeta, SRIEnergyData, 
-    SRIOperationalData, SRIOutdoorenvironmentalData,
-     SRIOnsiteenergygeneration, SRIUsecase
+    SRIAssetData, SRIIndoorEnvironmentalData, SRIControlLogic,
+    SRICyberDeviceData, SRIEnergyData, SRIOperationalData,
+    SRIOutdoorenvironmentalData, SRIOnsiteenergygeneration,
+    SRIInformationNeed, SRIUtilityGridData,
+    SRIInformationNeedData, SRIDesignBasisData
+)
+# must add SRIUsecase, if put in database layer
+from sridb.modules.sri.ict import (
+    SRIIctequipment,
+    SRIDataSource,
+    SRICommunicationProtocol,
+    SRIInterface,
+    SRIModel,  
+    SRIDevice,
+    SRIDataConnector,
+    SRISupportedAccess
 )
 from sridb.serializers import (
     BuildingSerializer, SRIServiceSerializer, SRIBuildingSerializer, 
     SRIAssessmentSerializer, SRIAssetDataSerializer,
     SRIIndoorEnvironmentalDataSerializer, SRIControlLogicSerializer, 
-    SRICyberDeviceDataSerializer, SRIDatacategoryMetaSerializer, 
+    SRICyberDeviceDataSerializer,
     SRIEnergyDataSerializer, SRIOperationalDataSerializer, 
     SRIOutdoorenvironmentalDataSerializer, SRIOnsiteenergygenerationSerializer,
-    SRIMethodologySerializer, SRIAssessorSerializer, 
-      SRIUsecaseSerializer, SRIServiceCatalogueSerializer
+    SRIAssessorSerializer, SRIServiceCatalogueSerializer,
+    SRIIctequipmentSerializer, SRIDataSourceSerializer,
+    SRICommunicationProtocolSerializer, SRIInterfaceSerializer,
+    SRIModelSerializer, SRIInformationNeedSerializer,
+    SRIUtilityGridDataSerializer, SRIInformationNeedDataSerializer,
+    SRIDesignBasisDataSerializer, SRIDeviceSerializer,
+    SRIDataConnectorSerializer, SRISupportedAccessSerializer
 )
+# must add SRIMethodologySerializer, if put in database layer
+# must add SRIUsecaseSerializer, if put in database layer
 from sridb.auxillary.gml_generator import generate_gml
 
 class BuildingViewSet(viewsets.ModelViewSet):
@@ -44,22 +64,41 @@ class SRIAssessmentViewSet(viewsets.ModelViewSet):
     queryset = SRISriAssessment.objects.all()
     serializer_class = SRIAssessmentSerializer
 
-class SRIMethodologyViewSet(viewsets.ModelViewSet):
-    queryset = SRIMethodology.objects.all()
-    serializer_class = SRIMethodologySerializer
+#class SRIMethodologyViewSet(viewsets.ModelViewSet):
+#    queryset = SRIMethodology.objects.all()
+#    serializer_class = SRIMethodologySerializer
 
 class SRIAssessorViewSet(viewsets.ModelViewSet):
     queryset = SRIAssessor.objects.all()
     serializer_class = SRIAssessorSerializer
 
 
-class SRIUsecaseViewSet(viewsets.ModelViewSet):
-    queryset = SRIUsecase.objects.all()
-    serializer_class = SRIUsecaseSerializer
+#class SRIUsecaseViewSet(viewsets.ModelViewSet):
+#    queryset = SRIUsecase.objects.all()
+#    serializer_class = SRIUsecaseSerializer
 
 class SRIServiceCatalogueViewSet(viewsets.ModelViewSet):
     queryset = SRIServiceCatalogue.objects.all()
     serializer_class = SRIServiceCatalogueSerializer
+
+class SRIInformationNeedViewSet(viewsets.ModelViewSet):
+    queryset = SRIInformationNeed.objects.all()
+    serializer_class = SRIInformationNeedSerializer
+ 
+class SRIUtilityGridDataViewSet(viewsets.ModelViewSet):  
+    queryset = SRIUtilityGridData.objects.all()
+    serializer_class = SRIUtilityGridDataSerializer
+
+class SRIInformationNeedDataViewSet(viewsets.ModelViewSet):
+    queryset = SRIInformationNeedData.objects.all()
+    serializer_class = SRIInformationNeedDataSerializer
+
+class SRIDesignBasisDataViewSet(viewsets.ModelViewSet):
+    queryset = SRIDesignBasisData.objects.all()
+    serializer_classs = SRIDesignBasisDataSerializer 
+
+
+
 
 @api_view(['POST'])
 def assign_service_to_building(request, building_id, service_id):
@@ -134,10 +173,6 @@ class SRICyberDeviceDataViewSet(viewsets.ModelViewSet):
     queryset = SRICyberDeviceData.objects.all()
     serializer_class = SRICyberDeviceDataSerializer
 
-class SRIDatacategoryMetaViewSet(viewsets.ModelViewSet):
-    queryset = SRIDatacategoryMeta.objects.all()
-    serializer_class = SRIDatacategoryMetaSerializer
-
 class SRIEnergyDataViewSet(viewsets.ModelViewSet):
     queryset = SRIEnergyData.objects.all()
     serializer_class = SRIEnergyDataSerializer
@@ -153,3 +188,50 @@ class SRIOutdoorenvironmentalDataViewSet(viewsets.ModelViewSet):
 class SRIOnsiteenergygenerationViewSet(viewsets.ModelViewSet):
     queryset = SRIOnsiteenergygeneration.objects.all()
     serializer_class = SRIOnsiteenergygenerationSerializer
+
+class SRIInformationNeedViewSet(viewsets.ModelViewSet):
+    queryset = SRIInformationNeed.objects.all()
+    serializer_class = SRIInformationNeedSerializer
+
+class SRIUtilityGridDataViewSet(viewsets.ModelViewSet):
+    queryset = SRIUtilityGridData.objects.all()
+    serializer_class = SRIUtilityGridDataSerializer
+
+class SRIInformationNeedDataViewSet(viewsets.ModelViewSet): 
+    queryset = SRIInformationNeedData.objects.all()
+    serializer_class = SRIInformationNeedDataSerializer
+
+# New ViewSets for ICT models
+class SRIIctequipmentViewSet(viewsets.ModelViewSet):
+    queryset = SRIIctequipment.objects.all()
+    serializer_class = SRIIctequipmentSerializer
+
+class SRIDataSourceViewSet(viewsets.ModelViewSet):
+    queryset = SRIDataSource.objects.all()
+    serializer_class = SRIDataSourceSerializer
+
+class SRICommunicationProtocolViewSet(viewsets.ModelViewSet):
+    queryset = SRICommunicationProtocol.objects.all()
+    serializer_class = SRICommunicationProtocolSerializer
+
+class SRIInterfaceViewSet(viewsets.ModelViewSet):
+    queryset = SRIInterface.objects.all()
+    serializer_class = SRIInterfaceSerializer
+
+class SRIModelViewSet(viewsets.ModelViewSet):
+    queryset = SRIModel.objects.all()
+    serializer_class = SRIModelSerializer
+
+class SRIDeviceViewSet(viewsets.ModelViewSet):
+    queryset = SRIDevice.objects.all()
+    serializer_class = SRIDeviceSerializer
+
+class SRIDataConnectorViewSet(viewsets.ModelViewSet):
+    queryset = SRIDataConnector.objects.all()
+    serializer_class = SRIDataConnectorSerializer
+
+class SRISupportedAccessViewSet(viewsets.ModelViewSet):
+    queryset = SRISupportedAccess.objects.all()
+    serializer_class = SRISupportedAccessSerializer
+
+

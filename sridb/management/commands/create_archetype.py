@@ -10,20 +10,13 @@ from sridb.modules.sri.sri import (
 from sridb.management.commands.cityobject import get_or_create_building, get_or_create_cityobject
 
 from sridb.modules.sri.information_need import (
-    SRIInformationNeed,
-    SRIAssetData,
-    SRIIndoorEnvironmentalData,
-    SRIControlLogic,
-    SRICyberDeviceData,
-    SRIDatacategoryMeta,
-    SRIEnergyData,
-    SRIOperationalData,
-    SRIOutdoorenvironmentalData,
-    SRIOnsiteenergygeneration,
-    SRICyberDeviceData,
-    SRIUtilityGridData
+    SRIAssetData, SRIIndoorEnvironmentalData, SRIControlLogic,
+    SRICyberDeviceData, SRIEnergyData, SRIOperationalData,
+    SRIOutdoorenvironmentalData, SRIOnsiteenergygeneration,
+    SRIInformationNeed, SRIUtilityGridData,
+    SRIInformationNeedData, SRIDesignBasisData, SRIOccupantData
 )
-
+# must add SRIUsecase, if put in database layer
 from citydb.modules.core.objectclass import ObjectClass
 
 PARENT_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
@@ -58,13 +51,31 @@ INFORMATION_NEED_OBJECTS = {
     "Outdoor envionmental data":        SRIOutdoorenvironmentalData,
     "System and equipment operational data": SRIOperationalData,
     "Control setting and logic data":   SRIControlLogic,
-    "Occupant data":                    SRIDatacategoryMeta,
-    "Design basis data":                SRIDatacategoryMeta,
+    "Occupant data":                    SRIOccupantData,
+    "Design basis data":                SRIDesignBasisData,
     "Building and system asset data":   SRIAssetData,
     "Utility and grid signal data":     SRIUtilityGridData,
     "Onsite energy generation data":    SRIOnsiteenergygeneration,
     "Cyber (IoT) device data":          SRICyberDeviceData,
 }
+
+# Map of archetype categories to model classes
+ARCHETYPE_MODELS = [
+    SRIInformationNeed,
+    SRIInformationNeedData,
+    SRIAssetData,
+    SRIIndoorEnvironmentalData,
+    SRIOutdoorenvironmentalData,
+    SRIControlLogic,
+    SRICyberDeviceData,
+    SRIEnergyData,
+    SRIOperationalData,
+    SRIUtilityGridData,
+    SRIOnsiteenergygeneration,
+    SRIDesignBasisData,
+    SRIOccupantData,
+]
+
 
 
 def build_choice_lookup_for_model(model_class):
@@ -77,97 +88,70 @@ def build_choice_lookup_for_model(model_class):
 
 
 class Command(BaseCommand):
-    help = "Import InformationNeed entries from the Excel archetype mapping."
+    help = 'Generates all digital archetypes for a given building GML ID.'
 
     def add_arguments(self, parser):
-        parser.add_argument('gml_id', type=str,
-                            help='GML ID of the building to import for')
+        parser.add_argument('building_id', type=str, help='The GML ID of the building.')
 
+    @transaction.atomic
     def handle(self, *args, **options):
-        gml_id = options['gml_id']
+        building_id = options['building_id']
+        self.stdout.write(self.style.NOTICE(f"Generating digital archetypes for building: {building_id}"))
 
-        # 1) Resolve building & its services
-        building = get_or_create_building(gml_id)
         try:
-            sri_building = SRIBuilding.objects.get(id=building)
-        except SRIBuilding.DoesNotExist:
-            self.stderr.write(f"No SRI building for GML ID {gml_id}")
-            return
+            # 1. Get the Building and its CityObject instance
+            building = get_or_create_building(building_id)
+            cityobject = building   # id is a OneToOneField to CityObject
+            print(type(cityobject))  # Should be <class 'citydb.models.CityObject'>
 
-        services = SRISriservice.objects.filter(building=sri_building)
-        if not services:
-            self.stderr.write(f"No services found for building {gml_id}")
-            return
 
-        # 2) Preload ADE ObjectClass 
-        oc_info_need = ObjectClass.objects.get(classname='InformationNeed')
+            # 2. Optionally, get ObjectClass for SRI archetypes if you need to set it
+            # objectclass = ObjectClass.objects.get(classname="YourClassName")
 
-        created = 0
-        skipped = 0
+            # 3. Create instances for each archetype model, if they do not exist yet
+            created = []
+            for model in ARCHETYPE_MODELS:
+                # If this model expects id to be a SRIInformationNeedData instance, adapt accordingly
+                field = model._meta.get_field('id')
+                rel_model = field.related_model
+                instance = None
 
-        with transaction.atomic():
-            for svc in services:
-                df = ARCHETYPE_CATALOGUE[
-                    (ARCHETYPE_CATALOGUE['FunctionalityLevel'] == svc.functionalitylevel) &
-                    (ARCHETYPE_CATALOGUE['Smart ready service'] == svc.servicename)
-                ]
-                if df.empty:
-                    self.stderr.write(
-                        f"  • No archetype row for service {svc.servicename!r} @ level {svc.functionalitylevel}"
+                # For archetypes that require SRIInformationNeedData as their ID, chain creation
+                if rel_model.__name__ == 'SRIInformationNeedData':
+                    # Create a SRIInformationNeed if it does not exist
+                    infoneed, _ = SRIInformationNeed.objects.get_or_create(
+                        id=cityobject,
+                        defaults={'descriptioninformationneed': f"Auto-generated for {building_id}"}
                     )
-                    continue
-                row = df.iloc[0]
+                    # Create a SRIInformationNeedData if it does not exist
+                    need_data, _ = SRIInformationNeedData.objects.get_or_create(
+                        id=cityobject,
+                        defaults={
+                            'objectclass': ObjectClass.objects.first(),  # Replace with appropriate objectclass
+                            'information_datarequired': infoneed
+                        }
+                    )
+                    instance, created_flag = model.objects.get_or_create(id=need_data)
+                elif rel_model.__name__ == 'SRIInformationNeed':
+                    # Create a SRIInformationNeed if it does not exist
+                    infoneed, _ = SRIInformationNeed.objects.get_or_create(
+                        id=cityobject,
+                        defaults={'descriptioninformationneed': f"Auto-generated for {building_id}"}
+                    )
+                    instance, created_flag = model.objects.get_or_create(id=infoneed)
+                else:
+                    # All other cases: link to CityObject
+                    instance, created_flag = model.objects.get_or_create(id=cityobject)
+                if created_flag:
+                    created.append(f"{model.__name__}")
 
+            if created:
+                self.stdout.write(self.style.SUCCESS(
+                    f"Created the following digital archetypes for building {building_id}: {', '.join(created)}"
+                ))
+            else:
+                self.stdout.write(self.style.NOTICE("No new archetypes were created (all existed)."))
 
-                # For each info‐need column:
-                for col in INFORMATION_NEED_COLUMNS[1:]:
-                    cell = row.get(col, '')
-                    if not isinstance(cell, str) or ':' not in cell:
-                        continue
-
-                    # Split into multiple label:desc by semicolon
-                    segments = [seg.strip() for seg in cell.split(';') if ':' in seg]
-                    for seg in segments:
-                        label, desc = [t.strip() for t in seg.split(':', 1)]
-                        SubModel = INFORMATION_NEED_OBJECTS[col]
-                        lookup   = build_choice_lookup_for_model(SubModel)
-                        field_name, key = lookup.get(label.lower(), (None, None))
-                        if not field_name:
-                            self.stderr.write(
-                                f"    – Unmapped label {label!r} for {SubModel.__name__}"
-                            )
-                            continue
-
-                        # 3) Create a fresh CityObject for this InformationNeed
-                        cityobj = get_or_create_cityobject(
-                            f"IN_{svc.id}_{col[:3]}_{label[:3]}"
-                        )
-                        # 4) Create the base record
-                        base = SRIInformationNeed.objects.create(
-                            id=cityobj,
-                            descriptioninformationneed=desc,
-                            objectclass=oc_info_need,
-                        )
-                        break
-
-                        # 5) Decide if this is a direct subtype or a two-step via SRIDatacategoryMeta
-                        parent = SubModel._meta.get_field('id').remote_field.model
-                        if parent is SRIDatacategoryMeta:
-                            # create the intermediate datacategory row
-                            datacat = SRIDatacategoryMeta.objects.create(
-                                id=base,
-                                datascale=None,
-                                other=None
-                            )
-                            # now the real subtype
-                            SubModel.objects.create(id=datacat, **{field_name: key})
-                        else:
-                            # direct subtype
-                            SubModel.objects.create(id=base, **{field_name: key})
-
-                        created += 1
-
-        self.stdout.write(self.style.SUCCESS(
-            f"Imported {created} InformationNeed entries "
-            f"for building {gml_id}"
-        ))
+        except Exception as e:
+            self.stderr.write(self.style.ERROR(f"Failed to generate digital archetypes: {e}"))
+            raise
