@@ -284,3 +284,23 @@ class SRISriservice(models.Model):
 
 
 
+class SriSriAssessmentBuilding(models.Model):
+    srisriassessment = models.ForeignKey(
+        'SRISriAssessment',
+        db_column='srisriassessment_id',
+        on_delete=models.CASCADE,
+        null    = True,
+        blank = True
+    )
+    sribuilding = models.ForeignKey(
+        'SRIBuilding',
+        db_column='sribuilding_id',
+        on_delete=models.CASCADE, 
+        null = True,
+        blank = True
+    )
+
+    class Meta:
+        db_table = 'sri_sriassessment_building'
+        unique_together = (('srisriassessment', 'sribuilding'),)
+        managed = True  # Set to False after migration if needed

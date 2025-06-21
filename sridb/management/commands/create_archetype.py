@@ -14,7 +14,7 @@ from sridb.modules.sri.information_need import (
     SRICyberDeviceData, SRIEnergyData, SRIOperationalData,
     SRIOutdoorenvironmentalData, SRIOnsiteenergygeneration,
     SRIInformationNeed, SRIUtilityGridData,
-    SRIInformationNeedData
+    SRIInformationNeedData, SRIDesignBasisData, SRIOccupantData
 )
 # must add SRIUsecase, if put in database layer
 from citydb.modules.core.objectclass import ObjectClass
@@ -51,13 +51,31 @@ INFORMATION_NEED_OBJECTS = {
     "Outdoor envionmental data":        SRIOutdoorenvironmentalData,
     "System and equipment operational data": SRIOperationalData,
     "Control setting and logic data":   SRIControlLogic,
-    "Occupant data":                    SRIDatacategoryMeta,
-    "Design basis data":                SRIDatacategoryMeta,
+    "Occupant data":                    SRIOccupantData,
+    "Design basis data":                SRIDesignBasisData,
     "Building and system asset data":   SRIAssetData,
     "Utility and grid signal data":     SRIUtilityGridData,
     "Onsite energy generation data":    SRIOnsiteenergygeneration,
     "Cyber (IoT) device data":          SRICyberDeviceData,
 }
+
+# Map of archetype categories to model classes
+ARCHETYPE_MODELS = [
+    SRIInformationNeed,
+    SRIInformationNeedData,
+    SRIAssetData,
+    SRIIndoorEnvironmentalData,
+    SRIOutdoorenvironmentalData,
+    SRIControlLogic,
+    SRICyberDeviceData,
+    SRIEnergyData,
+    SRIOperationalData,
+    SRIUtilityGridData,
+    SRIOnsiteenergygeneration,
+    SRIDesignBasisData,
+    SRIOccupantData,
+]
+
 
 
 def build_choice_lookup_for_model(model_class):
@@ -70,47 +88,70 @@ def build_choice_lookup_for_model(model_class):
 
 
 class Command(BaseCommand):
-    help = 'Creates an archetype for a given data category'
+    help = 'Generates all digital archetypes for a given building GML ID.'
 
     def add_arguments(self, parser):
-        parser.add_argument('category', type=str, help='The data category to create an archetype for')
+        parser.add_argument('building_id', type=str, help='The GML ID of the building.')
 
+    @transaction.atomic
     def handle(self, *args, **options):
-        category = options['category']
-        
-        # Map category names to their respective models
-        category_map = {
-            "Asset data":                     SRIAssetData,
-            "Indoor environmental data":       SRIIndoorEnvironmentalData,
-            "Outdoor environmental data":      SRIOutdoorenvironmentalData,
-            "Control logic":                  SRIControlLogic,
-            "Cyber device data":              SRICyberDeviceData,
-            "Energy data":                    SRIEnergyData,
-            "Operational data":               SRIOperationalData,
-            "Utility grid data":              SRIUtilityGridData,
-            "Onsite energy generation":       SRIOnsiteenergygeneration,
-            "Information need":               SRIInformationNeed,
-            "Information need data":          SRIInformationNeedData
-        }
-        # must add SRIUsecase, if put in database layer
-        if category not in category_map:
-            self.stdout.write(self.style.ERROR(f'Unknown category: {category}'))
-            self.stdout.write(self.style.NOTICE('Available categories:'))
-            for cat in category_map.keys():
-                self.stdout.write(self.style.NOTICE(f'  - {cat}'))
-            return
+        building_id = options['building_id']
+        self.stdout.write(self.style.NOTICE(f"Generating digital archetypes for building: {building_id}"))
 
-        model = category_map[category]
-        
-        # Create the archetype
         try:
-            # Get the parent class if it exists
-            parent = model.__bases__[0]
-            
-            # Create the object
-            obj = model.objects.create()
-            
-            self.stdout.write(self.style.SUCCESS(f'Successfully created archetype for {category}'))
-            
+            # 1. Get the Building and its CityObject instance
+            building = get_or_create_building(building_id)
+            cityobject = building   # id is a OneToOneField to CityObject
+            print(type(cityobject))  # Should be <class 'citydb.models.CityObject'>
+
+
+            # 2. Optionally, get ObjectClass for SRI archetypes if you need to set it
+            # objectclass = ObjectClass.objects.get(classname="YourClassName")
+
+            # 3. Create instances for each archetype model, if they do not exist yet
+            created = []
+            for model in ARCHETYPE_MODELS:
+                # If this model expects id to be a SRIInformationNeedData instance, adapt accordingly
+                field = model._meta.get_field('id')
+                rel_model = field.related_model
+                instance = None
+
+                # For archetypes that require SRIInformationNeedData as their ID, chain creation
+                if rel_model.__name__ == 'SRIInformationNeedData':
+                    # Create a SRIInformationNeed if it does not exist
+                    infoneed, _ = SRIInformationNeed.objects.get_or_create(
+                        id=cityobject,
+                        defaults={'descriptioninformationneed': f"Auto-generated for {building_id}"}
+                    )
+                    # Create a SRIInformationNeedData if it does not exist
+                    need_data, _ = SRIInformationNeedData.objects.get_or_create(
+                        id=cityobject,
+                        defaults={
+                            'objectclass': ObjectClass.objects.first(),  # Replace with appropriate objectclass
+                            'information_datarequired': infoneed
+                        }
+                    )
+                    instance, created_flag = model.objects.get_or_create(id=need_data)
+                elif rel_model.__name__ == 'SRIInformationNeed':
+                    # Create a SRIInformationNeed if it does not exist
+                    infoneed, _ = SRIInformationNeed.objects.get_or_create(
+                        id=cityobject,
+                        defaults={'descriptioninformationneed': f"Auto-generated for {building_id}"}
+                    )
+                    instance, created_flag = model.objects.get_or_create(id=infoneed)
+                else:
+                    # All other cases: link to CityObject
+                    instance, created_flag = model.objects.get_or_create(id=cityobject)
+                if created_flag:
+                    created.append(f"{model.__name__}")
+
+            if created:
+                self.stdout.write(self.style.SUCCESS(
+                    f"Created the following digital archetypes for building {building_id}: {', '.join(created)}"
+                ))
+            else:
+                self.stdout.write(self.style.NOTICE("No new archetypes were created (all existed)."))
+
         except Exception as e:
-            self.stdout.write(self.style.ERROR(f'Failed to create archetype: {str(e)}'))
+            self.stderr.write(self.style.ERROR(f"Failed to generate digital archetypes: {e}"))
+            raise

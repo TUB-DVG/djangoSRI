@@ -65,10 +65,11 @@ urlpatterns = [
 ]
 ```
 
-Run database migrations:
+Run database migrations (Necessary for relationship in joint table!):
 ```bash
-python manage.py migrate sridb
-python manage.py migrate --fake-initial
+python manage.py migrate sridb --fake-initial
+python manage.py makemigrations sridb
+python manage.py migrate
 ```
 
 Verify installation:
@@ -83,18 +84,11 @@ Access at: **http://127.0.0.1:8000/sri/**
 The `django-sri` module includes **archetype definitions** to automatically configure buildings based on their **SRI levels**.
 
 ### **Example: Creating a New Building Based on an Archetype**
-```python
-from sri.models import Building, SRILevel
-from archetypes.archetypes import SRIArchetype
 
-# Create a Residential Advanced Building
-archetype = SRIArchetype("Residential", "Advanced")
-new_building = archetype.create_building(building_id="B123", geometry="<gml:Point><gml:coordinates>13.4,52.5</gml:coordinates></gml:Point>")
+1. Upload service catalog from a SRI catalogue with ```python manage.py populate_service_catalog  <path_to_catalogue> <building_id>```
+2. Upload assessment from Service sheet v4.5 with ```python manage.py upload_builiding  <path_to_catalogue> <building_id>```
+3. Create digital archetypes with ```python manage.py create_archetype  <path_to_catalogue> <building_id>```
 
-new_building.save()
-```
-
----
 
 ## **CityGML Generation with SRI ADE**
 This module extends **CityGML** with an ADE for **SRI-related information**.

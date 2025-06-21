@@ -285,24 +285,24 @@ class SRIControlLogic(models.Model):
         managed = False  # Since the table already exists in the database
 
 
-class SRIDatacategoryMeta(models.Model):
-    id = models.OneToOneField(
-        SRIInformationNeed,
-        primary_key=True,
-        on_delete=models.CASCADE,
-        db_column='id'
-    )
-    datascale = models.CharField(
-        max_length=1000,
-        blank=True, null=True,
-        choices=scale_tag_choices,
-        db_column='datascale'
-    )
-    other = models.CharField(max_length=1000, blank=True, null=True, db_column='other')
-
-    class Meta:
-        db_table = 'sri_datacategorymeta'
-        managed = False  # Since the table already exists in the database
+#class SRIDatacategoryMeta(models.Model):
+#    id = models.OneToOneField(
+#        SRIInformationNeed,
+#        primary_key=True,
+#        on_delete=models.CASCADE,
+#        db_column='id'
+#    )
+#    datascale = models.CharField(
+#        max_length=1000,
+#        blank=True, null=True,
+#        choices=scale_tag_choices,
+#        db_column='datascale'
+#    )
+#    other = models.CharField(max_length=1000, blank=True, null=True, db_column='other')
+#
+#    class Meta:
+#        db_table = 'sri_datacategorymeta'
+#        managed = False  # Since the table already exists in the database
 
 
 class SRIEnergyData(models.Model):

@@ -20,7 +20,6 @@ from sridb.modules.sri.information_need import (
     SRIIndoorEnvironmentalData, 
     SRIControlLogic, 
     SRICyberDeviceData, 
-    SRIDatacategoryMeta, 
     SRIEnergyData, 
     SRIOperationalData, 
     SRIOutdoorenvironmentalData, 
