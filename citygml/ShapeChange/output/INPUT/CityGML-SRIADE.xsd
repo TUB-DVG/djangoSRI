@@ -1,0 +1,1019 @@
+<?xml version="1.0" encoding="UTF-8"?><schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:SRIADE="http://www.citygml.org/ade/SRIADE/0.1" xmlns:bldg="http://www.opengis.net/citygml/building/2.0" xmlns:gml="http://www.opengis.net/gml" xmlns:sc="http://www.interactive-instruments.de/ShapeChange/AppInfo" elementFormDefault="qualified" targetNamespace="http://www.citygml.org/ade/SRIADE/0.1" version="0.1">
+  <annotation>
+    <documentation>SRI ADE: Contains the Application Schema for the Smart Readiness Indicator (SRI) ADE. Optional data models included to create archetypes for data needs, use cases, and communication technologies.</documentation>
+  </annotation>
+  <import namespace="http://www.interactive-instruments.de/ShapeChange/AppInfo" schemaLocation="https://shapechange.net/resources/schema/ShapeChangeAppinfo.xsd"/>
+  <import namespace="http://www.opengis.net/citygml/building/2.0" schemaLocation="http://schemas.opengis.net/citygml/building/2.0/building.xsd"/>
+  <import namespace="http://www.opengis.net/gml" schemaLocation="http://schemas.opengis.net/gml/3.1.1/base/gml.xsd"/>
+  <!--XML Schema document created by ShapeChange - http://shapechange.net/-->
+  <element name="buildingUsage" substitutionGroup="bldg:_GenericApplicationPropertyOfAbstractBuilding" type="SRIADE:SRIBuildingUsageType"/>
+  <element name="usefulFloorArea" substitutionGroup="bldg:_GenericApplicationPropertyOfAbstractBuilding" type="string">
+    <annotation>
+      <appinfo>
+        <sc:taggedValue tag="maxOccurs">1</sc:taggedValue>
+      </appinfo>
+    </annotation>
+  </element>
+  <element name="location" substitutionGroup="bldg:_GenericApplicationPropertyOfAbstractBuilding" type="string">
+    <annotation>
+      <documentation>Location of the Building, e.g. Country and City.</documentation>
+    </annotation>
+  </element>
+  <element name="SRIBuildingType" substitutionGroup="bldg:_GenericApplicationPropertyOfAbstractBuilding" type="SRIADE:SRIBuildingTypeType">
+    <annotation>
+      <appinfo>
+        <sc:taggedValue tag="maxOccurs">1</sc:taggedValue>
+      </appinfo>
+    </annotation>
+  </element>
+  <element name="climateZone" substitutionGroup="bldg:_GenericApplicationPropertyOfAbstractBuilding" type="SRIADE:SRIClimateZoneTypeType"/>
+  <element name="buildingState" substitutionGroup="bldg:_GenericApplicationPropertyOfAbstractBuilding" type="SRIADE:SRIBuildingStateType"/>
+  <element name="sriDescription" substitutionGroup="bldg:_GenericApplicationPropertyOfAbstractBuilding" type="string">
+    <annotation>
+      <documentation>Description of the building and it's SRI relevant information.</documentation>
+    </annotation>
+  </element>
+  <element name="assessedBy" substitutionGroup="bldg:_GenericApplicationPropertyOfAbstractBuilding" type="gml:ReferenceType"/>
+  <simpleType name="AcessTypeType">
+    <restriction base="string">
+      <enumeration value="Tool"/>
+      <enumeration value="Webbased"/>
+      <enumeration value="Other"/>
+      <enumeration value="Endpoint"/>
+    </restriction>
+  </simpleType>
+  <element name="Assessor" substitutionGroup="gml:_Object" type="SRIADE:AssessorType">
+    <annotation>
+      <documentation>The assessor, information according to the SRI 4.5 sheet.</documentation>
+    </annotation>
+  </element>
+  <complexType name="AssessorType">
+    <sequence>
+      <element name="name" type="string"/>
+      <element name="organisation" type="string"/>
+      <element name="eMail" type="string"/>
+      <element name="phoneNumber" type="string"/>
+    </sequence>
+  </complexType>
+  <complexType name="AssessorPropertyType">
+    <sequence>
+      <element ref="SRIADE:Assessor"/>
+    </sequence>
+  </complexType>
+  <element name="AssetData" substitutionGroup="SRIADE:InformationNeedDataCategory" type="SRIADE:AssetDataType"/>
+  <complexType name="AssetDataType">
+    <complexContent>
+      <extension base="SRIADE:InformationNeedDataCategoryType">
+        <sequence>
+          <element maxOccurs="unbounded" minOccurs="0" name="assetType" type="SRIADE:AssetTypeDataTagType"/>
+          <element name="other" type="string"/>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="AssetDataPropertyType">
+    <sequence>
+      <element ref="SRIADE:AssetData"/>
+    </sequence>
+  </complexType>
+  <simpleType name="AssetTypeDataTagType">
+    <restriction base="string">
+      <enumeration value="BuildingCharacteristics">
+        <annotation>
+          <documentation>building type, vintage, stories, areas, space types, etc</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="SystemCharacteristics">
+        <annotation>
+          <documentation>HVAC, envelope and fenestration, etc.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Other"/>
+    </restriction>
+  </simpleType>
+  <element name="CommunicationProtocol" substitutionGroup="SRIADE:ICTEquipment" type="SRIADE:CommunicationProtocolType">
+    <annotation>
+      <documentation>Specifies the communication protocol used by the device or system for data exchange.</documentation>
+    </annotation>
+  </element>
+  <complexType name="CommunicationProtocolType">
+    <complexContent>
+      <extension base="SRIADE:ICTEquipmentType">
+        <sequence>
+          <element name="protocolType" type="string"/>
+          <element name="protocolVersion" type="string">
+            <annotation>
+              <documentation>Version number or identifier for the specified communication protocol, crucial for ensuring compatibility and interoperability among devices and systems.</documentation>
+            </annotation>
+          </element>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="CommunicationProtocolPropertyType">
+    <sequence minOccurs="0">
+      <element ref="SRIADE:CommunicationProtocol"/>
+    </sequence>
+    <attributeGroup ref="gml:AssociationAttributeGroup"/>
+  </complexType>
+  <element name="ControlLogic" substitutionGroup="SRIADE:InformationNeedDataCategory" type="SRIADE:ControlLogicType">
+    <annotation>
+      <documentation>Abbreviation for Control setting and logic data</documentation>
+    </annotation>
+  </element>
+  <complexType name="ControlLogicType">
+    <complexContent>
+      <extension base="SRIADE:InformationNeedDataCategoryType">
+        <sequence>
+          <element maxOccurs="unbounded" name="controlType" type="SRIADE:ControlTypeTagType"/>
+          <element maxOccurs="unbounded" minOccurs="0" name="controlSystem" type="SRIADE:ControlSystemTagType"/>
+          <element maxOccurs="unbounded" minOccurs="0" name="dataScale" type="SRIADE:SpatialDataScaleTagType"/>
+          <element name="other" type="string"/>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="ControlLogicPropertyType">
+    <sequence>
+      <element ref="SRIADE:ControlLogic"/>
+    </sequence>
+  </complexType>
+  <simpleType name="ControlSystemTagType">
+    <restriction base="string">
+      <enumeration value="HVAC"/>
+      <enumeration value="Lighting"/>
+      <enumeration value="Fenestration"/>
+      <enumeration value="Plant"/>
+      <enumeration value="OtherControlSystemType"/>
+    </restriction>
+  </simpleType>
+  <simpleType name="ControlTypeTagType">
+    <restriction base="string">
+      <enumeration value="Logic"/>
+      <enumeration value="Setpoint"/>
+      <enumeration value="Schedule"/>
+      <enumeration value="OtherControlType"/>
+      <enumeration value="Description"/>
+    </restriction>
+  </simpleType>
+  <element name="CyberDeviceData" substitutionGroup="SRIADE:InformationNeedDataCategory" type="SRIADE:CyberDeviceDataType"/>
+  <complexType name="CyberDeviceDataType">
+    <complexContent>
+      <extension base="SRIADE:InformationNeedDataCategoryType">
+        <sequence>
+          <element name="other" type="string"/>
+          <element maxOccurs="unbounded" minOccurs="0" name="cyberDeviceType" type="SRIADE:CyberDeviceDataTypeTagType"/>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="CyberDeviceDataPropertyType">
+    <sequence>
+      <element ref="SRIADE:CyberDeviceData"/>
+    </sequence>
+  </complexType>
+  <simpleType name="CyberDeviceDataTypeTagType">
+    <restriction base="string">
+      <enumeration value="Proxy"/>
+      <enumeration value="CyberAttacks"/>
+    </restriction>
+  </simpleType>
+  <simpleType name="DataCategoryTagType">
+    <restriction base="string">
+      <enumeration value="EnergyData"/>
+      <enumeration value="IndoorEnvironmentalData"/>
+      <enumeration value="OutdoorEnvironmentalData"/>
+      <enumeration value="SystemOperationalData"/>
+      <enumeration value="ControlSettingData"/>
+      <enumeration value="OccupantData"/>
+      <enumeration value="DesignBasisData"/>
+      <enumeration value="AssetData"/>
+      <enumeration value="UtilityGridData"/>
+      <enumeration value="OnsiteEnergyGenerationData"/>
+      <enumeration value="CyberDeviceData"/>
+      <enumeration value="OtherData"/>
+    </restriction>
+  </simpleType>
+  <element name="DataConnector" substitutionGroup="gml:_Object" type="SRIADE:DataConnectorType">
+    <annotation>
+      <documentation>A data connector, that holds information regarding the data schema.</documentation>
+    </annotation>
+  </element>
+  <complexType name="DataConnectorType">
+    <sequence>
+      <element name="modelSchema" type="string"/>
+      <element name="modelURI" type="string">
+        <annotation>
+          <documentation>Web-based reference (URL/URI) pointing directly to the specific definition or documentation of the semantic standard used (e.g., Brick Schema ontology). Provides clear semantic linkage and documentation.</documentation>
+        </annotation>
+      </element>
+      <element name="documentationURL" type="string">
+        <annotation>
+          <documentation>Documentation for the DataSource.</documentation>
+        </annotation>
+      </element>
+    </sequence>
+  </complexType>
+  <complexType name="DataConnectorPropertyType">
+    <sequence>
+      <element ref="SRIADE:DataConnector"/>
+    </sequence>
+  </complexType>
+  <element name="DataSource" substitutionGroup="gml:_Feature" type="SRIADE:DataSourceType">
+    <annotation>
+      <documentation>Data Source, that provides the datafor a Information Need.</documentation>
+    </annotation>
+  </element>
+  <complexType name="DataSourceType">
+    <complexContent>
+      <extension base="gml:AbstractFeatureType">
+        <sequence>
+          <element name="name" type="string">
+            <annotation>
+              <documentation>Name of the Data Source, e.g., Brick in case of Brick Model Schema</documentation>
+            </annotation>
+          </element>
+          <element name="description" type="string"/>
+          <element name="dataConnector" type="SRIADE:DataConnectorPropertyType"/>
+          <element maxOccurs="unbounded" minOccurs="0" name="requiresData">
+            <annotation>
+              <appinfo>
+                <sc:taggedValue tag="maxOccurs">*</sc:taggedValue>
+                <sc:taggedValue tag="minOccurs">0</sc:taggedValue>
+              </appinfo>
+            </annotation>
+            <complexType>
+              <sequence>
+                <element ref="SRIADE:InformationNeed"/>
+              </sequence>
+            </complexType>
+          </element>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="DataSourcePropertyType">
+    <sequence minOccurs="0">
+      <element ref="SRIADE:DataSource"/>
+    </sequence>
+    <attributeGroup ref="gml:AssociationAttributeGroup"/>
+  </complexType>
+  <element name="DesignBasisData" substitutionGroup="SRIADE:InformationNeedDataCategory" type="SRIADE:DesignBasisDataType"/>
+  <complexType name="DesignBasisDataType">
+    <complexContent>
+      <extension base="SRIADE:InformationNeedDataCategoryType">
+        <sequence>
+          <element maxOccurs="unbounded" minOccurs="0" name="designType" type="SRIADE:DesignTypeTagType"/>
+          <element maxOccurs="unbounded" minOccurs="0" name="dataScale" type="SRIADE:SpatialDataScaleTagType"/>
+          <element name="other" type="string"/>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="DesignBasisDataPropertyType">
+    <sequence>
+      <element ref="SRIADE:DesignBasisData"/>
+    </sequence>
+  </complexType>
+  <simpleType name="DesignTypeTagType">
+    <restriction base="string">
+      <enumeration value="IEQCriteria">
+        <annotation>
+          <documentation>Indoor Environmental Quality Criteria: thermal, visual, IAQ, acoustic design, etc.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="DesignWeather">
+        <annotation>
+          <documentation>design day weather data, etc.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Drawings">
+        <annotation>
+          <documentation>2D/3D geometry data, etc.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="RatedPower">
+        <annotation>
+          <documentation>Rated power/capacity</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Schedules">
+        <annotation>
+          <documentation>occupant schedule, etc.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="OtherDesign"/>
+    </restriction>
+  </simpleType>
+  <simpleType name="DeviceCategoryType">
+    <annotation>
+      <documentation>DeviceCategory classifies the ICT device into categories:  Sensor: Device measuring environmental or operational parameters, Actuator (Device capable of affecting building operation by controlling equipment.),   Gateway: (Device responsible for translating or aggregating data across multiple communication protocols),  EMS (Energy Management System) (Device or software managing and optimizing energy consumption), API ( Application Programming Interface), or other.</documentation>
+    </annotation>
+    <restriction base="string">
+      <enumeration value="Sensor"/>
+      <enumeration value="Actuator"/>
+      <enumeration value="EMS"/>
+      <enumeration value="Gateway"/>
+      <enumeration value="API"/>
+      <enumeration value="Other"/>
+    </restriction>
+  </simpleType>
+  <element name="EnergyData" substitutionGroup="SRIADE:InformationNeedDataCategory" type="SRIADE:EnergyDataType"/>
+  <complexType name="EnergyDataType">
+    <complexContent>
+      <extension base="SRIADE:InformationNeedDataCategoryType">
+        <sequence>
+          <element maxOccurs="unbounded" minOccurs="0" name="energySource" type="SRIADE:EnergySourceTagType"/>
+          <element name="dataScale" type="SRIADE:SpatialDataScaleTagType"/>
+          <element maxOccurs="unbounded" minOccurs="0" name="endUse" type="SRIADE:EnergyEndUseTagType"/>
+          <element name="other" type="string"/>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="EnergyDataPropertyType">
+    <sequence>
+      <element ref="SRIADE:EnergyData"/>
+    </sequence>
+  </complexType>
+  <simpleType name="EnergyEndUseTagType">
+    <restriction base="string">
+      <enumeration value="HVAC"/>
+      <enumeration value="Lighting"/>
+      <enumeration value="Appliances">
+        <annotation>
+          <documentation>Plug-Ins / Appliances - named appliances for consistent naming.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="DHW"/>
+      <enumeration value="Pump"/>
+      <enumeration value="EVCharging"/>
+      <enumeration value="Battery">
+        <annotation>
+          <documentation>Key variables: electric battery</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="OtherEnergyEndUse"/>
+    </restriction>
+  </simpleType>
+  <simpleType name="EnergySourceTagType">
+    <restriction base="string">
+      <enumeration value="Fuel"/>
+      <enumeration value="Electricity"/>
+      <enumeration value="OtherEnergySource"/>
+    </restriction>
+  </simpleType>
+  <simpleType name="EnvironmentalDataSourceTagType">
+    <restriction base="string">
+      <enumeration value="OnsiteWeatherStation"/>
+      <enumeration value="LocalWeatherStation"/>
+      <enumeration value="Forecast"/>
+      <enumeration value="Historical"/>
+      <enumeration value="TMY">
+        <annotation>
+          <documentation>Test Metrological Year</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="OtherEnvironmentalData"/>
+    </restriction>
+  </simpleType>
+  <simpleType name="EnvironmentalDataTypeTagType">
+    <restriction base="string">
+      <enumeration value="Thermal">
+        <annotation>
+          <documentation>Outdoor &amp; Indoor: air temperature, humidity, air velocity, barometric pressure, etc.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Visual">
+        <annotation>
+          <documentation>Indoor:illuminances, glare, etc.
+Outdoor: illuminances, luminance, cloud cover, etc.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="AirQuality">
+        <annotation>
+          <documentation>Outdoor &amp; Indoor: CO2 concentration, PM2.5, VOC, etc.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Acoustic">
+        <annotation>
+          <documentation>Outdoor &amp; Indoor: noise level, sound level, etc.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Noise">
+        <annotation>
+          <documentation>noise level, sound level, etc</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Solar">
+        <annotation>
+          <documentation>Outdoor: irradiation</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="OtherEnvironmentalData"/>
+      <enumeration value="Wind">
+        <annotation>
+          <documentation>Outdoor: wind speed, wind direction</documentation>
+        </annotation>
+      </enumeration>
+    </restriction>
+  </simpleType>
+  <element name="ICTEquipment" substitutionGroup="SRIADE:DataSource" type="SRIADE:ICTEquipmentType">
+    <annotation>
+      <documentation>Relates to https://ontology.brickschema.org/brick/ICT_Equipment.html : Information and Communications Technology (ICT) equipment operates with a processor to process data or logic and create digital signals.</documentation>
+    </annotation>
+  </element>
+  <complexType name="ICTEquipmentType">
+    <complexContent>
+      <extension base="SRIADE:DataSourceType">
+        <sequence>
+          <element name="manufacturer" type="string">
+            <annotation>
+              <documentation>Name of the manufacturer or vendor of the device. Essential for interoperability, compatibility checks, and maintenance processes.</documentation>
+            </annotation>
+          </element>
+          <element name="supportedProtcols" type="string">
+            <annotation>
+              <documentation>List of protocols supported by the device, if any.</documentation>
+            </annotation>
+          </element>
+          <element name="deviceCategory" type="SRIADE:DeviceCategoryType">
+            <annotation>
+              <documentation>DeviceCategory classifies the ICT device into categories:  Sensor: Device measuring environmental or operational parameters, Actuator (Device capable of affecting building operation by controlling equipment.),   Gateway: (Device responsible for translating or aggregating data across multiple communication protocols),  EMS (Energy Management System) (Device or software managing and optimizing energy consumption), API ( Application Programming Interface), or other.</documentation>
+            </annotation>
+          </element>
+          <element name="supportedAccess" type="SRIADE:SupportedAccessPropertyType"/>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="ICTEquipmentPropertyType">
+    <sequence minOccurs="0">
+      <element ref="SRIADE:ICTEquipment"/>
+    </sequence>
+    <attributeGroup ref="gml:AssociationAttributeGroup"/>
+  </complexType>
+  <element name="IndoorEnvironmentalData" substitutionGroup="SRIADE:InformationNeedDataCategory" type="SRIADE:IndoorEnvironmentalDataType"/>
+  <complexType name="IndoorEnvironmentalDataType">
+    <complexContent>
+      <extension base="SRIADE:InformationNeedDataCategoryType">
+        <sequence>
+          <element maxOccurs="unbounded" minOccurs="0" name="environmentalDataType" type="SRIADE:EnvironmentalDataTypeTagType"/>
+          <element name="other" type="string"/>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="IndoorEnvironmentalDataPropertyType">
+    <sequence>
+      <element ref="SRIADE:IndoorEnvironmentalData"/>
+    </sequence>
+  </complexType>
+  <element name="InformationNeed" substitutionGroup="gml:_Feature" type="SRIADE:InformationNeedType"/>
+  <complexType name="InformationNeedType">
+    <complexContent>
+      <extension base="gml:AbstractFeatureType">
+        <sequence>
+          <element maxOccurs="unbounded" minOccurs="0" name="dataRequirements" type="SRIADE:InformationNeedDataCategoryPropertyType"/>
+          <element name="descriptionInformationNeed" type="string"/>
+          <element maxOccurs="unbounded" minOccurs="0" name="specifiesInformation" type="SRIADE:SRIServicePropertyType">
+            <annotation>
+              <appinfo>
+                <sc:taggedValue tag="minOccurs">0</sc:taggedValue>
+              </appinfo>
+            </annotation>
+          </element>
+          <element maxOccurs="unbounded" minOccurs="0" name="providesData">
+            <annotation>
+              <appinfo>
+                <sc:taggedValue tag="maxOccurs">*</sc:taggedValue>
+                <sc:taggedValue tag="minOccurs">0</sc:taggedValue>
+                <sc:taggedValue tag="minOccurs">0</sc:taggedValue>
+              </appinfo>
+            </annotation>
+            <complexType>
+              <sequence>
+                <element ref="SRIADE:DataSource"/>
+              </sequence>
+            </complexType>
+          </element>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="InformationNeedPropertyType">
+    <sequence minOccurs="0">
+      <element ref="SRIADE:InformationNeed"/>
+    </sequence>
+    <attributeGroup ref="gml:AssociationAttributeGroup"/>
+  </complexType>
+  <element name="InformationNeedDataCategory" substitutionGroup="gml:_Object" type="SRIADE:InformationNeedDataCategoryType"/>
+  <complexType name="InformationNeedDataCategoryType">
+    <sequence/>
+  </complexType>
+  <complexType name="InformationNeedDataCategoryPropertyType">
+    <sequence>
+      <element ref="SRIADE:InformationNeedDataCategory"/>
+    </sequence>
+  </complexType>
+  <element name="Interface" substitutionGroup="SRIADE:DataSource" type="SRIADE:InterfaceType"/>
+  <complexType name="InterfaceType">
+    <complexContent>
+      <extension base="SRIADE:DataSourceType">
+        <sequence>
+          <element name="supportedAccess" type="SRIADE:SupportedAccessPropertyType"/>
+          <element name="interfaceType" type="string"/>
+          <element name="version" type="string"/>
+          <element name="software" type="string"/>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="InterfacePropertyType">
+    <sequence minOccurs="0">
+      <element ref="SRIADE:Interface"/>
+    </sequence>
+    <attributeGroup ref="gml:AssociationAttributeGroup"/>
+  </complexType>
+  <element name="Model" substitutionGroup="SRIADE:DataSource" type="SRIADE:ModelType"/>
+  <complexType name="ModelType">
+    <complexContent>
+      <extension base="SRIADE:DataSourceType">
+        <sequence>
+          <element name="aquisitionMethod" type="string"/>
+          <element name="software" type="string"/>
+          <element name="type" type="string">
+            <annotation>
+              <documentation>ModelType:  Indicates the semantic or schema standard used for representing data from ICT devices, e.g., Brick.</documentation>
+            </annotation>
+          </element>
+          <element name="version" type="string">
+            <annotation>
+              <documentation>Version of the semantic model or standard used, important for compatibility and integration accuracy.</documentation>
+            </annotation>
+          </element>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="ModelPropertyType">
+    <sequence minOccurs="0">
+      <element ref="SRIADE:Model"/>
+    </sequence>
+    <attributeGroup ref="gml:AssociationAttributeGroup"/>
+  </complexType>
+  <simpleType name="NonRenewableEnergyTagType">
+    <restriction base="string">
+      <enumeration value="OnsiteConventionalEnergy"/>
+      <enumeration value="OtherNonRenewableEnergy"/>
+    </restriction>
+  </simpleType>
+  <element name="OccupantData" substitutionGroup="SRIADE:InformationNeedDataCategory" type="SRIADE:OccupantDataType"/>
+  <complexType name="OccupantDataType">
+    <complexContent>
+      <extension base="SRIADE:InformationNeedDataCategoryType">
+        <sequence>
+          <element name="occupantType" type="SRIADE:OccupantTypeTagType"/>
+          <element maxOccurs="unbounded" minOccurs="0" name="dataScale" type="SRIADE:SpatialDataScaleTagType"/>
+          <element name="other" type="string"/>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="OccupantDataPropertyType">
+    <sequence>
+      <element ref="SRIADE:OccupantData"/>
+    </sequence>
+  </complexType>
+  <simpleType name="OccupantTypeTagType">
+    <restriction base="string">
+      <enumeration value="Occupancy">
+        <annotation>
+          <documentation>presence, count, etc.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Actions">
+        <annotation>
+          <documentation>setpoint adjustment, window/door open/close, lighting &amp; shading adjustment, equipment action, etc.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Attributes">
+        <annotation>
+          <documentation>gender, age, etc.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Attitude">
+        <annotation>
+          <documentation>energy and environmental awareness, energy use style, etc.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="OtherOccupantType"/>
+    </restriction>
+  </simpleType>
+  <element name="OnsiteEnergyGeneration" substitutionGroup="SRIADE:InformationNeedDataCategory" type="SRIADE:OnsiteEnergyGenerationType">
+    <annotation>
+      <documentation>Abbreviation for Onsite energy generation data</documentation>
+    </annotation>
+  </element>
+  <complexType name="OnsiteEnergyGenerationType">
+    <complexContent>
+      <extension base="SRIADE:InformationNeedDataCategoryType">
+        <sequence>
+          <element maxOccurs="unbounded" minOccurs="0" name="renewableEnergy" type="SRIADE:RenewableEnergyTagType"/>
+          <element maxOccurs="unbounded" minOccurs="0" name="nonRenewableEnergy" type="SRIADE:NonRenewableEnergyTagType"/>
+          <element name="other" type="string"/>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="OnsiteEnergyGenerationPropertyType">
+    <sequence>
+      <element ref="SRIADE:OnsiteEnergyGeneration"/>
+    </sequence>
+  </complexType>
+  <element name="OperationalData" substitutionGroup="SRIADE:InformationNeedDataCategory" type="SRIADE:OperationalDataType">
+    <annotation>
+      <documentation>System and Equipment Operational Data, abbreviation for consistency with Names.</documentation>
+    </annotation>
+  </element>
+  <complexType name="OperationalDataType">
+    <complexContent>
+      <extension base="SRIADE:InformationNeedDataCategoryType">
+        <sequence>
+          <element maxOccurs="unbounded" minOccurs="0" name="systemData" type="SRIADE:SystemDataTagType"/>
+          <element maxOccurs="unbounded" minOccurs="0" name="systemType" type="SRIADE:SystemTypeTagType"/>
+          <element maxOccurs="unbounded" minOccurs="0" name="dataScale" type="SRIADE:SpatialDataScaleTagType"/>
+          <element name="other" type="string"/>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="OperationalDataPropertyType">
+    <sequence>
+      <element ref="SRIADE:OperationalData"/>
+    </sequence>
+  </complexType>
+  <element name="OutdoorEnvironmentalData" substitutionGroup="SRIADE:InformationNeedDataCategory" type="SRIADE:OutdoorEnvironmentalDataType"/>
+  <complexType name="OutdoorEnvironmentalDataType">
+    <complexContent>
+      <extension base="SRIADE:InformationNeedDataCategoryType">
+        <sequence>
+          <element maxOccurs="unbounded" minOccurs="0" name="environmentalDataType" type="SRIADE:EnvironmentalDataTypeTagType"/>
+          <element maxOccurs="unbounded" minOccurs="0" name="source" type="SRIADE:EnvironmentalDataSourceTagType"/>
+          <element name="other" type="string"/>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="OutdoorEnvironmentalDataPropertyType">
+    <sequence>
+      <element ref="SRIADE:OutdoorEnvironmentalData"/>
+    </sequence>
+  </complexType>
+  <simpleType name="RenewableEnergyTagType">
+    <restriction base="string">
+      <enumeration value="SolarEnergy"/>
+      <enumeration value="WindEnergy"/>
+      <enumeration value="ThermalEnergy"/>
+      <enumeration value="OtherRenewableEnergyType"/>
+    </restriction>
+  </simpleType>
+  <element name="SRIAssessment" substitutionGroup="gml:_Feature" type="SRIADE:SRIAssessmentType">
+    <annotation>
+      <documentation>Smart Readiness Indicator (SRI) Assessment of a building. The Assessment is conducted by an Assessor, and leads to a rating of a specific building. Depending on the specifics (such as location, type of building, catalogue considered relevant) different types of services are investigated.</documentation>
+      <appinfo>
+        <sc:taggedValue tag="topLevel">true</sc:taggedValue>
+      </appinfo>
+    </annotation>
+  </element>
+  <complexType name="SRIAssessmentType">
+    <complexContent>
+      <extension base="gml:AbstractFeatureType">
+        <sequence>
+          <element minOccurs="0" name="score" type="integer"/>
+          <element minOccurs="0" name="dateOfAssessment" type="date"/>
+          <element minOccurs="0" name="assessor" type="SRIADE:AssessorPropertyType"/>
+          <element name="sriMethodology" type="SRIADE:SRIMethodologyType"/>
+          <element maxOccurs="unbounded" minOccurs="0" name="isPartOfAssessment" type="SRIADE:SRIServicePropertyType">
+            <annotation>
+              <appinfo>
+                <sc:taggedValue tag="maxOccurs">*</sc:taggedValue>
+                <sc:taggedValue tag="minOccurs">0</sc:taggedValue>
+              </appinfo>
+            </annotation>
+          </element>
+          <element maxOccurs="unbounded" minOccurs="0" name="assesses" type="gml:ReferenceType"/>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="SRIAssessmentPropertyType">
+    <sequence minOccurs="0">
+      <element ref="SRIADE:SRIAssessment"/>
+    </sequence>
+    <attributeGroup ref="gml:AssociationAttributeGroup"/>
+  </complexType>
+  <simpleType name="SRIBuildingStateType">
+    <annotation>
+      <documentation>Reference designation of the degree of refurbishment. This reference may be European (from the Tabula project) or local (used for the Energy Action Plan of a city).</documentation>
+    </annotation>
+    <restriction base="string">
+      <enumeration value="Original"/>
+      <enumeration value="AdvancedRefurbishment"/>
+      <enumeration value="NormalRefurbishment"/>
+      <enumeration value="Other"/>
+    </restriction>
+  </simpleType>
+  <simpleType name="SRIBuildingTypeType">
+    <annotation>
+      <documentation>The building type classification according to the SRI modeling sheet 4.5. Additionally, the term other is added to offer the possibility to include Mixed-Use Buildings.</documentation>
+    </annotation>
+    <restriction base="string">
+      <enumeration value="Residential"/>
+      <enumeration value="NonResidential"/>
+      <enumeration value="Other"/>
+    </restriction>
+  </simpleType>
+  <simpleType name="SRIBuildingUsageType">
+    <annotation>
+      <documentation>Refers to the SRI Building Usage type, user other for Mixed Use.</documentation>
+    </annotation>
+    <restriction base="string">
+      <enumeration value="NonResidentialEducational"/>
+      <enumeration value="NonResidentialHealthcare"/>
+      <enumeration value="NonResidentialOffice"/>
+      <enumeration value="ResidentialOther"/>
+      <enumeration value="ResidentialLargeMultiFamilyHouse"/>
+      <enumeration value="ResidentialSmallMultiFamilyHouse"/>
+      <enumeration value="NonResidentialOther"/>
+      <enumeration value="Other"/>
+      <enumeration value="ResidentialSingleFamilyHouse"/>
+    </restriction>
+  </simpleType>
+  <simpleType name="SRIClimateZoneTypeType">
+    <restriction base="string">
+      <enumeration value="NorthEastEurope"/>
+      <enumeration value="NorthEurope"/>
+      <enumeration value="Other"/>
+      <enumeration value="SouthEastEurope"/>
+      <enumeration value="WestEurope"/>
+    </restriction>
+  </simpleType>
+  <simpleType name="SRIDomainsType">
+    <restriction base="string">
+      <enumeration value="DynamicBuildingEnvelopeDomain"/>
+      <enumeration value="HeatingDomain"/>
+      <enumeration value="ElectricVehicleChargingDomain"/>
+      <enumeration value="CoolingDomain"/>
+      <enumeration value="LightingDomain"/>
+      <enumeration value="MonitoringAndControlDomain"/>
+      <enumeration value="VentilationDomain"/>
+      <enumeration value="DomesticHotWater"/>
+      <enumeration value="Other"/>
+    </restriction>
+  </simpleType>
+  <simpleType name="SRIMethodologyType">
+    <restriction base="string">
+      <enumeration value="MethodA"/>
+      <enumeration value="MethodB"/>
+      <enumeration value="Other">
+        <annotation>
+          <documentation>Methodology of the SRI Assessment.</documentation>
+        </annotation>
+      </enumeration>
+    </restriction>
+  </simpleType>
+  <element name="SRIService" substitutionGroup="gml:_Feature" type="SRIADE:SRIServiceType">
+    <annotation>
+      <documentation>Contains the information on a specific service, the minimum information include, Code (e.g., MC-3), Domain (e.g., Monitoring and control), service group (e.g., HVAC interaction control), Name (e.g., Run time management of HVAC systems), Preconditions (e.g. " "), part of Method A (e.g., True), part of Method B (e.g., False).</documentation>
+    </annotation>
+  </element>
+  <complexType name="SRIServiceType">
+    <complexContent>
+      <extension base="gml:AbstractFeatureType">
+        <sequence>
+          <element name="sriDomain" type="SRIADE:SRIDomainsType"/>
+          <element name="impact" type="string"/>
+          <element name="code" type="string">
+            <annotation>
+              <documentation>Code of the SRI Service, e.g. H-1a.</documentation>
+            </annotation>
+          </element>
+          <element name="serviceName" type="string"/>
+          <element name="serviceGroup" type="string"/>
+          <element name="preconditions" type="string"/>
+          <element name="userDefined" type="boolean"/>
+          <element name="partOfMethodA" type="boolean"/>
+          <element name="partOfMethodB" type="boolean"/>
+          <element maxOccurs="4" minOccurs="0" name="functionalityLevel" type="integer"/>
+          <element name="descriptionFunctionalityLevel" type="string">
+            <annotation>
+              <documentation>Textual Description of the functionality level.</documentation>
+            </annotation>
+          </element>
+          <element name="shareFunctionalityLevel" type="integer">
+            <annotation>
+              <documentation>Share of functionality level in  % of building.</documentation>
+            </annotation>
+          </element>
+          <element maxOccurs="unbounded" minOccurs="0" name="needs" type="SRIADE:InformationNeedPropertyType">
+            <annotation>
+              <appinfo>
+                <sc:taggedValue tag="maxOccurs">*</sc:taggedValue>
+                <sc:taggedValue tag="minOccurs">0</sc:taggedValue>
+              </appinfo>
+            </annotation>
+          </element>
+          <element maxOccurs="unbounded" minOccurs="0" name="consistsOf">
+            <annotation>
+              <appinfo>
+                <sc:taggedValue tag="maxOccurs">*</sc:taggedValue>
+                <sc:taggedValue tag="minOccurs">0</sc:taggedValue>
+              </appinfo>
+            </annotation>
+            <complexType>
+              <sequence>
+                <element ref="SRIADE:ServiceCatalogue"/>
+              </sequence>
+            </complexType>
+          </element>
+          <element maxOccurs="unbounded" minOccurs="0" name="isAssessed" type="SRIADE:SRIAssessmentPropertyType">
+            <annotation>
+              <appinfo>
+                <sc:taggedValue tag="maxOccurs">*</sc:taggedValue>
+                <sc:taggedValue tag="minOccurs">0</sc:taggedValue>
+              </appinfo>
+            </annotation>
+          </element>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="SRIServicePropertyType">
+    <sequence minOccurs="0">
+      <element ref="SRIADE:SRIService"/>
+    </sequence>
+    <attributeGroup ref="gml:AssociationAttributeGroup"/>
+  </complexType>
+  <element name="SRI_SriAssessment_Building" substitutionGroup="gml:_GML" type="SRIADE:SRI_SriAssessment_BuildingType"/>
+  <complexType name="SRI_SriAssessment_BuildingType">
+    <complexContent>
+      <extension base="gml:AbstractGMLType">
+        <sequence>
+          <element name="assessedBy" type="gml:ReferenceType"/>
+          <element name="assesses" type="gml:ReferenceType"/>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="SRI_SriAssessment_BuildingPropertyType">
+    <sequence minOccurs="0">
+      <element ref="SRIADE:SRI_SriAssessment_Building"/>
+    </sequence>
+    <attributeGroup ref="gml:AssociationAttributeGroup"/>
+  </complexType>
+  <element name="ServiceCatalogue" substitutionGroup="gml:_Feature" type="SRIADE:ServiceCatalogueType">
+    <annotation>
+      <documentation>The service catalogue from which the Service is obtained from.</documentation>
+    </annotation>
+  </element>
+  <complexType name="ServiceCatalogueType">
+    <complexContent>
+      <extension base="gml:AbstractFeatureType">
+        <sequence>
+          <element name="version" type="integer"/>
+          <element name="description" type="string"/>
+          <element maxOccurs="unbounded" minOccurs="0" name="isPartOfCatalogue" type="SRIADE:SRIServicePropertyType">
+            <annotation>
+              <appinfo>
+                <sc:taggedValue tag="maxOccurs">*</sc:taggedValue>
+                <sc:taggedValue tag="minOccurs">0</sc:taggedValue>
+              </appinfo>
+            </annotation>
+          </element>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="ServiceCataloguePropertyType">
+    <sequence minOccurs="0">
+      <element ref="SRIADE:ServiceCatalogue"/>
+    </sequence>
+    <attributeGroup ref="gml:AssociationAttributeGroup"/>
+  </complexType>
+  <simpleType name="SpatialDataScaleTagType">
+    <restriction base="string">
+      <enumeration value="Room"/>
+      <enumeration value="Building"/>
+      <enumeration value="District"/>
+      <enumeration value="System"/>
+      <enumeration value="Floor"/>
+      <enumeration value="OtherSpatialScale"/>
+      <enumeration value="Equipment"/>
+      <enumeration value="Zone"/>
+      <enumeration value="Circuit"/>
+    </restriction>
+  </simpleType>
+  <element name="SupportedAccess" substitutionGroup="gml:_Object" type="SRIADE:SupportedAccessType"/>
+  <complexType name="SupportedAccessType">
+    <sequence>
+      <element name="description" type="string"/>
+      <element name="hasAPI" type="boolean"/>
+      <element name="accessType" type="SRIADE:AcessTypeType">
+        <annotation>
+          <documentation>Type of the Access: Web Based, Tool Based or other.</documentation>
+        </annotation>
+      </element>
+      <element name="hasEndpoint" type="boolean"/>
+    </sequence>
+  </complexType>
+  <complexType name="SupportedAccessPropertyType">
+    <sequence>
+      <element ref="SRIADE:SupportedAccess"/>
+    </sequence>
+  </complexType>
+  <simpleType name="SystemDataTagType">
+    <annotation>
+      <documentation>computer, washer, refrigerator, oven, dryer, etc.</documentation>
+    </annotation>
+    <restriction base="string">
+      <enumeration value="HVAC">
+        <annotation>
+          <documentation>operational status (e.g. fan on/off, damper position), state variables (e.g. temp, airflow rate, pressure), etc.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Lighting">
+        <annotation>
+          <documentation>dimming level, etc.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Fenestration">
+        <annotation>
+          <documentation>open/close states, shading status, etc.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Plant">
+        <annotation>
+          <documentation>chiller, boiler, cooling tower, etc</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="HotWater">
+        <annotation>
+          <documentation>flowrate, hot water usage, etc.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="NonHeatedWater">
+        <annotation>
+          <documentation>flowrate, water usage, etc.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="Equipment"/>
+      <enumeration value="EnergyStorage"/>
+      <enumeration value="Elevator"/>
+    </restriction>
+  </simpleType>
+  <simpleType name="SystemTypeTagType">
+    <restriction base="string">
+      <enumeration value="Log"/>
+      <enumeration value="Fault"/>
+      <enumeration value="OtherSystemType"/>
+    </restriction>
+  </simpleType>
+  <element name="UtilityGridData" substitutionGroup="SRIADE:InformationNeedDataCategory" type="SRIADE:UtilityGridDataType"/>
+  <complexType name="UtilityGridDataType">
+    <complexContent>
+      <extension base="SRIADE:InformationNeedDataCategoryType">
+        <sequence>
+          <element maxOccurs="unbounded" minOccurs="0" name="utilityGridType" type="SRIADE:UtilityGridTypeTagType"/>
+          <element maxOccurs="unbounded" minOccurs="0" name="dataScale" type="SRIADE:SpatialDataScaleTagType"/>
+          <element name="other" type="string"/>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="UtilityGridDataPropertyType">
+    <sequence>
+      <element ref="SRIADE:UtilityGridData"/>
+    </sequence>
+  </complexType>
+  <simpleType name="UtilityGridTypeTagType">
+    <restriction base="string">
+      <enumeration value="Tariff">
+        <annotation>
+          <documentation>utility rates, et.c</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="DemandResponse">
+        <annotation>
+          <documentation>DR signal via OpenADR, etc.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="CarbonEmission">
+        <annotation>
+          <documentation>CO2 emission rate, etc.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="OtherUtilityGrid"/>
+    </restriction>
+  </simpleType>
+</schema>
